@@ -1,21 +1,43 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Coucou</title>
-</head>
-<body>
-Voici un premier exemple de composant web avec une servlet: 
-<br>
- <form method="post" action="/TP1/LoginServlet">
-  Name:
-  <input type="text" name="name">
-  Password:
-  <input type="text" name="pwd">
-  <br>
-  <input type="submit" value="Submit">
-  
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Connexion</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="./bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="./signin.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="container">
+
+      <form method="post" action="/CODEL-GestionnaireDeContact/LoginServlet">
+
+        <h2 class="form-signin-heading">Connectez-vous</h2>
+        <label for="inputEmail" class="sr-only">Email address</label>
+        <input type="text" class="form-control" placeholder="Votre login." name="name" required>
+        <label for="inputPassword" class="sr-only">Mot de passe</label>
+        <input type="text" class="form-control" placeholder="Votre mot de passe." name="pwd" required>
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" value="remember-me"> Remember me
+          </label>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" value="Submit">Connexion</button>
+
+
   <input type="reset" value="Reset">
-</form>   
-</body>
+
+      </form>
+
+    </div> <!-- /container -->
+  </body>
 </html>

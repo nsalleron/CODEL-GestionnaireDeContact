@@ -1,12 +1,14 @@
 package daos;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
 import entities.Contact;
+import entities.PhoneNumber;
 import utils.HibernateUtil;
 
 public  class ContactDAO {
@@ -18,6 +20,9 @@ public  class ContactDAO {
 		System.out.println("ADDED : "+firstName+" " + lastName +" at "+email);
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Contact c = new Contact(firstName,lastName,email);
+		HashSet<PhoneNumber> c2 = new HashSet<PhoneNumber>();
+		c2.add(new PhoneNumber("+33","0125646546546",c));
+		c.setPhones(c2);
 		
 		session.beginTransaction();
 		session.save(c);

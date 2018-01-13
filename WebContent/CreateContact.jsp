@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<form method="post" action="/TP1/CreateServlet">
+<form method="post" action="/CODEL-GestionnaireDeContact/CreateServlet">
    Prenom:
   <input type="text" name="firstName"><br>
  

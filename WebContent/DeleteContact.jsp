@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form method="post" action="/TP1/DeleteServlet">
+<form method="post" action="/CODEL-GestionnaireDeContact/DeleteServlet">
    email:
   <input type="text" name="email">
   <br>

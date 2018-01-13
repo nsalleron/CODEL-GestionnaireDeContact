@@ -7,7 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-<form method="post" action="/TP1/UpdateServlet">
+<form method="post" action="/CODEL-GestionnaireDeContact/UpdateServlet">
    Prenom:
   <input type="text" name="firstName"><br>
    Nom:
