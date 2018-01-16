@@ -22,7 +22,6 @@ public  class ContactDAO {
 		//TODO Hibernate? alContact.add(new Contact(alContact.size(),firstName,lastName,email));
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		
 		Contact c = new Contact(firstName,lastName,email);
 		c.setAdd(a);
 		c.setPhones(new HashSet<PhoneNumber>());
@@ -34,18 +33,17 @@ public  class ContactDAO {
 		System.out.println("CONTACT ADDED");
 	}
 	public static void createContact(String firstName, String lastName, String email, Address a,String siret) {
-		//TODO Hibernate? alContact.add(new Contact(alContact.size(),firstName,lastName,email));
-		System.out.println("ADDED : "+firstName+" " + lastName +" at "+email);
+		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Entreprise c = new Entreprise(firstName ,lastName,email, Long.parseLong(siret));
-		HashSet<PhoneNumber> c2 = new HashSet<PhoneNumber>();
-		c2.add(new PhoneNumber("+33","0125646546546",c));
-		c.setPhones(c2);
+		c.setAdd(a);
+		c.setPhones(new HashSet<PhoneNumber>());
+		c.setBooks(new HashSet<ContactGroup>());
 		
 		session.beginTransaction();
-		session.save(c2);
 		session.save(c);
 		session.getTransaction().commit();
+		System.out.println("ENTREPRISE ADDED");
 	}
 	
 	
@@ -75,7 +73,13 @@ public  class ContactDAO {
 	}
 	
 	public static List<Contact> readContact(){
-		return alContact;
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction tx = session.getTransaction();
+		if(!tx.isActive()) tx = session.beginTransaction();
+		List<Contact> lc = session.createCriteria(Contact.class).list();
+		session.getTransaction().commit();
+		return lc;
+		
 	}
 	
 }

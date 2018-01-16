@@ -16,7 +16,7 @@
 				okEmail= true , okStreet = true ,
 				okZip = true, okCity = true, okCountry = true;
 		
-		String showError = "STYLE=\"color: #FFFFFF; background-color: #ff6633;\"";
+		String showError = "STYLE=\"color: #000000; background-color: #ff6633;\"";
 		String noError = "STYLE=\"color: #000000; background-color: #FFFFFF;\"";
 		Boolean success;
 		information = ((String)request.getAttribute("information"));
@@ -85,12 +85,20 @@
 			</div>
 			<div class="from-group">
 				<label for="lastname">Last name</label> 
-				<input type="text" class="form-control" name="lastname" value="<%=lastname %>"
+				<input type="text" <%if(!okLastName){%>
+										<%=showError %>
+									<% }else{ %>
+										<%=noError %>
+									<%} %> class="form-control" name="lastname" value="<%=lastname %>"
 					placeholder="Last name">
 			</div>
 			<div class="from-group">
 				<label for="email">Email address</label>
-				<input type="email" class="form-control" name="email" value="<%=email %>"
+				<input type="email" <%if(!okEmail){%>
+										<%=showError %>
+									<% }else{ %>
+										<%=noError %>
+									<%} %>class="form-control" name="email" value="<%=email %>"
 					placeholder="Email">
 			</div>
 			<div class="from-group">
@@ -104,22 +112,38 @@
    			
 			<div class="from-group">
 				<label for="street">Street</label> 
-				<input type="text" class="form-control" name="street" value="<%=street %>"
+				<input type="text" <%if(!okStreet){%>
+										<%=showError %>
+									<% }else{ %>
+										<%=noError %>
+									<%} %>class="form-control" name="street" value="<%=street %>"
 					placeholder="Street name">
 			</div>
 			<div class="from-group">
 				<label for="city">City</label>
-				<input type="text" class="form-control" name="city" value="<%=city%>"
+				<input type="text" <%if(!okCity){%>
+										<%=showError %>
+									<% }else{ %>
+										<%=noError %>
+									<%} %>class="form-control" name="city" value="<%=city%>"
 					placeholder="City">
 			</div>
 			<div class="from-group">
 				<label for="zip">Zip</label> 
-				<input type="number" class="form-control" name="zip" value="<%=zip%>"
+				<input type="number" <%if(!okZip){%>
+										<%=showError %>
+									<% }else{ %>
+										<%=noError %>
+									<%} %>class="form-control" name="zip" value="<%=zip%>"
 					placeholder="Zip">
 			</div>
 			<div class="from-group">
 				<label for="country">Country</label> 
-				<input type="text" class="form-control" name="country" value="<%=country%>"
+				<input type="text" <%if(!okCountry){%>
+										<%=showError %>
+									<% }else{ %>
+										<%=noError %>
+									<%} %>class="form-control" name="country" value="<%=country%>"
 					placeholder="City">
 			</div>
 			</fieldset>
