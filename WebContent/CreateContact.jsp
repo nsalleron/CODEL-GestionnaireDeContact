@@ -157,6 +157,11 @@
 						<div class="input-group">
 							<input type="tel" class="form-control" name="telephone" id="tel1" maxlength="10" style="border-radius: 4px;">
 						</div>
+						<select id="phonekind">
+  							<option value="valeur1"selected>Valeur 1</option> 
+  							<option value="valeur2">Valeur 2</option>
+  							<option value="valeur3">Valeur 3</option>
+						</select>
 					</div>
 				</div>
 			</div>

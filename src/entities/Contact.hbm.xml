@@ -37,8 +37,7 @@
 
 		<joined-subclass name="Entreprise" table="ENTREPRISE_TABLE">
 			<key column="ID_CONF" />
-			
-			<property name="numSiret" column="numSiret" />
+			<property name="numSiret" column="NUMSIRET" />
 		</joined-subclass>
 
 	</class>

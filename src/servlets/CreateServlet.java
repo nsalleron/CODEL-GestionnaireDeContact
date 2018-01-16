@@ -9,7 +9,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import daos.AddressDAO;
+import daos.PhoneNumberDAO;
 import entities.Address;
+import entities.Contact;
+import entities.PhoneNumber;
 import services.AddressService;
 import services.ContactService;
 
@@ -41,10 +44,10 @@ public class CreateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		/* Déclaration */
 		String firstName, lastName, email, siret, street,
-			   city, zip, country, phone;
+			   city, zip, country, phone, phonekind;
 		boolean okFirstName = false, okLastName = false ,
 				okEmail= false , okStreet = false ,
-				okZip = false, okCity = false, okCountry = false;
+				okZip = false, okCity = false, okCountry = false, okPhoneKind = false, okPhone = false;
 		
 		/* Récupération des élements */
 		firstName = request.getParameter("firstname");
@@ -56,6 +59,7 @@ public class CreateServlet extends HttpServlet {
 		zip = request.getParameter("zip");
 		country = request.getParameter("country");
 		phone = request.getParameter("telephone");
+		phonekind = request.getParameter("phonekind");
 		
 		/* Vérification des élements */
 		if(firstName != null && firstName.length() > 0) 
@@ -72,17 +76,23 @@ public class CreateServlet extends HttpServlet {
 			okCity = true;
 		if(country!=null && country.length()>0) 
 			okCountry = true;
+		if(phone!=null && phone.length()>0) 
+			okPhone = true;
+		if(phonekind!=null && phonekind.length()>0) 
+			okPhoneKind = true;
 		
 		/* Création */
 		if(okFirstName && okLastName && okEmail && okStreet && okZip && okCity && okCountry){
 			
 			Address add = AddressDAO.createAddress(street, city, zip, country);
-			
+			Contact c;
 			if(siret!=null && !siret.isEmpty()){
-				ContactService.CreateContact(firstName, lastName, email, add, siret);
+				c = ContactService.CreateContact(firstName, lastName, email, add, siret);
 			} else {
-				ContactService.CreateContact(firstName, lastName, email, add);
+				c = ContactService.CreateContact(firstName, lastName, email, add);
 			}
+			
+			PhoneNumberDAO.createPhoneNumber(phonekind, phone, c);
 					
 			request.setAttribute("success", true);
 			request.setAttribute("information", "Contact created !");
@@ -90,14 +100,14 @@ public class CreateServlet extends HttpServlet {
 			rd.forward(request, response);
 		} else {
 			
-			String who = whoFails(okFirstName, okLastName, okEmail, okStreet, okZip, okCity, okCountry);
+			String who = whoFails(okFirstName, okLastName, okEmail, okStreet, okZip, okCity, okCountry, okPhoneKind, okPhone);
 			request.setAttribute("success", false);
 			request.setAttribute("information",who);
 			RequestDispatcher rd = request.getRequestDispatcher("CreateContact.jsp");
 			rd.forward(request, response);
 		}	
 	}
-	private String whoFails(boolean first, boolean last, boolean email, boolean street, boolean zip, boolean city, boolean country) {
+	private String whoFails(boolean first, boolean last, boolean email, boolean street, boolean zip, boolean city, boolean country, boolean phonekind, boolean phone) {
 		String tmp = "";
 		if(!first)
 			tmp += "firstname;";
@@ -113,6 +123,10 @@ public class CreateServlet extends HttpServlet {
 			tmp += "city;";
 		if(!country)
 			tmp += "country;";
+		if(!phonekind)
+			tmp += "phonekind;";
+		if(!phone)
+			tmp += "phone";
 		return tmp;
 	}
 

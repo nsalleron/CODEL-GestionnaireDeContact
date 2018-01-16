@@ -9,11 +9,11 @@ import entities.Address;
 public class ContactService {
 
 	
-	public static void CreateContact(String firstName, String lastName, String email, Address a) {
-		ContactDAO.createContact(firstName,lastName,email,a);
+	public static Contact CreateContact(String firstName, String lastName, String email, Address a) {
+		return ContactDAO.createContact(firstName,lastName,email,a);
 	}
-	public static void CreateContact(String firstName, String lastName, String email, Address a, String Siret) {
-		ContactDAO.createContact(firstName,lastName,email,a, Siret);
+	public static Contact CreateContact(String firstName, String lastName, String email, Address a, String Siret) {
+		return ContactDAO.createContact(firstName,lastName,email,a, Siret);
 	}
 	
 	public static void DeleteContact(String email) {

@@ -19,7 +19,7 @@ public  class AddressDAO {
 	
 	public static Address createAddress(String street, String city, String zip, String country){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		
+		System.out.println("DEBUG OBJT SESSION : "+session.toString());
 		Address address = new Address();
 		address.setStreet(street);
 		address.setCity(city);
@@ -36,6 +36,7 @@ public  class AddressDAO {
 	
 	public static void deleteAddress(long id) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		System.out.println("DEBUG OBJT SESSION : "+session.toString());
 		Transaction tx = session.getTransaction();
 		if(!tx.isActive()) tx = session.beginTransaction();
 		Address address = (Address) session.load(Address.class, id);
@@ -50,7 +51,7 @@ public  class AddressDAO {
 	public static boolean updateAddress(long id, String street, String city, String zip, String country) {
 		try{
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-	
+			System.out.println("DEBUG OBJT SESSION : "+session.toString());
 			Transaction tx = session.getTransaction();
 			if(!tx.isActive()) tx = session.beginTransaction();
 			
@@ -71,6 +72,7 @@ public  class AddressDAO {
 	
 	public static Address getAddressById(long id){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		System.out.println("DEBUG OBJT SESSION : "+session.toString());
 		Transaction tx = session.getTransaction();
 		if(!tx.isActive()) tx = session.beginTransaction();
 		Address address = (Address) session.load(Address.class, id);
