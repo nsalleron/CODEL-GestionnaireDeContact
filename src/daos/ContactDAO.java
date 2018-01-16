@@ -3,6 +3,7 @@ package daos;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -92,6 +93,35 @@ public  class ContactDAO {
 		
 		return lc;
 		
+	}
+	
+	public static void addContactInGroup(long id_cont, long id_group){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		if(!transaction.isActive()) 
+			transaction = session.beginTransaction();
+		
+		Contact contact = (Contact) session.load(Contact.class, id_cont);
+		ContactGroup cg = (ContactGroup) session.load(ContactGroup.class, id_group);
+		
+		
+		Set<ContactGroup> ensGroupe = contact.getBooks();
+		Set<Contact> ensContact = cg.getContacts();
+		
+		ensContact.add(contact);
+		ensGroupe.add(cg);
+		
+		contact.setBooks(ensGroupe);
+		cg.setContacts(ensContact);	
+		
+		transaction = session.getTransaction();
+		if(!transaction.isActive()) 
+			transaction = session.beginTransaction();
+		
+		session.saveOrUpdate(contact);
+		session.saveOrUpdate(cg);
+		
+		transaction.commit();
 	}
 	
 }

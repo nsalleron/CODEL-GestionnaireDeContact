@@ -10,8 +10,8 @@ import entities.Address;
 public class AddressService {
 
 	
-	public static void createAddress(String street, String city, String zip, String country) {
-		AddressDAO.createAddress(street,city,zip,country);
+	public static Address createAddress(String street, String city, String zip, String country) {
+		return AddressDAO.createAddress(street,city,zip,country);
 	}
 	
 	public static void deleteAddress(long id) {

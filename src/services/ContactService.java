@@ -27,4 +27,8 @@ public class ContactService {
 	public static List<Contact> ReadContact() {
 		return ContactDAO.readContact();
 	}
+	
+	public static void addContactInGroup(long id_cont, long id_group) {
+		ContactDAO.addContactInGroup(id_cont, id_group);
+	}
 }

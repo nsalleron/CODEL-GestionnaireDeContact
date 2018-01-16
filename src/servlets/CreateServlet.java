@@ -12,9 +12,12 @@ import daos.AddressDAO;
 import daos.PhoneNumberDAO;
 import entities.Address;
 import entities.Contact;
+import entities.ContactGroup;
 import entities.PhoneNumber;
 import services.AddressService;
+import services.ContactGroupService;
 import services.ContactService;
+import services.PhoneNumberService;
 
 /**
  * Servlet implementation class CreateServlet
@@ -44,7 +47,7 @@ public class CreateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		/* Déclaration */
 		String firstName, lastName, email, siret, street,
-			   city, zip, country, phone, phonekind;
+			   city, zip, country, phone, phonekind, contactGroups;
 		boolean okFirstName = false, okLastName = false ,
 				okEmail= false , okStreet = false ,
 				okZip = false, okCity = false, okCountry = false, okPhoneKind = false, okPhone = false;
@@ -60,6 +63,7 @@ public class CreateServlet extends HttpServlet {
 		country = request.getParameter("country");
 		phone = request.getParameter("telephone");
 		phonekind = request.getParameter("phonekind");
+		contactGroups = request.getParameter("contact_groups");
 		
 		/* Vérification des élements */
 		if(firstName != null && firstName.length() > 0) 
@@ -84,16 +88,31 @@ public class CreateServlet extends HttpServlet {
 		/* Création */
 		if(okFirstName && okLastName && okEmail && okStreet && okZip && okCity && okCountry){
 			
-			Address add = AddressDAO.createAddress(street, city, zip, country);
-			Contact c;
+			Address add = AddressService.createAddress(street, city, zip, country);
+			Contact c = null;
+			ContactGroup cg = null;
+			
 			if(siret!=null && !siret.isEmpty()){
 				c = ContactService.CreateContact(firstName, lastName, email, add, siret);
 			} else {
 				c = ContactService.CreateContact(firstName, lastName, email, add);
 			}
 			
-			PhoneNumberDAO.createPhoneNumber(phonekind, phone, c);
-					
+			PhoneNumberService.createPhoneNumber(phonekind, phone, c);
+			if(contactGroups != null) {
+				if(!ContactGroupService.checkIfGroupExist(contactGroups))
+					cg = ContactGroupService.createContactGroup(contactGroups);
+				else
+					cg = ContactGroupService.getContactGroupByName(contactGroups);
+			}else {
+				if(!ContactGroupService.checkIfGroupExist("_PAS_DE_GROUPE_"))
+					cg = ContactGroupService.createContactGroup("_PAS_DE_GROUPE_");
+				else
+					cg = ContactGroupService.getContactGroupByName("_PAS_DE_GROUPE_");
+			}
+			ContactService.addContactInGroup(c.getIdContact(), cg.getIdContactGroup());
+			
+			
 			request.setAttribute("success", true);
 			request.setAttribute("information", "Contact created !");
 			RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
