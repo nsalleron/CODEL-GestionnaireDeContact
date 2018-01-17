@@ -1,9 +1,9 @@
--- TODO --
- HQL with Criteria
- removeContactDAO
- searchContact
- updateContact
- CSS
+-- TODO --<br />
+ HQL with Criteria<br />
+ removeContactDAO<br />
+ searchContact<br />
+ updateContact<br />
+ CSS<br />
 
 
 
