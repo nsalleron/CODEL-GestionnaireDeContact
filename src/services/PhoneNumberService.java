@@ -1,9 +1,6 @@
 package services;
 
-import java.util.List;
-
 import daos.PhoneNumberDAO;
-import daos.ContactDAO;
 import entities.Contact;
 import entities.PhoneNumber;
 

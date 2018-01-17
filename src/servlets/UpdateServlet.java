@@ -41,7 +41,7 @@ public class UpdateServlet extends HttpServlet {
 		String lastName = request.getParameter("lastName");
 		String email = request.getParameter("email");
 		
-		ContactService.UpdateContact(firstName, lastName, email);
+		ContactService.updateContact(firstName, lastName, email);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
 		rd.forward(request, response);

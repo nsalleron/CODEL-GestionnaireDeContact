@@ -15,7 +15,7 @@ Voici vos contacts : <br>
 
 <%
 	
-	List<Contact> contacts = ContactService.ReadContact();
+	List<Contact> contacts = ContactService.listContact();
 	for(Contact t : contacts){
 		%>
 		<li><%=t.getFirstName() %> <%=t.getLastName() %> at <%=t.getEmail() %>  <%=t.getBooks().toString()%></li>

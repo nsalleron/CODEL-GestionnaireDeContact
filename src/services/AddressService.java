@@ -1,10 +1,6 @@
 package services;
 
-import java.util.List;
-
 import daos.AddressDAO;
-import daos.ContactDAO;
-import entities.Contact;
 import entities.Address;
 
 public class AddressService {

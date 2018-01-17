@@ -39,7 +39,7 @@ public class DeleteServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		String email = request.getParameter("email");
 		
-		ContactService.DeleteContact(email);
+		ContactService.deleteContact(email);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
 		rd.forward(request, response);

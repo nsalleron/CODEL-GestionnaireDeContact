@@ -1,15 +1,8 @@
 package services;
 
-import java.util.List;
-
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
 import daos.ContactGroupDAO;
-import daos.ContactDAO;
-import entities.Contact;
 import entities.ContactGroup;
-import utils.HibernateUtil;
 
 public class ContactGroupService {
 

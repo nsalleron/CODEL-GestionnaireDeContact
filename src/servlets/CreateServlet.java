@@ -1,26 +1,21 @@
 package servlets;
 
 import java.io.IOException;
-import java.util.List;
+
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import daos.AddressDAO;
-import daos.PhoneNumberDAO;
 import entities.Address;
 import entities.Contact;
 import entities.ContactGroup;
-import entities.PhoneNumber;
-import net.sf.ehcache.CacheManager;
 import services.AddressService;
 import services.ContactGroupService;
 import services.ContactService;
+import services.EntrepriseService;
 import services.PhoneNumberService;
-import utils.HibernateUtil;
 
 /**
  * Servlet implementation class CreateServlet
@@ -100,9 +95,9 @@ public class CreateServlet extends HttpServlet {
 			ContactGroup cg = null;
 			
 			if(siret!=null && !siret.isEmpty()){
-				c = ContactService.CreateContact(firstName, lastName, email, add, siret);
+				c = EntrepriseService.createEntreprise(firstName, lastName, email, add, siret);
 			} else {
-				c = ContactService.CreateContact(firstName, lastName, email, add);
+				c = ContactService.createContact(firstName, lastName, email, add);
 			}
 			
 			PhoneNumberService.createPhoneNumber(phonekind, phone, c);

@@ -2,11 +2,6 @@ package services;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import daos.PhoneNumberDAO;
-import daos.ContactDAO;
-import entities.Contact;
-import entities.PhoneNumber;
 import net.sf.ehcache.CacheManager;
 
 public class TestsService {

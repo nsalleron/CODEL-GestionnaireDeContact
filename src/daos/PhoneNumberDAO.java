@@ -1,15 +1,9 @@
 package daos;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-
-import entities.Address;
 import entities.Contact;
-import entities.Entreprise;
 import entities.PhoneNumber;
 import utils.HibernateUtil;
 

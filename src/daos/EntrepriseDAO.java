@@ -10,78 +10,82 @@ import org.hibernate.Transaction;
 import entities.Address;
 import entities.Contact;
 import entities.ContactGroup;
+import entities.Entreprise;
 import entities.PhoneNumber;
 import utils.HibernateUtil;
 
-public  class ContactDAO {
+public  class EntrepriseDAO {
+
 	
-	public static Contact createContact(String firstName, String lastName, String email, Address a) {
-		//TODO Hibernate? alContact.add(new Contact(alContact.size(),firstName,lastName,email));
+	public static Entreprise createEntreprise(String firstName, String lastName, String email, Address a, String siret) {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		System.out.println("DEBUG OBJT SESSION : "+session.toString());
-		Contact c = new Contact(firstName,lastName,email);
-		c.setAdd(a);
-		c.setPhones(new HashSet<PhoneNumber>());
-		c.setBooks(new HashSet<ContactGroup>());
+		long longSiret = Long.parseLong(siret);
+		
+		Entreprise entreprise = new Entreprise(firstName ,lastName,email, longSiret);
+		entreprise.setAdd(a);
+		entreprise.setPhones(new HashSet<PhoneNumber>());
+		entreprise.setBooks(new HashSet<ContactGroup>());
 		
 		session.beginTransaction();
-		session.save(c);
+		session.save(entreprise);
 		session.getTransaction().commit();
 
-		
-		System.out.println("CONTACT ADDED");
-		return c;
+		return entreprise;
 	}
 	
-	public static void deleteContact(String email) {
+	
+	
+	public static void deleteEntreprise(String email) {
 		//TODO
 		
 	}
 	
-	public static void updateContact(String firstName, String lastName, String email) {
+	public static void updateEntreprise(String firstName, String lastName, String email) {
 		//TODO
-
+		
+		
 	}
 	
-	public static List<Contact> listContact(){
+	public static List<Entreprise> listEntreprise(){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
 			transaction = session.beginTransaction();
 		@SuppressWarnings("unchecked")
-		List<Contact> lc = session.createCriteria(Contact.class).list();
+		List<Entreprise> lc = session.createCriteria(Entreprise.class).list();
 		session.getTransaction().commit();
 		
 		return lc;
 		
 	}
 	
-	public static void addContactInGroup(long id_cont, long id_group){
+	public static void addEntrepriseInGroup(long id_cont, long id_group){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
 			transaction = session.beginTransaction();
 		
-		Contact contact = (Contact) session.load(Contact.class, id_cont);
+		Entreprise entreprise = (Entreprise) session.load(Entreprise.class, id_cont);
 		ContactGroup cg = (ContactGroup) session.load(ContactGroup.class, id_group);
-
-		Set<ContactGroup> ensGroupe = contact.getBooks();
+		
+		
+		Set<ContactGroup> ensGroupe = entreprise.getBooks();
 		Set<Contact> ensContact = cg.getContacts();
 		
-		ensContact.add(contact);
+		ensContact.add(entreprise);
 		ensGroupe.add(cg);
 		
-		contact.setBooks(ensGroupe);
+		entreprise.setBooks(ensGroupe);
 		cg.setContacts(ensContact);	
 		
 		transaction = session.getTransaction();
 		if(!transaction.isActive()) 
 			transaction = session.beginTransaction();
 		
-		session.saveOrUpdate(contact);
+		session.saveOrUpdate(entreprise);
 		session.saveOrUpdate(cg);
 		
 		transaction.commit();
