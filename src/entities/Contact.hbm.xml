@@ -31,12 +31,12 @@
 		</set>
 	
 		<set name="phones" inverse="true" lazy="false"  cascade="persist">
-			<key column="ID_CONT" />
+			<key column="ID_CONTACT" />
 			<one-to-many class="PhoneNumber" />
 		</set>
 
 		<joined-subclass name="Entreprise" table="ENTREPRISE_TABLE">
-			<key column="ID_CONF" />
+			<key column="ID_LIAISON_CONTACT" />
 			<property name="numSiret" column="NUMSIRET" />
 		</joined-subclass>
 
