@@ -107,5 +107,19 @@ public class ContactGroupDAO {
 		return (ContactGroup) session.createQuery("select contactGroup from ContactGroup contactGroup "+
 																"where contactGroup.groupName like '"+contactGroups+"'").uniqueResult();	
 	}
+	
+	public static List<ContactGroup> listContactGroup(){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
+		Transaction transaction = session.getTransaction();
+		if(!transaction.isActive()) 
+			transaction = session.beginTransaction();
+		@SuppressWarnings("unchecked")
+		List<ContactGroup> lc = session.createCriteria(ContactGroup.class).list();
+		session.getTransaction().commit();
+		
+		return lc;
+		
+	}
 
 }

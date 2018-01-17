@@ -20,7 +20,12 @@ public  class EntrepriseDAO {
 	public static Entreprise createEntreprise(String firstName, String lastName, String email, Address a, String siret) {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		long longSiret = Long.parseLong(siret);
+		long longSiret = 0;
+		try {
+			longSiret = Long.parseLong(siret);
+		}catch(Exception e) {
+			return null;
+		}
 		
 		Entreprise entreprise = new Entreprise(firstName ,lastName,email, longSiret);
 		entreprise.setAdd(a);

@@ -20,7 +20,7 @@ public class ContactService {
 		ContactDAO.updateContact(firstName, lastName, email);
 	}
 	
-	public static List<Contact> listContact() {
+	public static List<Contact> listContacts() {
 		return ContactDAO.listContact();
 	}
 	

@@ -1,6 +1,8 @@
 package daos;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import entities.Contact;
@@ -90,6 +92,24 @@ public  class PhoneNumberDAO {
 		PhoneNumber phone = (PhoneNumber) session.load(PhoneNumber.class, id);
 		transaction.commit();
 		return phone;
+	}
+	
+	public static List<String> listPhoneNumberGroups(){
+		List<String> rm = new ArrayList<String>();
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		if(!transaction.isActive()) 
+			transaction = session.beginTransaction();
+		@SuppressWarnings("unchecked")
+		List<PhoneNumber> lc = session.createCriteria(PhoneNumber.class).list();
+		session.getTransaction().commit();
+		
+		for(PhoneNumber pn : lc) {
+			rm.add(pn.getPhoneKind());
+		}
+	
+		return rm;
 	}
 	
 }

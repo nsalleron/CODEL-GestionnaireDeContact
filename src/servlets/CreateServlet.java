@@ -99,6 +99,13 @@ public class CreateServlet extends HttpServlet {
 			} else {
 				c = ContactService.createContact(firstName, lastName, email, add);
 			}
+			if(c == null && siret!= null && !siret.isEmpty()) {
+				request.setAttribute("success", false);
+				request.setAttribute("information","siret;");
+				RequestDispatcher rd = request.getRequestDispatcher("CreateContact.jsp");
+				rd.forward(request, response);
+			}
+			
 			
 			PhoneNumberService.createPhoneNumber(phonekind, phone, c);
 			if(contactGroups != null) {

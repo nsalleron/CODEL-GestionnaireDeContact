@@ -1,5 +1,8 @@
 package services;
 
+import java.util.List;
+
+
 import daos.PhoneNumberDAO;
 import entities.Contact;
 import entities.PhoneNumber;
@@ -21,5 +24,8 @@ public class PhoneNumberService {
 	
 	public static PhoneNumber getPhoneNumberById(Long id) {
 		return PhoneNumberDAO.getPhoneNumberById(id);
+	}
+	public static List<String> listPhoneNumberGroups() {
+		return PhoneNumberDAO.listPhoneNumberGroups();
 	}
 }

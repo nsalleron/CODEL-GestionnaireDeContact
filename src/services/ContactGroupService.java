@@ -1,6 +1,7 @@
 package services;
 
 
+import java.util.List;
 import daos.ContactGroupDAO;
 import entities.ContactGroup;
 
@@ -33,6 +34,10 @@ public class ContactGroupService {
 
 	public static ContactGroup getContactGroupByName(String contactGroups) {
 		return ContactGroupDAO.getContactGroupByName(contactGroups);
+	}
+	
+	public static List<ContactGroup> listContactGroups() {
+		return ContactGroupDAO.listContactGroup();
 	}
 	
 }

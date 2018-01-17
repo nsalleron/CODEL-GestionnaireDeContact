@@ -16,11 +16,11 @@
 %>
 Bonjour <%= name %> :)
 
-<a href="CreateContact.jsp"><h3>Créer contact</h3></a>
-<a href="listContact.jsp"><h3>Lire les contacts</h3></a>
-<a href="UpdateContact.jsp"><h3>Modifier contact</h3></a>
-<a href="DeleteContact.jsp"><h3>Supprimer contact</h3></a>
-<a href="Test.jsp"><h3>Tests de la plateforme</h3></a>
+<h3><a href="CreateContact.jsp">Créer contact</a></h3>
+<h3><a href="listContact.jsp">Lire les contacts</a></h3>
+<h3><a href="UpdateContact.jsp">Modifier contact</a></h3>
+<h3><a href="DeleteContact.jsp">Supprimer contact</a></h3>
+<h3><a href="Test.jsp">Tests de la plateforme</a></h3>
 
 
 </body>
