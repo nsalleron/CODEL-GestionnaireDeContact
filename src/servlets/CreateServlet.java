@@ -1,6 +1,7 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,10 +15,12 @@ import entities.Address;
 import entities.Contact;
 import entities.ContactGroup;
 import entities.PhoneNumber;
+import net.sf.ehcache.CacheManager;
 import services.AddressService;
 import services.ContactGroupService;
 import services.ContactService;
 import services.PhoneNumberService;
+import utils.HibernateUtil;
 
 /**
  * Servlet implementation class CreateServlet
@@ -45,6 +48,10 @@ public class CreateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		
+		
+		
 		/* Déclaration */
 		String firstName, lastName, email, siret, street,
 			   city, zip, country, phone, phonekind, contactGroups;

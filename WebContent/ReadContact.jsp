@@ -14,6 +14,7 @@ Voici vos contacts : <br>
 
 
 <%
+	
 	List<Contact> contacts = ContactService.ReadContact();
 	for(Contact t : contacts){
 		%>

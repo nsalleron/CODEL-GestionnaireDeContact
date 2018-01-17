@@ -1,9 +1,9 @@
 package services;
 
 import java.util.List;
-
 import daos.ContactDAO;
 import entities.Contact;
+import utils.HibernateUtil;
 import entities.Address;
 
 public class ContactService {

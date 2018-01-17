@@ -10,6 +10,8 @@
 
 	<%
 		/* Déclaration des éléments */
+		
+		
 		String information, firstname, lastname, email, siret, street, city, zip, country, groupe;
 		String[] whereFails;
 		boolean okFirstName = true, okLastName = true, okEmail = true, okStreet = true, okZip = true, okCity = true,

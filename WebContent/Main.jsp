@@ -20,7 +20,7 @@ Bonjour <%= name %> :)
 <a href="ReadContact.jsp"><h3>Lire les contacts</h3></a>
 <a href="UpdateContact.jsp"><h3>Modifier contact</h3></a>
 <a href="DeleteContact.jsp"><h3>Supprimer contact</h3></a>
-
+<a href="Test.jsp"><h3>Tests de la plateforme</h3></a>
 
 
 </body>

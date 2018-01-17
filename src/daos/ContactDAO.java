@@ -96,6 +96,7 @@ public  class ContactDAO {
 	}
 	
 	public static void addContactInGroup(long id_cont, long id_group){
+		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
