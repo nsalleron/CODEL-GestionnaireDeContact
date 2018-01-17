@@ -1,6 +1,6 @@
 -- TODO --<br />
  HQL with Criteria<br />
- removeContactDAO<br />
+ removeContact<br />
  searchContact<br />
  updateContact<br />
  CSS<br />
