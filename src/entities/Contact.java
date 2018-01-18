@@ -11,6 +11,7 @@ public class Contact {
 	private Address add;
 	private Set<ContactGroup> books;
 	private Set<PhoneNumber> phones;
+	private int version;
 	
 	public Contact() {
 		super();

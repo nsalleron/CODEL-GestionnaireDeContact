@@ -3,6 +3,7 @@ package entities;
 public class Entreprise extends Contact {
 	
 	private long numSiret;
+	private int version;
 
 	public Entreprise() {
 		super();

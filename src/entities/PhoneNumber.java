@@ -6,6 +6,7 @@ public class PhoneNumber {
 	private String phoneKind;
 	private String phoneNumber;
 	private Contact contact;
+	private int version;
 	
 	public PhoneNumber() {	
 		this("DEFAULT","DEFAULT",new Contact("DEFAULT","DEFAULT","DEFAULT@DEFAULT.COM"));
