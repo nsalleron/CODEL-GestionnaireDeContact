@@ -14,6 +14,10 @@ public class AddressService {
 		AddressDAO.deleteAddress(id);
 	}
 	
+	public static void deleteAddress(Address address) {
+		AddressDAO.deleteAddress(address);
+	}
+	
 	public static void updateAddress(long id, String street, String city, String zip, String country) {
 		AddressDAO.updateAddress(id,street,city,zip,country);
 	}

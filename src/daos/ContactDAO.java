@@ -6,11 +6,14 @@ import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.Restrictions;
 
 import entities.Address;
 import entities.Contact;
 import entities.ContactGroup;
 import entities.PhoneNumber;
+import services.AddressService;
+import services.PhoneNumberService;
 import utils.HibernateUtil;
 
 public  class ContactDAO {
@@ -35,13 +38,82 @@ public  class ContactDAO {
 	}
 	
 	public static void deleteContact(String email) {
-		//TODO
 		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction tx = session.getTransaction();
+		if(!tx.isActive()) tx = session.beginTransaction();
+		
+		Long id = Long.parseLong("2");
+		Contact contact = (Contact) session.load(Contact.class, id);
+		
+		//On réouvre la session car delete deletePhoneNumber
+		session = HibernateUtil.getSessionFactory().getCurrentSession();
+		tx = session.getTransaction();
+		if(!tx.isActive()) tx = session.beginTransaction();
+		session.delete(contact);
+		tx.commit();
 	}
 	
-	public static void updateContact(String firstName, String lastName, String email) {
-		//TODO
-
+	public static void updateContact(Long idContact, String firstName, String lastName, String email, String siret, Long idAddr, String street, String zip, String country, String city,  List<Long> idList, List<String> kindList, List<String> phoneList, String contactGroups) {
+		AddressService.updateAddress(idAddr, street, city, zip, country);
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		if(!transaction.isActive()) 
+			transaction = session.beginTransaction();
+		
+		Contact contact  = (Contact) session.load(Contact.class, idContact);
+		Address addr = new Address(street, city, zip, country);
+		addr.setIdAddress(idAddr);
+		
+		Set<PhoneNumber> number = new HashSet<PhoneNumber>();
+		
+		for(int i=0; i<phoneList.size(); i++) {
+			number.add(new PhoneNumber(kindList.get(i), phoneList.get(i), contact));
+		}
+		
+		contact.setIdContact(idContact);
+		contact.setFirstName(firstName);
+		contact.setLastName(lastName);
+		contact.setPhones(number);
+		contact.setEmail(email);
+		contact.setAdd(addr);
+		
+		transaction.commit();
+		
+		PhoneNumberService.updatePhoneNumberById(idList, kindList, phoneList, contact);
+	}
+	
+	public static void deleteContact(String firstName, String lastName) {
+		Contact contact = researchContact(firstName, lastName);
+		
+		for(PhoneNumber number : contact.getPhones()) {
+			PhoneNumberService.deletePhoneNumberById(number);
+		}
+		
+		AddressService.deleteAddress(contact.getAdd());
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		if(!transaction.isActive()) 
+			transaction = session.beginTransaction();
+		session.delete(contact);
+		
+		transaction.commit();
+}
+	
+	public static Contact researchContact(String firstName, String lastName) {
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		if(!transaction.isActive()) 
+			transaction = session.beginTransaction();
+		
+		Contact contact = (Contact)session.createCriteria(Contact.class)
+				                            .add(Restrictions.like("firstName", "%"+firstName+"%"))
+				                            .add(Restrictions.like("lastName", "%"+lastName+"%")).uniqueResult();
+		transaction.commit();
+		return contact;
 	}
 	
 	public static List<Contact> listContact(){

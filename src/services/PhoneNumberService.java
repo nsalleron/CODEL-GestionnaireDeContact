@@ -18,14 +18,22 @@ public class PhoneNumberService {
 		PhoneNumberDAO.deletePhoneNumberById(id);
 	}
 	
+	public static void deletePhoneNumberById(PhoneNumber number) {
+		PhoneNumberDAO.deletePhoneNumberById(number);
+	}
+	
 	public static boolean updatePhoneNumberById(long id, String phoneKind, String phoneNumber, Contact contact)  {
 		return PhoneNumberDAO.updatePhoneNumberById(id,phoneKind, phoneNumber, contact);
 	}
 	
+	public static boolean updatePhoneNumberById(List<Long> idList, List<String> kindList, List<String> number,  Contact contact)  {
+		return PhoneNumberDAO.updatePhoneNumberById(idList, kindList, number,  contact);
+}
 	public static PhoneNumber getPhoneNumberById(Long id) {
 		return PhoneNumberDAO.getPhoneNumberById(id);
 	}
 	public static List<String> listPhoneNumberGroups() {
 		return PhoneNumberDAO.listPhoneNumberGroups();
 	}
+	
 }

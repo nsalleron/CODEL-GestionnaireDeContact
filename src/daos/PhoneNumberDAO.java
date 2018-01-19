@@ -52,6 +52,19 @@ public  class PhoneNumberDAO {
 		transaction.commit();
 	}
 	
+	public static void deletePhoneNumberById(PhoneNumber phone) {
+		Session session =  HibernateUtil.getSessionFactory().getCurrentSession();
+		System.out.println("DEBUG OBJT SESSION : "+session.toString());
+		Transaction transaction = session.getTransaction();
+		
+		if(!transaction.isActive())
+			transaction = session.beginTransaction();
+		
+		session.delete(phone);
+		
+		//transaction.commit();
+	}
+	
 	public static boolean updatePhoneNumberById(long id, String phoneKind, String phoneNumber, Contact contact) {
 		boolean bPhoneKind = false, bPhoneNumber = false;
 		
@@ -79,6 +92,25 @@ public  class PhoneNumberDAO {
 		
 		session.saveOrUpdate(phone);
 		transaction.commit();
+		
+		return true;
+	}
+	
+	public static boolean updatePhoneNumberById(List<Long> idList, List<String> kindList, List<String> number, Contact contact) {
+		
+		for(int i=0; i<idList.size(); i++) {
+			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+			System.out.println("DEBUG OBJT SESSION : "+session.toString());
+			Transaction transaction = session.getTransaction();
+			if(!transaction.isActive()) 
+				transaction = session.beginTransaction();
+			
+			PhoneNumber phone = (PhoneNumber) session.load(PhoneNumber.class, idList.get(i));
+			phone.setPhoneKind(kindList.get(i));
+			phone.setPhoneNumber(number.get(i));
+			phone.setContact(contact);
+			transaction.commit();
+		}
 		
 		return true;
 	}

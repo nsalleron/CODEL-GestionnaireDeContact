@@ -8,8 +8,10 @@
 </head>
 <body>
 <form method="post" action="/CODEL-GestionnaireDeContact/DeleteServlet">
-   email:
-  <input type="text" name="email">
+   Prenom:
+  <input type="text" name="firstName"><br>
+   Nom:
+<input type="text" name="lastName"><br>
   <br>
   <br>
   <input type="submit" value="Submit">

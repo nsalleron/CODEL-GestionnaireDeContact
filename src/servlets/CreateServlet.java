@@ -43,10 +43,6 @@ public class CreateServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-		
-		
 		/* Déclaration */
 		String firstName, lastName, email, siret, street,
 			   city, zip, country, phone, phonekind, contactGroups;
@@ -59,7 +55,7 @@ public class CreateServlet extends HttpServlet {
 		lastName = request.getParameter("lastname");
 		email = request.getParameter("email");
 		siret = request.getParameter("siret");
-		street = request.getParameter("city");
+		street = request.getParameter("street");
 		city = request.getParameter("city");
 		zip = request.getParameter("zip");
 		country = request.getParameter("country");
@@ -108,7 +104,7 @@ public class CreateServlet extends HttpServlet {
 			
 			
 			PhoneNumberService.createPhoneNumber(phonekind, phone, c);
-			if(contactGroups != null) {
+			if(contactGroups != null && !contactGroups.isEmpty()) {
 				if(!ContactGroupService.checkIfGroupExist(contactGroups))
 					cg = ContactGroupService.createContactGroup(contactGroups);
 				else

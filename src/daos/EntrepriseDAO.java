@@ -46,10 +46,17 @@ public  class EntrepriseDAO {
 		
 	}
 	
-	public static void updateEntreprise(String firstName, String lastName, String email) {
-		//TODO
+	public static void updateEntreprise(Long idEntreprise, String siret) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		if(!transaction.isActive()) 
+			transaction = session.beginTransaction();
 		
+		long longSiret = Long.parseLong(siret);
 		
+		Entreprise contactEntre  = (Entreprise) session.load(Entreprise.class, idEntreprise);
+		contactEntre.setNumSiret(longSiret);
+		transaction.commit();
 	}
 	
 	public static List<Entreprise> listEntreprise(){

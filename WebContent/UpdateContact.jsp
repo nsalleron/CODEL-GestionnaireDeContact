@@ -7,14 +7,11 @@
 <title>Mise à jour d'un contact</title>
 </head>
 <body>
-<form method="post" action="/CODEL-GestionnaireDeContact/UpdateServlet">
+<form method="post" action="/CODEL-GestionnaireDeContact/RechercheServlet">
    Prenom:
   <input type="text" name="firstName"><br>
    Nom:
   <input type="text" name="lastName"><br>
-   email:
-  <input type="text" name="email">
-  <br>
   <br>
   <input type="submit" value="Submit">
 </form> 

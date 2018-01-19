@@ -17,8 +17,8 @@ public class EntrepriseService {
 		EntrepriseDAO.deleteEntreprise(email);
 	}
 	
-	public static void updateEntreprise(String firstName, String lastName, String email) {
-		EntrepriseDAO.updateEntreprise(firstName, lastName, email);
+	public static void updateEntreprise(Long idEntreprise, String siret) {
+		EntrepriseDAO.updateEntreprise(idEntreprise, siret);
 	}
 	
 	public static List<Entreprise> listEntreprises() {

@@ -42,6 +42,19 @@ public  class AddressDAO {
 		tx.commit();		
 	}
 	
+	public static void deleteAddress(Address address) {
+		Session session =  HibernateUtil.getSessionFactory().getCurrentSession();
+		System.out.println("DEBUG OBJT SESSION : "+session.toString());
+		Transaction transaction = session.getTransaction();
+		
+		if(!transaction.isActive())
+			transaction = session.beginTransaction();
+		
+		session.delete(address);
+		
+		//transaction.commit();
+	} 
+	
 	public static boolean updateAddress(long id, String street, String city, String zip, String country) {
 		try{
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
