@@ -23,7 +23,7 @@ public  class ContactDAO {
 		//TODO Hibernate? alContact.add(new Contact(alContact.size(),firstName,lastName,email));
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		System.out.println("DEBUG OBJT SESSION : "+session.toString());
+	
 		Contact c = new Contact(firstName,lastName,email);
 		c.setAdd(a);
 		c.setPhones(new HashSet<PhoneNumber>());
@@ -33,8 +33,6 @@ public  class ContactDAO {
 		session.save(c);
 		session.getTransaction().commit();
 
-		
-		System.out.println("CONTACT ADDED");
 		return c;
 	}
 	

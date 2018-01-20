@@ -37,10 +37,6 @@ public class LoginServlet extends HttpServlet {
 		String user = request.getParameter("name");
 		String pwd = request.getParameter("pwd");
 		
-		System.out.print("USER : "+ user+"\n");
-		System.out.print("PWD : "+ pwd+"\n");
-		
-		
 		if(user.equals(pwd)) {
 			RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
 			request.setAttribute("user", user);

@@ -10,13 +10,11 @@ import entities.PhoneNumber;
 import utils.HibernateUtil;
 
 public  class PhoneNumberDAO {
-
-	static ArrayList<Contact> alContact = new ArrayList<Contact>();
 	
 	public static PhoneNumber createPhoneNumber(String phoneKind, String phoneNumber, Contact contact) {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		System.out.println("DEBUG OBJT SESSION : "+session.toString());
+		
 		
 		PhoneNumber phone = new PhoneNumber();
 		phone.setPhoneKind(phoneKind);
@@ -36,7 +34,7 @@ public  class PhoneNumberDAO {
 	
 	public static void deletePhoneNumberById(long id) {
 		Session session =  HibernateUtil.getSessionFactory().getCurrentSession();
-		System.out.println("DEBUG OBJT SESSION : "+session.toString());
+
 		Transaction transaction = session.getTransaction();
 		
 		if(!transaction.isActive())
@@ -54,7 +52,7 @@ public  class PhoneNumberDAO {
 	
 	public static void deletePhoneNumberById(PhoneNumber phone) {
 		Session session =  HibernateUtil.getSessionFactory().getCurrentSession();
-		System.out.println("DEBUG OBJT SESSION : "+session.toString());
+	
 		Transaction transaction = session.getTransaction();
 		
 		if(!transaction.isActive())
@@ -69,7 +67,7 @@ public  class PhoneNumberDAO {
 		boolean bPhoneKind = false, bPhoneNumber = false;
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		System.out.println("DEBUG OBJT SESSION : "+session.toString());
+		
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
 			transaction = session.beginTransaction();
@@ -100,7 +98,7 @@ public  class PhoneNumberDAO {
 		
 		for(int i=0; i<idList.size(); i++) {
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-			System.out.println("DEBUG OBJT SESSION : "+session.toString());
+			
 			Transaction transaction = session.getTransaction();
 			if(!transaction.isActive()) 
 				transaction = session.beginTransaction();

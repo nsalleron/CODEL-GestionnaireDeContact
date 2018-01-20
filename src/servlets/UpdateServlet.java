@@ -93,46 +93,30 @@ public class UpdateServlet extends HttpServlet {
 		versionAddress = request.getParameter("updateAddress").split(";")[1];
 		
 		/* DEBUG */
-		System.out.println(firstName);
-		System.out.println(lastName);
-		System.out.println(email);
-		System.out.println(street);
-		System.out.println(city);
-		System.out.println(zip);
-		System.out.println(country);
-		System.out.println(siret);
-		System.out.println(idContact);
-		System.out.println(versionContact);
-		System.out.println(idAddr);
-		System.out.println(versionAddress);
+
 		
 		String tmp = "";
 		/* Récupération des versions et des identifiants */
 		while(tmp != null) {
 			tmp = request.getParameter("updatePhones"+i);
 			if(tmp != null) {
-				System.out.println("updatePhones"+i);
 				alPhones.add(tmp);
 				i++;
 			}else {
 				i=0;
 				tmp = "";
-				System.out.println("----> BREAK UPDATEPHONES");
 				break;
 			}
 		}
 		
-		System.out.println(alPhones);
 		while(tmp != null) {
 			tmp = request.getParameter("updateCG"+i);
 			if(tmp != null) {
-				System.out.println("updateCG"+i);
 				alCg.add(tmp);
 				i++;
 			}else {
 				i=1;
 				tmp = "";
-				System.out.println("----> BREAK UPDATECG");
 				break;
 			}
 		}
@@ -141,50 +125,39 @@ public class UpdateServlet extends HttpServlet {
 		while(tmp != null) {
 			tmp = request.getParameter("telephone"+i);
 			if(tmp != null) {
-				System.out.println("alPhone +1");
 				alNewPhone.add(new StringAndBoolean(tmp,false));
 				i++;
 			}else {
-				System.out.println("alPhoneLoop -> break;");
 				i=1;
 				tmp = "";
 				break;
 			}
 		}
 		
-		System.out.println(alNewPhone);
 		while(tmp != null) {
 			tmp = request.getParameter("phonekind"+i);
 			if(tmp != null) {
-				System.out.println("alPhoneKind +1");
 				alNewPhoneKind.add(new StringAndBoolean(tmp,false));
 				i++;
 			}else {
-				System.out.println("alPhoneKind -> break;");
 				i=1;
 				tmp = "";
 				break;
 			}
 		}
-		
-		System.out.println(alNewPhoneKind);
 		
 		i = 1;
 		while(tmp != null) {
 			tmp = request.getParameter("groupe"+i);
 			if(tmp != null) {
-				System.out.println("alContactGroups +1");
 				alNewContactGroups.add(new StringAndBoolean(tmp,false));
 				i++;
 			}else {
-				System.out.println("alContactGroups -> break;");
 				i=1;
 				tmp = "";
 				break;
 			}
 		}
-		
-		System.out.println(alNewContactGroups);
 		
 		long idContactFromUser = Long.parseLong(idContact);
 		long verContactFromUser = Long.parseLong(versionContact);
@@ -218,26 +191,24 @@ public class UpdateServlet extends HttpServlet {
 		for(i = 0;i<tabPhones.length ; i++) {
 			phonesDB.add(PhoneNumberService.getPhoneNumberById(tabPhones[i]));
 		}
-		System.out.println(phonesDB);
+		
 		for(i = 0;i<tabCG.length ; i++) {
 			cgDB.add(ContactGroupService.getContactGroupById(tabCG[i]));
 		}
 		
 		if(a.getVersion() != verAddressFromUser) {
 			bAllOk = false;
-			System.out.println("a.getVersion "+a.getVersion() + " versionContact : "+verAddressFromUser);
+			
 		}
 						
 		for(i = 0;i<verPhones.length ; i++) {
 			if(verPhones[i] != phonesDB.get(i).getVersion()) {
 				bAllOk = false;
-				System.out.println("verPhones : "+verPhones[i]+" celui db : "+phonesDB.get(i).getIdPhoneNumber());
 			}
 		}
 		for(i = 0;i<verCG.length ; i++) {
 			if(verCG[i] != cgDB.get(i).getVersion()) {
 				bAllOk = false;
-				System.out.println("verPhones : "+verCG[i]+" celui db : "+cgDB.get(i).getIdContactGroup());
 			}
 		}
 		
@@ -247,14 +218,13 @@ public class UpdateServlet extends HttpServlet {
 				bAllOk = false;
 				break;
 			}
-		System.out.println("Après alNewPhone: " + bAllOk);
+
 		for(StringAndBoolean phonekind : alNewPhoneKind)
 			if(phonekind.value!=null && phonekind.value.length()>0) {}
 			else {
 				bAllOk = false;
 				break;
 			}
-		System.out.println("Après alNewPhoneKind: " + bAllOk);
 
 		if(siret != null && siret.length() > 0) {	//Cas entreprise
 			Entreprise e = EntrepriseService.getEntrepriseById(idContactFromUser);
@@ -312,7 +282,6 @@ public class UpdateServlet extends HttpServlet {
 		
 		if(!bAllOk) {
 			request.setAttribute("updatefailed",rep); 
-			System.out.println("FAILED : "+rep);
 			RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
 			rd.forward(request, response);
 		}
@@ -320,10 +289,6 @@ public class UpdateServlet extends HttpServlet {
 		if(bAllOk) {
 			
 			AddressService.updateAddress(a.getIdAddress(), street, city, zip, country);
-			
-			System.out.println("alNewPhone size : "+alNewPhone.size());
-			System.out.println("alNewPhone size : "+alNewPhoneKind.size());
-			System.out.println("verPhones size : "+verPhones.length);
 
 			RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
 			rd.forward(request, response);

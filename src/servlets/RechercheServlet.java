@@ -44,8 +44,6 @@ public class RechercheServlet extends HttpServlet {
 		String recherche = request.getParameter("recherche");
 		String modeDelete = request.getParameter("delete");
 		
-		System.out.println("----> modeDelete : "+modeDelete);
-		
 		if(idContact == null && modeDelete == null) {
 			ArrayList<Contact> contacts = ContactService.researchContacts(recherche);
 			RequestDispatcher rd = request.getRequestDispatcher("UpdateContact.jsp");
@@ -60,7 +58,6 @@ public class RechercheServlet extends HttpServlet {
 			rd.forward(request, response);
 		}else if(modeDelete == null){
 			Contact contact = ContactService.getContactById(Long.parseLong(idContact));
-			System.out.println("RechercheServlet : VERSION ---> "+contact.getVersion());
 			RequestDispatcher rd = request.getRequestDispatcher("CreateContact.jsp");
 			request.setAttribute("contact", contact);
 			rd.forward(request, response);

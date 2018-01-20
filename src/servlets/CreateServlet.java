@@ -93,50 +93,40 @@ public class CreateServlet extends HttpServlet {
 		while(tmp != null) {
 			tmp = request.getParameter("telephone"+i);
 			if(tmp != null) {
-				System.out.println("alPhone +1");
 				alPhone.add(new StringAndBoolean(tmp,false));
 				i++;
 			}else {
-				System.out.println("alPhoneLoop -> break;");
 				i=1;
 				tmp = "";
 				break;
 			}
 		}
 		
-		System.out.println(alPhone);
 		while(tmp != null) {
 			tmp = request.getParameter("phonekind"+i);
 			if(tmp != null) {
-				System.out.println("alPhoneKind +1");
 				alPhoneKind.add(new StringAndBoolean(tmp,false));
 				i++;
 			}else {
-				System.out.println("alPhoneKind -> break;");
 				i=1;
 				tmp = "";
 				break;
 			}
 		}
-		
-		System.out.println(alPhoneKind);
 		
 		i = 1;
 		while(tmp != null) {
 			tmp = request.getParameter("groupe"+i);
 			if(tmp != null) {
-				System.out.println("alContactGroups +1");
 				alContactGroups.add(new StringAndBoolean(tmp,false));
 				i++;
 			}else {
-				System.out.println("alContactGroups -> break;");
 				i=1;
 				tmp = "";
 				break;
 			}
 		}
 		
-		System.out.println(alContactGroups);
 		
 		
 		/* Vérification des élements */

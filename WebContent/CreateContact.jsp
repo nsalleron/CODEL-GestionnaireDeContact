@@ -252,12 +252,10 @@
 			tmp = request.getParameter("groupe"+i);
 			if(tmp != null) {
 				alGroupes.add(tmp);
-				System.out.println("CREATE : "+tmp);
 				i++;
 			}else{
 				i=1;
 				tmp = "";
-				System.out.println("break");
 				break;
 			}
 		}
@@ -302,17 +300,15 @@
 		int j = 0;
 		ArrayList<PhoneNumber> alPhoneRetrieve = new ArrayList<PhoneNumber>();
 		alPhoneRetrieve.addAll(contact.getPhones());
-		System.out.println("CreateContact : SIZE : "+alPhoneRetrieve.size());
-		for(j = 0; j < alPhoneRetrieve.size() ; j++){
-			System.out.println("PhoneNumberPASSAGE : "+alPhoneRetrieve.get(j).getVersion());%>
+
+		for(j = 0; j < alPhoneRetrieve.size() ; j++){%>
 			<%="<input name=\""+"updatePhones"+j+"\" type=\"hidden\" value=\""+alPhoneRetrieve.get(j).getIdPhoneNumber()+";"+alPhoneRetrieve.get(j).getVersion()+"\">"%>
 		<%} %>
 		<%
 		j = 0;
 		ArrayList<ContactGroup> cgRetrieve = new ArrayList<ContactGroup>();
 		cgRetrieve.addAll(contact.getBooks());
-		for(j = 0 ; j < cgRetrieve.size(); j++){
-			System.out.println("ContactGroupPASSAGE");%>
+		for(j = 0 ; j < cgRetrieve.size(); j++){%>
 			<%="<input name=\""+"updateCG"+j+"\" type=\"hidden\" value=\""+cgRetrieve.get(j).getIdContactGroup()+";"+cgRetrieve.get(j).getVersion()+"\">"%>
 		<%} %>
 <%	} %>
@@ -388,7 +384,7 @@
 										<%
 											int i = 0;
 											if(alPhone.size() > 0){	//Il y a eu une erreur ou un modification de contact
-												System.out.println("TAILLE DE ALPHONE : " + alPhone.size());
+											
 											}else{
 												alPhone.add("");
 												alPhoneKind.add("");
@@ -446,7 +442,7 @@
 										<%
 											i = 0;
 											if(alGroupes.size() > 0){	//Il y a eu une erreur ou un modification de contact
-												System.out.println("TAILLE DE ALGROUPES : " + alGroupes.size());
+												
 											}else{
 												alGroupes.add("");
 											}
