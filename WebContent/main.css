@@ -1,0 +1,16 @@
+.choices {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: nowrap;
+}
+
+body{
+    background-color: #e6e6e6;
+}
+
+#welcomeMsg {
+	display: flex;
+	justify-content: center;
+	font-size: 250%;
+	font-weight: bold;
+}
