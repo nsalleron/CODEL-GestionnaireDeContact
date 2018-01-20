@@ -19,6 +19,14 @@ public class Entreprise extends Contact {
 	}
 	public void setNumSiret(long numSiret) {
 		this.numSiret = numSiret;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}	
 	
 	

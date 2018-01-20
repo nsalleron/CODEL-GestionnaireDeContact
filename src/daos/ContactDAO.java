@@ -1,5 +1,6 @@
 package daos;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -84,6 +85,7 @@ public  class ContactDAO {
 		PhoneNumberService.updatePhoneNumberById(idList, kindList, phoneList, contact);
 	}
 	
+	/*
 	public static void deleteContact(String firstName, String lastName) {
 		Contact contact = researchContact(firstName, lastName);
 		
@@ -100,19 +102,44 @@ public  class ContactDAO {
 		session.delete(contact);
 		
 		transaction.commit();
-}
+}*/
 	
-	public static Contact researchContact(String firstName, String lastName) {
+	@SuppressWarnings("unchecked")
+	public static ArrayList<Contact> researchContacts(String recherche) {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
 			transaction = session.beginTransaction();
 		
-		Contact contact = (Contact)session.createCriteria(Contact.class)
-				                            .add(Restrictions.like("firstName", "%"+firstName+"%"))
-				                            .add(Restrictions.like("lastName", "%"+lastName+"%")).uniqueResult();
-		transaction.commit();
+		ArrayList<Contact> listContact = new ArrayList<Contact>();
+		
+		if(recherche.length() > 0) {
+			listContact.addAll(session.createCriteria(Contact.class)
+					.add(Restrictions.like("firstName", "%"+recherche+"%")
+							).list());
+			listContact.addAll(session.createCriteria(Contact.class)
+					.add(Restrictions.like("lastName", "%"+recherche+"%")
+							).list());
+			listContact.addAll(session.createCriteria(Contact.class)
+					.add(Restrictions.like("email", "%"+recherche+"%")
+							).list());
+			Set<Contact> eliminateDoubleContact = new HashSet<Contact>();
+			eliminateDoubleContact.addAll(listContact);
+			listContact.clear();
+			listContact.addAll(eliminateDoubleContact);
+		
+			transaction.commit();
+		}
+		return listContact;
+	}
+	
+	public static Contact getContactById(long id){
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		if(!transaction.isActive()) 
+			transaction = session.beginTransaction();
+		Contact contact = (Contact) session.load(Contact.class, id);
 		return contact;
 	}
 	

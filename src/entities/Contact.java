@@ -17,9 +17,9 @@ public class Contact {
 		super();
 	}
 	
-	public Contact(String name, String lastName, String email) {
+	public Contact(String firstName, String lastName, String email) {
 		super();
-		this.firstName = name;
+		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
 	}
@@ -71,6 +71,14 @@ public class Contact {
 
 	public void setPhones(Set<PhoneNumber> phones) {
 		this.phones = phones;
+	}
+
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 }

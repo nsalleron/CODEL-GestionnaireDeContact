@@ -9,6 +9,8 @@
 <body>
 <%
 	String name = (String) request.getSession().getAttribute("name");
+	String updateFailed = (String) request.getAttribute("updatefailed");
+	System.out.println("MAIN : "+updateFailed);
 	if (name == null){
 		name = (String) session.getAttribute("name");
 	}
@@ -21,6 +23,10 @@ Bonjour <%= name %> :)
 <h3><a href="UpdateContact.jsp">Modifier contact</a></h3>
 <h3><a href="DeleteContact.jsp">Supprimer contact</a></h3>
 <h3><a href="Test.jsp">Tests de la plateforme</a></h3>
+
+<% if(updateFailed != null && updateFailed.length() > 0){%>
+	<%=updateFailed%>
+<%}%>
 
 
 </body>

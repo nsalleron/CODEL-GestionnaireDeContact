@@ -10,6 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entities.Address;
+import entities.Contact;
+import entities.Entreprise;
+import services.AddressService;
+import services.ContactGroupService;
 import services.ContactService;
 
 /**
@@ -42,7 +47,7 @@ public class UpdateServlet extends HttpServlet {
 		String firstName, lastName, email, siret, street,
 		city, zip, country, phoneMaison, phonePortable, 
 		phoneBureau, phonekind, contactGroups, kindBureau, kindMaison, kindPortable,
-		idBureau, idMaison, idPortable, idContactS, idAddrS;
+		idBureau, idMaison, idPortable, idContactS, idAddrS, versionContact = null,versionAddress = null;
 
 		/* Récupération des élements */
 		zip = request.getParameter("zip");
@@ -53,6 +58,8 @@ public class UpdateServlet extends HttpServlet {
 		country = request.getParameter("country");
 		lastName = request.getParameter("lastname");
 		firstName = request.getParameter("firstname");
+		versionContact = request.getParameter("version");
+		System.out.println("UpdateServlet : VERSION : "+versionContact+"SIRET : "+siret);
 
 		phoneMaison = request.getParameter("telephone1");
 		phoneBureau = request.getParameter("telephone3");
@@ -93,12 +100,44 @@ public class UpdateServlet extends HttpServlet {
 			idList.add(Long.parseLong(idPortable));
 			phoneList.add(phonePortable);
 			kindList.add(kindPortable);
-		}	
+		}	  
+		
+		if(siret != null && siret.length() > 0) {
+			//TODO
+		}else {
+			Contact c = ContactService.getContactById(idContact);
+			System.out.println("UpdateServelt : VERSION ----> "+c.getVersion()+"MA VERSION : "+Integer.parseInt(versionContact));
+			if(c.getVersion() != Integer.parseInt(versionContact) ){//|| 
+				//	AddressService.getAddress(idAddr).getVersion() > Integer.parseInt(versionAddress) ) {
+				//TODO Vérification sur les contactGroups de ce contact + sur les PhoneNumber de ce contact
+				String rep = "La mise à jour à échouer. "
+						+ "Il y a eu une update en concurrence avec la votre sur le contact : "+c.getLastName() + " " + c.getFirstName();
+				request.setAttribute("updatefailed",rep); 
+				System.out.println("FAILED : "+rep);
+				RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
+				
+				rd.forward(request, response);
+			}else {//TODO
+				c.setFirstName(firstName);
+				c.setLastName(lastName);
+				c.setEmail(email);
+				
+				Address a = AddressService.getAddress(idAddr);
+				a.setStreet(street);
+				a.setCity(city);
+				a.setCountry(country);
+				a.setZip(zip);
+				
+										//		x		x			x		x				x		x	x		x		x		x		x		x			x
+				ContactService.updateContact(idContact, firstName, lastName, email, siret, idAddr, street, zip, country, city, idList, kindList, phoneList, contactGroups);
 
-		ContactService.updateContact(idContact, firstName, lastName, email, siret, idAddr, street, zip, country, city, idList, kindList, phoneList, contactGroups);
-
-		RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
-		rd.forward(request, response);
+				RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
+				rd.forward(request, response);
+			}
+			
+			
+		}
+		
 	}
 
 }

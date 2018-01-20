@@ -1,7 +1,7 @@
 package servlets;
 
 import java.io.IOException;
-import java.util.List;
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -40,14 +40,26 @@ public class RechercheServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String firstName = request.getParameter("firstName");
-		String lastName = request.getParameter("lastName");
+		String idContact = request.getParameter("idcontact");
+		String recherche = request.getParameter("recherche");
+		
+		System.out.println("----> idContact : "+idContact);
+		
+		if(idContact == null) {
+			ArrayList<Contact> contacts = ContactService.researchContacts(recherche);
+			RequestDispatcher rd = request.getRequestDispatcher("UpdateContact.jsp");
+			request.setAttribute("contacts", contacts);
+			request.setAttribute("recherche", recherche);
+			rd.forward(request, response);
+		}else {
+			Contact contact = ContactService.getContactById(Long.parseLong(idContact));
+			System.out.println("RechercheServlet : VERSION ---> "+contact.getVersion());
+			RequestDispatcher rd = request.getRequestDispatcher("CreateContact.jsp");
+			request.setAttribute("contact", contact);
+			rd.forward(request, response);
+		}
 		
 		
-		Contact contact = ContactService.researchContact(firstName, lastName);
-		RequestDispatcher rd = request.getRequestDispatcher("RechercheContact.jsp");
-		request.setAttribute("Contact", contact);
-		rd.forward(request, response);
 	}
 
 }

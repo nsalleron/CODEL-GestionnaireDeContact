@@ -48,5 +48,11 @@ public class Address {
 	public void setCountry(String country) {
 		this.country = country;
 	}
+	public int getVersion() {
+		return version;
+	}
+	public void setVersion(int version) {
+		this.version = version;
+	}
 
 }

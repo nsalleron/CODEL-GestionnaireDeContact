@@ -44,6 +44,16 @@ public class ContactGroup {
 	public void setGroupName(String groupName) {
 		this.groupName = groupName;
 	}
+
+
+	public int getVersion() {
+		return version;
+	}
+
+
+	public void setVersion(int version) {
+		this.version = version;
+	}
 	
 	
 }

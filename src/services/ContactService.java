@@ -1,5 +1,6 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.List;
 import daos.ContactDAO;
 import entities.Contact;
@@ -17,7 +18,7 @@ public class ContactService {
 	}
 	
 	public static void deleteContact(String firstName, String lastName) {
-		ContactDAO.deleteContact(firstName, lastName);
+		//ContactDAO.deleteContact(firstName, lastName);
  	}
 	
 	public static void updateContact(Long idContact, String firstName, String lastName, String email, String siret, Long idAddr, String street, String zip, String city, String country, List<Long> idList, List<String> kindList, List<String> phoneList, String contactGroups) {
@@ -28,11 +29,15 @@ public class ContactService {
 		return ContactDAO.listContact();
 	}
 	
+	public static Contact getContactById(long id){
+		return ContactDAO.getContactById(id);
+	}
+	
 	public static void addContactInGroup(long id_cont, long id_group) {
 		ContactDAO.addContactInGroup(id_cont, id_group);
 	}
 	
-	public static Contact researchContact(String firstName, String lastName) {
-		return ContactDAO.researchContact(firstName, lastName);
+	public static ArrayList<Contact> researchContacts(String recherche) {
+		return ContactDAO.researchContacts(recherche);
 	}
 }
