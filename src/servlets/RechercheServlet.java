@@ -42,19 +42,32 @@ public class RechercheServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String idContact = request.getParameter("idcontact");
 		String recherche = request.getParameter("recherche");
+		String modeDelete = request.getParameter("delete");
 		
-		System.out.println("----> idContact : "+idContact);
+		System.out.println("----> modeDelete : "+modeDelete);
 		
-		if(idContact == null) {
+		if(idContact == null && modeDelete == null) {
 			ArrayList<Contact> contacts = ContactService.researchContacts(recherche);
 			RequestDispatcher rd = request.getRequestDispatcher("UpdateContact.jsp");
 			request.setAttribute("contacts", contacts);
 			request.setAttribute("recherche", recherche);
 			rd.forward(request, response);
-		}else {
+		}else if (idContact == null && modeDelete != null){
+			ArrayList<Contact> contacts = ContactService.researchContacts(recherche);
+			RequestDispatcher rd = request.getRequestDispatcher("DeleteContact.jsp");
+			request.setAttribute("contacts", contacts);
+			request.setAttribute("recherche", recherche);
+			rd.forward(request, response);
+		}else if(modeDelete == null){
 			Contact contact = ContactService.getContactById(Long.parseLong(idContact));
 			System.out.println("RechercheServlet : VERSION ---> "+contact.getVersion());
 			RequestDispatcher rd = request.getRequestDispatcher("CreateContact.jsp");
+			request.setAttribute("contact", contact);
+			rd.forward(request, response);
+		}else {
+			Contact contact = ContactService.getContactById(Long.parseLong(idContact));
+			request.setAttribute("delete", "byebye");
+			RequestDispatcher rd = request.getRequestDispatcher("DeleteContact.jsp");
 			request.setAttribute("contact", contact);
 			rd.forward(request, response);
 		}

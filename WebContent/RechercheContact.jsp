@@ -44,11 +44,11 @@
 				placeholder="Email">
 		</div>
 		<%  if(contact instanceof Entreprise) { %>
-		 <class="from-group">
+		 
 			<label for="siret">Siret number</label> <input type="text"
 				class="form-control" name="siret" value="<%=((Entreprise)contact).getNumSiret()%>"
 				placeholder="(optionnal) Siret number">
-		</div> 
+	
 		<% } %>
 
 		<fieldset style="margin-bottom: -2%;">
@@ -106,7 +106,6 @@
 				</div>
 			</div>
 		</div>
-		</fieldset>
 		<br> <br> <input type="submit" value="Envoyer">
 	</form>
 </body>

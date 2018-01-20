@@ -28,4 +28,13 @@ public class EntrepriseService {
 	public static void addEntrepriseInGroup(long id_cont, long id_group) {
 		ContactDAO.addContactInGroup(id_cont, id_group);
 	}
+	
+	public static Entreprise getEntrepriseById(long id) {
+		return EntrepriseDAO.getEntrepriseById(id);
+	}
+
+	public static void updateEntreprise(long idEntreprise, String firstName, String lastName, String email, String siret) {
+		EntrepriseDAO.updateEntreprise(idEntreprise, firstName, lastName, email, siret);		
+	}
+
 }

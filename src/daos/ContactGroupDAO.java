@@ -44,7 +44,7 @@ public class ContactGroupDAO {
 		Transaction transaction = session.getTransaction();
 		if (!transaction.isActive())
 			transaction = session.beginTransaction();
-		ContactGroup contact = (ContactGroup) session.load(ContactGroup.class, id);
+		ContactGroup contact = (ContactGroup) session.get(ContactGroup.class, id);
 		return contact;
 	}
 

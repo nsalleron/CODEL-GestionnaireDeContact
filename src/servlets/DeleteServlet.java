@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entities.Contact;
 import services.ContactService;
+
 
 /**
  * Servlet implementation class CreateServlet
@@ -36,12 +38,13 @@ public class DeleteServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		String firstName = request.getParameter("firstName");
-		String lastName = request.getParameter("lastName");
+		// TODO Faire des checks
+		String contact = request.getParameter("idcontact");
+			
+		Contact c = ContactService.getContactById(Long.parseLong(contact));
+		ContactService.deleteContact(c.getIdContact());
 		
-		ContactService.deleteContact(firstName,lastName);
-		
+	
 		RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
 		rd.forward(request, response);
 	}

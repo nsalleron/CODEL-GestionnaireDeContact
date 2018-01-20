@@ -117,11 +117,10 @@ public  class PhoneNumberDAO {
 	
 	public static PhoneNumber getPhoneNumberById(long id){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-		System.out.println("DEBUG OBJT SESSION : "+session.toString());
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
 			transaction = session.beginTransaction();
-		PhoneNumber phone = (PhoneNumber) session.load(PhoneNumber.class, id);
+		PhoneNumber phone = (PhoneNumber) session.get(PhoneNumber.class, id);
 		transaction.commit();
 		return phone;
 	}

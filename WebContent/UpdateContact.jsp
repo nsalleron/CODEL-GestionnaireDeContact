@@ -26,10 +26,16 @@ $(document).ready(function(){
 <title>Mise à jour d'un contact</title>
 </head>
 <body>
-	<form name="updateForm" method="post"
-		action="/CODEL-GestionnaireDeContact/RechercheServlet">
+	<div class="col-md-offset-2 col-md-8">
 
-		<%
+		<h1>
+			Modification de contact <br /> <small> Merci de rechercher
+				votre contact </small>
+		</h1>
+		<form name="updateForm" method="post"
+			action="/CODEL-GestionnaireDeContact/RechercheServlet">
+
+			<%
 			String recherche = "";
 			boolean bAfficheTab = false;
 			recherche = (String) request.getAttribute("recherche");
@@ -42,13 +48,15 @@ $(document).ready(function(){
 			}
 		%>
 
-		<div class="form-group">
-			<label for="recherche">Recherche</label> <input type="text"
-				class="form-control" name="recherche" id="recherche" value="<%=recherche%>"
-				placeholder="Recherche" autofocus onchange="this.parentNode.submit()"> <input name="submit" type="submit" value="Envoyer">
-		</div>
+			<div class="form-group">
+				<label for="recherche">Recherche</label> <input type="text"
+					class="form-control" name="recherche" id="recherche"
+					value="<%=recherche%>" placeholder="Recherche" autofocus
+					onchange="this.parentNode.submit()"> <br />
+					<input name="submit" type="submit" value="Envoyer">
+			</div>
 
-		<%if(bAfficheTab == true){ %>
+			<%if(bAfficheTab == true){ %>
 			<%="<div class=\"table-responsive\">"+
 			"<table class=\"table-striped\" style=\"width: 100%\">"+
 				"<tr>"+
@@ -60,25 +68,26 @@ $(document).ready(function(){
 			<%
 				
 				for (Contact c : contacts) {%>
-					<%="<tr>"%>
-						<%="<td>"%>
-							<%=c.getFirstName()%>
-						<%="</td>"%>
-						<%="<td>"%>
-							<%=c.getLastName()%>		
-						<%="</td>"%>
-						<%="<td>"%>
-							<%=c.getEmail()%>
-						<%="</td>"%>
-						<%="<td>"%>
-							<%="<button class=\"editbtn\" name=\"idcontact\""%>
-							<%="value=\""+c.getIdContact()+"\">Editer</button></td>"%>
-						<%="</td>"%>
-					<%="</tr>"%>
-				<%}%>
+			<%="<tr>"%>
+			<%="<td>"%>
+			<%=c.getFirstName()%>
+			<%="</td>"%>
+			<%="<td>"%>
+			<%=c.getLastName()%>
+			<%="</td>"%>
+			<%="<td>"%>
+			<%=c.getEmail()%>
+			<%="</td>"%>
+			<%="<td>"%>
+			<%="<button class=\"editbtn\" name=\"idcontact\""%>
+			<%="value=\""+c.getIdContact()+"\">Editer</button></td>"%>
+			<%="</td>"%>
+			<%="</tr>"%>
 			<%}%>
-		<%="</table>"%>
-		<%="</div>" %>
-	</form>
+			<%}%>
+			<%="</table>"%>
+			<%="</div>" %>
+		</form>
+	</div>
 </body>
 </html>

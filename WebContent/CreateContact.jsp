@@ -23,16 +23,108 @@
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.Iterator" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 </head>
 <script type="text/javascript">
+	var nbNumero = 1;
+	var nbGroupe = 1;
+	
 	function changeGroups(e) {
-		document.getElementById("groupe").value = e.target.value
+		document.getElementById("groupe"+e.target.name.substr(17,e.target.name.length)).value = e.target.value;
 	}
 	function changePhoneKind(e) {
-		document.getElementById("phonekind").value = e.target.value
+		document.getElementById(e.target.name.substr(3,e.target.name.length)).value = e.target.value;
 	}
+	function add_fields_telephone(e) {
+		  	var d = document.getElementById("input-group-telephone");	
+		  	var phone = document.getElementById("tel1");
+		  	var kind = document.getElementById("phonekind1");
+		  	var option = document.getElementById("chgphonekind1");
+		  	var arrayTel = [];
+		  	var arrayKind = [];
+		  	var arrayOption = [];
+		  	var i;
+		  
+		  	/* Sauvegarde des élements avant modification du HTML */
+		  	for (i = 1; i < (nbNumero+1) ; i++){
+		  		phone = document.getElementById("tel"+i);
+		  		kind =  document.getElementById("phonekind"+i);
+		  		option =  document.getElementById("chgphonekind"+i);
+		  		arrayTel.push(phone.value);
+		  		arrayKind.push(kind.value);
+		  		arrayOption.push(option.value);
+		  	}
+		  	
+		  	/* Augmentation du numero */
+			nbNumero = nbNumero+1;
+		  	
+		  	/* Modification du HTML */
+		   	d.innerHTML += "<br><span> Téléphone "+nbNumero+" : "; 
+		   	d.innerHTML += "<span> <input type=\"tel\" class=\"form-control\" name=\"telephone"+nbNumero+"\" id=\"tel"+nbNumero+"\" maxlength=\"10\" style=\"border-radius: 4px;\"> </span>";
+		   	d.innerHTML += " <label for=\"phonekind\">PhoneKind :  </label>\n";
+			d.innerHTML += "<input type=\"text\"" + "STYLE=\"color: #000000; background-color: #FFFFFF;\"" + 
+							"class=\"form-control\" id=\"phonekind"+nbNumero+"\" name=\"phonekind" + nbNumero+"\" value =\"\" placeholder=\"PhoneKind\">\n";
+			var valueSelect = document.getElementById("chgphonekind1")		
+			var buildHtml = "<select id=\"chgphonekind"+nbNumero+"\" name=\"chgphonekind"+nbNumero+"\" onchange=\"changePhoneKind(event)\">";
+			for (i = 0; i < valueSelect.length; i++) {
+				buildHtml += "<option value=\""+valueSelect.options[i].value + "\">"+valueSelect.options[i].text+"</option>\n";
+		    }
+			buildHtml += "</select><br>";
+			d.innerHTML += buildHtml;
+			
+			/* Restauration des valeurs */
+			for (i = 1; i < (nbNumero) ; i++){
+				phone = document.getElementById("tel"+i);
+				kind = document.getElementById("phonekind"+i);
+				option =  document.getElementById("chgphonekind"+i);
+				phone.value = arrayTel[i-1];
+				kind.value = arrayKind[i-1];
+				option.value = arrayOption[i-1]
+		  		console.log("--->"+"tel"+i+" added : "+phone.value);
+		  	}
+			
+	}
+	
+	function add_fields_groupe(e) {
+		  	var d = document.getElementById("input-group-groupes");
+		  	var groupe = document.getElementById("groupe1");
+		  	var option = document.getElementById("chgcontact_groups1");
+		  	var arrayGroup = [];
+		  	var arrayOption = [];
+		  	var i;
+		  
+		  	/* Sauvegarde des valeurs */
+		  	for (i = 1; i < (nbGroupe+1) ; i++){
+		  		groupe = document.getElementById("groupe"+i);
+		  		option =  document.getElementById("chgcontact_groups"+i);
+		  		arrayGroup.push(groupe.value);
+		  		arrayOption.push(option.value);
+		  	}
+		  	
+		  	/* Augmentation du nombre de groupes */
+		   	nbGroupe = nbGroupe+1
+		   	d.innerHTML += "<br><label> Groupe "+nbGroupe+" : </label> "; 
+		   	d.innerHTML += "<input type=\"text\" class=\"form-control\" id=\"groupe"+nbGroupe+"\" name=\"groupe"+nbGroupe+"\""+"value=\"\" placeholder=\"Nom du groupe\"> ";
+		  	var buildHtml = "<select id=\"chgcontact_groups"+nbGroupe+"\" name=\"chgcontact_groups"+nbGroupe+"\" onchange=\"changeGroups(event)\">"
+			var valueSelect = document.getElementById("chgcontact_groups1");	
+			var i;
+		   	for(i=0;i< valueSelect.length; i++) {
+		   		buildHtml += "<option value=\""+valueSelect.options[i].value + "\">"+valueSelect.options[i].text+"</option>\n";
+		   	}
+		   	buildHtml += "</select><br>";
+		   	d.innerHTML += buildHtml;
+		   	
+		   	/* Restauration des données */
+		   	for (i = 1; i < (nbGroupe) ; i++){
+		   		groupe = document.getElementById("groupe"+i);
+		  		option =  document.getElementById("chgcontact_groups"+i);
+				groupe.value = arrayGroup[i-1];
+				option.value = arrayOption[i-1]
+		  	}
+	}
+
 </script>
 <body>
 <body class="my_background">
@@ -42,11 +134,14 @@
 		String noError = "STYLE=\"color: #000000; background-color: #FFFFFF;\"";
 		String create = "\"/CODEL-GestionnaireDeContact/CreateServlet\"";
 		String update = "\"/CODEL-GestionnaireDeContact/UpdateServlet\"";
-		String information, firstname, lastname, email, siret = "", street, city, zip, country, groupe,
-				phone, phonekind, version = "";
+		String information, firstname, lastname, email, siret = "", street, city, zip, country, groupe, version = "";
+		ArrayList<String> alPhone = new ArrayList<String>();
+		ArrayList<String> alPhoneKind = new ArrayList<String>();
+		ArrayList<String> alGroupes = new ArrayList<String>();
+		
 		String[] whereFails;
 		boolean bFirstName = true, bLastName = true, bEmail = true, bStreet = true, bZip = true, bCity = true,
-				bCountry = true, bPhoneKind = true;
+				bCountry = true, bPhone = true, bPhoneKind = true;
 		Boolean success;
 		Contact contact;
 	%>
@@ -109,14 +204,15 @@
 			bCity = false;
 		if (information.contains("country"))
 			bCountry = false;
+		if (information.contains("phone"))
+			bPhone = false; 
 		if (information.contains("phonekind"))
 			bPhoneKind = false;%>
 		<%=tmp%>
 		</h1>
 	<%	}
 	}
-	if(contact == null){
-	// récupération des éléments déjà renseignés (cas d'erreur)
+	if(contact == null){ // récupération des éléments déjà renseignés (cas d'erreur)
 		firstname = request.getParameter("firstname") == null ? "" : request.getParameter("firstname");
 		lastname = request.getParameter("lastname") == null ? "" : request.getParameter("lastname");
 		email = request.getParameter("email") == null ? "" : request.getParameter("email");
@@ -125,8 +221,48 @@
 		city = request.getParameter("city") == null ? "" : request.getParameter("city");
 		zip = request.getParameter("zip") == null ? "" : request.getParameter("zip");
 		country = request.getParameter("country") == null ? "" : request.getParameter("country");
-		groupe = request.getParameter("groupe") == null ? "" : request.getParameter("groupe");
-		phonekind = request.getParameter("phonekind") == null ? "" : request.getParameter("phonekind");
+		
+		int i = 1;
+		String tmp = "";
+		while(tmp != null) {
+			tmp = request.getParameter("telephone"+i);
+			if(tmp != null) {
+				alPhone.add(tmp);
+				i++;
+			}else {
+				i=1;
+				tmp = "";
+				break;
+			}
+		}
+		
+		while(tmp != null) {
+			tmp = request.getParameter("phonekind"+i);
+			if(tmp != null) {
+				alPhoneKind.add(tmp);
+				i++;
+			}else {
+				i=1;
+				tmp = "";
+				break;
+			}
+		}	
+	
+		while(tmp != null) {
+			tmp = request.getParameter("groupe"+i);
+			if(tmp != null) {
+				alGroupes.add(tmp);
+				System.out.println("CREATE : "+tmp);
+				i++;
+			}else{
+				i=1;
+				tmp = "";
+				System.out.println("break");
+				break;
+			}
+		}
+		
+		
 	}else {
 		firstname = contact.getFirstName();
 		lastname = contact.getLastName();
@@ -139,25 +275,49 @@
 		zip = contact.getAdd().getZip();
 		country = contact.getAdd().getCountry();
 		groupe = contact.getBooks().iterator().next().getGroupName();
-		phone = contact.getPhones().iterator().next().getPhoneNumber();
-		phonekind = contact.getPhones().iterator().next().getPhoneKind();
-		version = ""+contact.getVersion();
-		System.out.println("CreateContact.jsp : VERSION ----> "+version);
-		request.setAttribute("version", version);
+		
+		for(PhoneNumber pn: contact.getPhones()){
+			alPhone.add(pn.getPhoneNumber());
+			alPhoneKind.add(pn.getPhoneKind());
+		}
+		
+		for(ContactGroup cg: contact.getBooks()){
+			alGroupes.add(cg.getGroupName());
+		}
+		
+		version = ""+contact.getIdContact()+";"+contact.getVersion();
+		
 	}
 	%>
 
 		<form method="post" action= 
 <%  if(contact == null){ %>
 		<%=create %>
-<%  } else {				 %>
+<%  } else {	
+		String updateAddress = ""+contact.getAdd().getIdAddress()+";"+contact.getAdd().getVersion();%>
 		<%=update %>>
-		<%="<input name=\"IdContact\" type=\"hidden\" value=\""+contact.getIdContact()+"\">"%>
-		<%="<input name=\"IdAddr\" type=\"hidden\" value=\""+contact.getAdd().getIdAddress()+"\">"%>
-		<%="<input name=\"version\" type=\"hidden\" value=\""+version+"\">"%>
+		<%="<input name=\"updateContact\" type=\"hidden\" value=\""+version+"\">"%>
+		<%="<input name=\"updateAddress\" type=\"hidden\" value=\""+updateAddress+"\">"%>
+		<%
+		int j = 0;
+		ArrayList<PhoneNumber> alPhoneRetrieve = new ArrayList<PhoneNumber>();
+		alPhoneRetrieve.addAll(contact.getPhones());
+		System.out.println("CreateContact : SIZE : "+alPhoneRetrieve.size());
+		for(j = 0; j < alPhoneRetrieve.size() ; j++){
+			System.out.println("PhoneNumberPASSAGE : "+alPhoneRetrieve.get(j).getVersion());%>
+			<%="<input name=\""+"updatePhones"+j+"\" type=\"hidden\" value=\""+alPhoneRetrieve.get(j).getIdPhoneNumber()+";"+alPhoneRetrieve.get(j).getVersion()+"\">"%>
+		<%} %>
+		<%
+		j = 0;
+		ArrayList<ContactGroup> cgRetrieve = new ArrayList<ContactGroup>();
+		cgRetrieve.addAll(contact.getBooks());
+		for(j = 0 ; j < cgRetrieve.size(); j++){
+			System.out.println("ContactGroupPASSAGE");%>
+			<%="<input name=\""+"updateCG"+j+"\" type=\"hidden\" value=\""+cgRetrieve.get(j).getIdContactGroup()+";"+cgRetrieve.get(j).getVersion()+"\">"%>
+		<%} %>
 <%	} %>
-			<div class="row">
-				<div class="col-md-offset-2 col-md-3">
+			<div class="row" >
+				<div class="col-md-offset-2 col-md-3" style="width: 80%">
 					<div class="form-group">
 						<label for="firstname">First name</label> 
 						<input type="text"
@@ -222,36 +382,57 @@
 						<div class="phones">
 							<div class="form-inline" style="margin-bottom: 3px;">
 								<div class="form-group">
-									<div class="input-group">
-										<label for="country">Téléphone :</label> <input type="tel"
-											class="form-control" name="telephone" id="tel1"
-											maxlength="10" style="border-radius: 4px;">
-									</div>
-									<br> <br>
-									<div class="input-group">
-										<label for="phonekind">PhoneKind : </label> <input type="text"
-											<%if (!bCountry) {%> 
-												<%=showError%> 
-											<%} else {%> 
-												<%=noError%>
-											<%}%> class="form-control" id="phonekind" name="phonekind"
-											value="<%=phonekind%>" placeholder="PhoneKind"> <br>
-										<select id="chgphonekind" name="chgphonekind"
-											onchange="changePhoneKind(event)">
-											<option value="">Choix</option>
-											<option value="Portable" selected>Portable</option>
-											<option value="Maison">Maison</option>
-											<option value="Bureau">Bureau</option>
-											<%
+									
+									<div id="input-group-telephone" class="input-group-telephone">
+										 
+										<%
+											int i = 0;
+											if(alPhone.size() > 0){	//Il y a eu une erreur ou un modification de contact
+												System.out.println("TAILLE DE ALPHONE : " + alPhone.size());
+											}else{
+												alPhone.add("");
+												alPhoneKind.add("");
+											}
+											for(i = 0;i<alPhone.size();i++){
+												String tmp = "<span> Téléphone "+(i+1)+" : ";
+												tmp += "<input type=\"tel\" class=\"form-control\" name=\"telephone"+(i+1)+"\"";
+												if(!bPhone)
+													tmp += showError;
+												else
+													tmp += noError;
+												tmp += " id=\"tel"+(i+1)+"\""+"value=\""+alPhone.get(i)+"\""+" maxlength=\"10\" style=\"border-radius: 4px;\"> </span>";
+												tmp += " <label for=\"phonekind\">PhoneKind : </label>";
+										%>
+										<%=tmp%>
+										<%		tmp = "<input type=\"text\"";
+												if(!bPhoneKind)
+													tmp += showError;
+												else
+													tmp += noError;
+												tmp += "class=\"form-control\" id=\"phonekind"+(i+1)+"\" name=\"phonekind"+(i+1)+"\"";
+												tmp += "value=\""+alPhoneKind.get(i)+"\" placeholder=\"PhoneKind\">";
+												tmp += " <select id=\"chgphonekind"+(i+1)+"\" name=\"chgphonekind"+(i+1)+"\"onchange=\"changePhoneKind(event)\">";
+												tmp += "<option value=\"\" selected>Choix d'un groupe existant</option>";
 												List<String> pkg = PhoneNumberService.listPhoneNumberGroups();
 												for (String cg : pkg) {
-											%>
-											<option value="<%=cg%>"><%=cg%></option>
-											<%
+													tmp += "<option value=\""+cg+"\">"+cg+"</option>";
 												}
-											%>
-										</select>
-									</div>
+												tmp += "</select>";
+												tmp += "<br>";%>
+										<%=tmp%>
+										<%	} %>
+										<br>
+									</div> 
+									<% 
+									String tmp="";
+									if(contact == null){
+										tmp="<input class=\"btn btn btn-primary btn-block\" style=\"width: 20%\"  type=\"button\" id=\"more_fields\" onclick=\"add_fields_telephone();\" value=\"Ajouter un numéro\" />";
+									}else{
+										tmp="";
+									}%>
+									<%=tmp %>
+									<br> <br>
+									
 								</div>
 							</div>
 						</div>
@@ -260,30 +441,54 @@
 						<legend style="color: #5826AB80;">Groupe</legend>
 						<div class="contact_groups">
 							<div class="form-inline" style="margin-bottom: 3px;">
-								<div class="from-group">
-									<label for="country">Groupe : </label> <input type="text"
-										class="form-control" id="groupe" name="contact_groups"
-										value="<%=groupe%>" placeholder="Nom du groupe"> <select
-										id="contact_groups" name="contact_groups"
-										onchange="changeGroups(event)">
-										<option value="">Choix</option>
+								<div id="input-group-groupes" class="input-group-groupes">
+
 										<%
-											List<ContactGroup> lcg = ContactGroupService.listContactGroups();
-											for (ContactGroup cg : lcg) {
-										%>
-										<option value="<%=cg.getGroupName()%>"><%=cg.getGroupName()%></option>
-										<%
+											i = 0;
+											if(alGroupes.size() > 0){	//Il y a eu une erreur ou un modification de contact
+												System.out.println("TAILLE DE ALGROUPES : " + alGroupes.size());
+											}else{
+												alGroupes.add("");
 											}
+											for(i = 0;i<alGroupes.size();i++){
+												tmp = "<label for=\"country\">Groupe "+(i+1)+" : </label>";
 										%>
-									</select>
+										<%=tmp%>
+										<%		tmp = "<input type=\"text\"";
+												tmp += noError;
+												tmp += "class=\"form-control\" id=\"groupe"+(i+1)+"\" name=\"groupe"+(i+1)+"\"";
+												tmp += "value=\""+alGroupes.get(i)+"\" placeholder=\"Nom du groupe\">";
+												tmp += " <select id=\"chgcontact_groups"+(i+1)+"\" name=\"chgcontact_groups"+(i+1)+"\"onchange=\"changeGroups(event)\">";
+												tmp += "<option value=\"\" selected>Choix du groupe existant</option>";
+												List<ContactGroup> lcg = ContactGroupService.listContactGroups();
+												for (ContactGroup cg : lcg) {
+													tmp += "<option value=\""+cg.getGroupName()+"\">"+cg.getGroupName()+"</option>";
+												}
+												tmp += "</select>";
+												tmp += "<br>";%>
+										<%=tmp%>
+										<%	} %>
+										<br>
 								</div>
+								
+								<% 
+								tmp="";
+								if(contact == null){
+										tmp="<input class=\"btn btn btn-primary btn-block\" style=\"width: 20%\" type=\"button\" id=\"more_fields\" onclick=\"add_fields_groupe();\" value=\"Ajouter un autre groupe\" />";
+								}else{
+										tmp="";
+								}%>
+								<%=tmp %>
+								
 							</div>
 						</div>
 					</fieldset>
+					<br> <input class="btn btn btn-primary btn-block"  style="width: 10%" type="submit" value="Envoyer"><br> 
 				</div>
-				<br> <br> <input type="submit" value="Envoyer">
 			</div>
+			
 		</form>
+		
 	</div>
 </body>
 </html>

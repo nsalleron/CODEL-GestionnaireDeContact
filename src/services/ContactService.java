@@ -13,16 +13,8 @@ public class ContactService {
 		return ContactDAO.createContact(firstName,lastName,email,a);
 	}
 	
-	public static void deleteContact(String email) {
-		ContactDAO.deleteContact(email);
-	}
-	
-	public static void deleteContact(String firstName, String lastName) {
-		//ContactDAO.deleteContact(firstName, lastName);
- 	}
-	
-	public static void updateContact(Long idContact, String firstName, String lastName, String email, String siret, Long idAddr, String street, String zip, String city, String country, List<Long> idList, List<String> kindList, List<String> phoneList, String contactGroups) {
-		ContactDAO.updateContact(idContact, firstName, lastName, email, siret, idAddr, street, zip, country, city, idList, kindList, phoneList, contactGroups);
+	public static void deleteContact(long id) {
+		ContactDAO.deleteContact(id);
 	}
 	
 	public static List<Contact> listContacts() {
@@ -39,5 +31,10 @@ public class ContactService {
 	
 	public static ArrayList<Contact> researchContacts(String recherche) {
 		return ContactDAO.researchContacts(recherche);
+	}
+
+	public static void updateContact(long idContact, String firstName, String lastName, String email) {
+		ContactDAO.updateContact(idContact, firstName, lastName, email);
+		
 	}
 }

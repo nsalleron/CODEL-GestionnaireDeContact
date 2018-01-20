@@ -31,7 +31,6 @@ public  class EntrepriseDAO {
 		entreprise.setAdd(a);
 		entreprise.setPhones(new HashSet<PhoneNumber>());
 		entreprise.setBooks(new HashSet<ContactGroup>());
-		
 		session.beginTransaction();
 		session.save(entreprise);
 		session.getTransaction().commit();
@@ -45,6 +44,22 @@ public  class EntrepriseDAO {
 		//TODO
 		
 	}
+	public static void updateEntreprise(long idEntreprise, String firstName, String lastName, String email, String siret) {
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		if(!transaction.isActive()) 
+			transaction = session.beginTransaction();
+		
+		long longSiret = Long.parseLong(siret);
+		
+		Entreprise contactEntre  = (Entreprise) session.load(Entreprise.class, idEntreprise);
+		contactEntre.setNumSiret(longSiret);
+		contactEntre.setFirstName(firstName);
+		contactEntre.setLastName(lastName);
+		contactEntre.setEmail(email);
+		transaction.commit();
+	}
+	
 	
 	public static void updateEntreprise(Long idEntreprise, String siret) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -102,5 +117,22 @@ public  class EntrepriseDAO {
 		
 		transaction.commit();
 	}
+
+
+
+	public static Entreprise getEntrepriseById(long id) {
+		// TODO Auto-generated method stub
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		Transaction transaction = session.getTransaction();
+		if(!transaction.isActive()) 
+			transaction = session.beginTransaction();
+		
+		Entreprise entreprise = (Entreprise) session.get(Entreprise.class, id);
+	
+		transaction.commit();
+		
+		return entreprise;
+	}
+
 	
 }

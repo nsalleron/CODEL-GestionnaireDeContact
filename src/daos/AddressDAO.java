@@ -82,7 +82,7 @@ public  class AddressDAO {
 		System.out.println("DEBUG OBJT SESSION : "+session.toString());
 		Transaction tx = session.getTransaction();
 		if(!tx.isActive()) tx = session.beginTransaction();
-		Address address = (Address) session.load(Address.class, id);
+		Address address = (Address) session.get(Address.class, id);
 		tx.commit();
 		return address;
 	}

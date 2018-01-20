@@ -9,61 +9,122 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <html>
+<!-- Bootstrap core CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="style.css" />
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Liste des contats</title>
+<title>Liste des contacts</title>
 </head>
 <body>
+	<div class="col-md-offset-2 col-md-3" style="width: 70%">
 	<h1 id="contacts">Voici vos contacts :</h1>
 	<br>
-	<ul>
 	<%
 	String allNumber = "";
 	List<Contact> contacts = ContactService.listContacts();
-	for(Contact t : contacts){
-		if(t instanceof Entreprise)
-				continue;%>
+	%>
+	<%="<div class=\"table-responsive\">"+
+	"<table class=\"table-striped\" style=\"width: 100%\">"+
+		"<tr>"+
+			"<th>Firstname</th>"+
+			"<th>Lastname</th>"+
+			"<th>Email</th>"+
+			"<th>Street</th>"+
+			"<th>City</th>"+
+			"<th>Zip</th>"+
+			"<th>Country</th>"+
+		"</tr>" %>
+	<%
+		for (Contact c : contacts) {
+			Address a = c.getAdd();%>
+			<%="<tr>"%>
+				<%="<td>"%>
+					<%=c.getFirstName()%>
+				<%="</td>"%>
+				<%="<td>"%>
+					<%=c.getLastName()%>		
+				<%="</td>"%>
+				<%="<td>"%>
+					<%=c.getEmail()%>
+				<%="</td>"%>
+				<%="<td>"%>
+					<%=a.getStreet()%>
+				<%="</td>"%>
+				<%="<td>"%>
+					<%=a.getCity()%>
+				<%="</td>"%>
+				<%="<td>"%>
+					<%=a.getZip()%>
+				<%="</td>"%>
+				<%="<td>"%>
+					<%=a.getCountry()%>
+				<%="</td>"%>
+				
+			<%="</tr>"%>
+		<%}%>
+<%="</table>"%>
+<%="</div>" %>
+	</div>
 	
-		<li>nom : <%=t.getFirstName() %> <br>
-			prenom : <%=t.getLastName() %> <br>
-			email : <%=t.getEmail() %> <br> 
-			<%for(PhoneNumber pn: t.getPhones()){
-						allNumber+= "        -> "+ pn.getPhoneKind()+" : "+pn.getPhoneNumber()+"<br>";
-			} 
-			   Address ad = t.getAdd();
-			   String addr ="<br>"+
-						"        -> "+ad.getCity()+"<br>"+
-						"        -> "+ad.getCountry()+"<br>"+
-						"        -> "+ad.getStreet()+"<br>"+
-						"        -> "+ad.getZip()+"<br>";
-			
-	%> Addresse : <%=addr %> téléphones : <%=allNumber%> <%allNumber = "";}%>
-		</li>
-	</ul>
+	<div class="col-md-offset-2 col-md-3" style="width: 70%">
 	<h1 id="Entreprise"> Voici vos contacts (ENTREPRISE):</h1>
-	<ul>
 	<%
 	List<Entreprise> entreprise = EntrepriseService.listEntreprises();
-	for(Entreprise t : entreprise ){
-		%>
-	<li>nom : <%=t.getFirstName() %> <br> prenom : <%=t.getLastName() %>
-		<br> email : <%=t.getEmail() %> <br> <%for(PhoneNumber pn: t.getPhones()){
-						allNumber+= "        -> "+ pn.getPhoneKind()+" : "+pn.getPhoneNumber()+"<br>";
-			}%><% Address ad = t.getAdd();
-			   String addr ="<br>"+
-						"        -> "+ad.getCity()+"<br>"+
-						"        -> "+ad.getCountry()+"<br>"+
-						"        -> "+ad.getStreet()+"<br>"+
-						"        -> "+ad.getZip()+"<br>";
-			%> Addresse : <%=addr %> téléphones : <%=allNumber%> <%allNumber = "";%>
-	</li>
-</ul>
-	<%	} %>
-
-
+	%>
+	<%="<div class=\"table-responsive\">"+
+	"<table class=\"table-striped\" style=\"width: 100%\">"+
+		"<tr>"+
+			"<th>Firstname</th>"+
+			"<th>Lastname</th>"+
+			"<th>Email</th>"+
+			"<th>Siret</th>" +
+			"<th>Street</th>"+
+			"<th>City</th>"+
+			"<th>Zip</th>"+
+			"<th>Country</th>"+
+		"</tr>" %>
+	<%
+		for (Entreprise c : entreprise) {
+			Address a = c.getAdd();%>
+			<%="<tr>"%>
+				<%="<td>"%>
+					<%=c.getFirstName()%>
+				<%="</td>"%>
+				<%="<td>"%>
+					<%=c.getLastName()%>		
+				<%="</td>"%>
+				<%="<td>"%>
+					<%=c.getEmail()%>
+				<%="</td>"%>
+				<%="<td>"%>
+					<%=c.getNumSiret()%>
+				<%="</td>"%>
+				<%="<td>"%>
+					<%=a.getStreet()%>
+				<%="</td>"%>
+				<%="<td>"%>
+					<%=a.getCity()%>
+				<%="</td>"%>
+				<%="<td>"%>
+					<%=a.getZip()%>
+				<%="</td>"%>
+				<%="<td>"%>
+					<%=a.getCountry()%>
+				<%="</td>"%>
+			<%="</tr>"%>
+		<%}%>
+<%="</table>"%>
+<%="</div>" %>
+	<br>
 	<form method="post" action="/CODEL-GestionnaireDeContact/Main.jsp">
 		<input type="submit" value="Retour">
 	</form>
+	</div>
+	
 
 </body>
 </html>

@@ -1,7 +1,7 @@
 package servlets;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -38,6 +38,26 @@ public class CreateServlet extends HttpServlet {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
+	/**
+	 * InnerClass Verification
+	 */
+	protected class StringAndBoolean{
+		public String value;
+		public boolean checked;
+		
+		public StringAndBoolean(String value, boolean checked) {
+			super();
+			this.value = value;
+			this.checked = checked;
+		}
+		
+		@Override
+		public String toString() {
+			return "[" + value +" , " + checked + "]";
+		}
+		
+	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
@@ -45,10 +65,19 @@ public class CreateServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		/* Déclaration */
 		String firstName, lastName, email, siret, street,
-			   city, zip, country, phone, phonekind, contactGroups;
+			   city, zip, country;
+		
+		ArrayList<StringAndBoolean>alPhone = new ArrayList<StringAndBoolean>();
+		ArrayList<StringAndBoolean>alPhoneKind = new ArrayList<StringAndBoolean>();
+		ArrayList<StringAndBoolean>alContactGroups = new ArrayList<StringAndBoolean>();
+		
+		
 		boolean okFirstName = false, okLastName = false ,
 				okEmail= false , okStreet = false ,
 				okZip = false, okCity = false, okCountry = false, okPhoneKind = false, okPhone = false;
+		
+		int i = 1;
+		
 		
 		/* Récupération des élements */
 		firstName = request.getParameter("firstname");
@@ -59,9 +88,56 @@ public class CreateServlet extends HttpServlet {
 		city = request.getParameter("city");
 		zip = request.getParameter("zip");
 		country = request.getParameter("country");
-		phone = request.getParameter("telephone");
-		phonekind = request.getParameter("phonekind");
-		contactGroups = request.getParameter("contact_groups");
+		
+		String tmp = "";
+		while(tmp != null) {
+			tmp = request.getParameter("telephone"+i);
+			if(tmp != null) {
+				System.out.println("alPhone +1");
+				alPhone.add(new StringAndBoolean(tmp,false));
+				i++;
+			}else {
+				System.out.println("alPhoneLoop -> break;");
+				i=1;
+				tmp = "";
+				break;
+			}
+		}
+		
+		System.out.println(alPhone);
+		while(tmp != null) {
+			tmp = request.getParameter("phonekind"+i);
+			if(tmp != null) {
+				System.out.println("alPhoneKind +1");
+				alPhoneKind.add(new StringAndBoolean(tmp,false));
+				i++;
+			}else {
+				System.out.println("alPhoneKind -> break;");
+				i=1;
+				tmp = "";
+				break;
+			}
+		}
+		
+		System.out.println(alPhoneKind);
+		
+		i = 1;
+		while(tmp != null) {
+			tmp = request.getParameter("groupe"+i);
+			if(tmp != null) {
+				System.out.println("alContactGroups +1");
+				alContactGroups.add(new StringAndBoolean(tmp,false));
+				i++;
+			}else {
+				System.out.println("alContactGroups -> break;");
+				i=1;
+				tmp = "";
+				break;
+			}
+		}
+		
+		System.out.println(alContactGroups);
+		
 		
 		/* Vérification des élements */
 		if(firstName != null && firstName.length() > 0) 
@@ -78,13 +154,25 @@ public class CreateServlet extends HttpServlet {
 			okCity = true;
 		if(country!=null && country.length()>0) 
 			okCountry = true;
-		if(phone!=null && phone.length()>0) 
-			okPhone = true;
-		if(phonekind!=null && phonekind.length()>0) 
-			okPhoneKind = true;
+		
+		for(StringAndBoolean phone : alPhone)
+			if(phone.value!=null && phone.value.length()>0) 
+				okPhone = true;
+			else {
+				okPhone = false;
+				break;
+			}
+		
+		for(StringAndBoolean phonekind : alPhoneKind)
+			if(phonekind.value!=null && phonekind.value.length()>0) 
+				okPhoneKind = true;
+			else {
+				okPhoneKind = false;
+				break;
+			}
 		
 		/* Création */
-		if(okFirstName && okLastName && okEmail && okStreet && okZip && okCity && okCountry){
+		if(okFirstName && okLastName && okEmail && okStreet && okZip && okCity && okCountry && okPhone && okPhoneKind){
 			
 			Address add = AddressService.createAddress(street, city, zip, country);
 			Contact c = null;
@@ -102,36 +190,47 @@ public class CreateServlet extends HttpServlet {
 				rd.forward(request, response);
 			}
 			
-			
-			PhoneNumberService.createPhoneNumber(phonekind, phone, c);
-			if(contactGroups != null && !contactGroups.isEmpty()) {
-				if(!ContactGroupService.checkIfGroupExist(contactGroups))
-					cg = ContactGroupService.createContactGroup(contactGroups);
-				else
-					cg = ContactGroupService.getContactGroupByName(contactGroups);
-			}else {
-				if(!ContactGroupService.checkIfGroupExist("_PAS_DE_GROUPE_"))
-					cg = ContactGroupService.createContactGroup("_PAS_DE_GROUPE_");
-				else
-					cg = ContactGroupService.getContactGroupByName("_PAS_DE_GROUPE_");
+			for(i = 0; i < alPhone.size(); i++) {
+				PhoneNumberService.createPhoneNumber(alPhoneKind.get(i).value, alPhone.get(i).value, c);
 			}
-			ContactService.addContactInGroup(c.getIdContact(), cg.getIdContactGroup());
 			
+			for(i = 0; i< alContactGroups.size();i++) {
+				String contactGroups = alContactGroups.get(i).value;
+				if(contactGroups != null && !contactGroups.isEmpty()) {
+					if(!ContactGroupService.checkIfGroupExist(contactGroups))
+						cg = ContactGroupService.createContactGroup(contactGroups);
+					else
+						cg = ContactGroupService.getContactGroupByName(contactGroups);
+				}else {
+					if(!ContactGroupService.checkIfGroupExist("_PAS_DE_GROUPE_"))
+						cg = ContactGroupService.createContactGroup("_PAS_DE_GROUPE_");
+					else
+						cg = ContactGroupService.getContactGroupByName("_PAS_DE_GROUPE_");
+				}
+				ContactService.addContactInGroup(c.getIdContact(), cg.getIdContactGroup());
+			}
 			
 			request.setAttribute("success", true);
 			request.setAttribute("information", "Contact created !");
+			
 			RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
 			rd.forward(request, response);
 		} else {
+			String who = whoFails(okFirstName, okLastName, okEmail,
+					okStreet, okZip, okCity, okCountry, okPhoneKind, okPhone);
 			
-			String who = whoFails(okFirstName, okLastName, okEmail, okStreet, okZip, okCity, okCountry, okPhoneKind, okPhone);
 			request.setAttribute("success", false);
 			request.setAttribute("information",who);
+								
 			RequestDispatcher rd = request.getRequestDispatcher("CreateContact.jsp");
 			rd.forward(request, response);
 		}	
 	}
-	private String whoFails(boolean first, boolean last, boolean email, boolean street, boolean zip, boolean city, boolean country, boolean phonekind, boolean phone) {
+	
+	private String whoFails(boolean first, boolean last,
+			boolean email, boolean street, boolean zip,
+			boolean city, boolean country, boolean phonekind, boolean phone) {
+		
 		String tmp = "";
 		if(!first)
 			tmp += "firstname;";
@@ -152,6 +251,7 @@ public class CreateServlet extends HttpServlet {
 		if(!phone)
 			tmp += "phone";
 		return tmp;
+		
 	}
 
 }
