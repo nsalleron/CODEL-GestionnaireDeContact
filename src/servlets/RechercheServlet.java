@@ -56,16 +56,15 @@ public class RechercheServlet extends HttpServlet {
 			request.setAttribute("contacts", contacts);
 			request.setAttribute("recherche", recherche);
 			rd.forward(request, response);
-		}else if(modeDelete == null){
+		}else if(modeDelete == null && idContact.length() > 0){
 			Contact contact = ContactService.getContactById(Long.parseLong(idContact));
 			RequestDispatcher rd = request.getRequestDispatcher("CreateContact.jsp");
 			request.setAttribute("contact", contact);
 			rd.forward(request, response);
-		}else {
+		}else if(modeDelete != null && idContact.length() > 0){
 			Contact contact = ContactService.getContactById(Long.parseLong(idContact));
-			request.setAttribute("delete", "byebye");
-			RequestDispatcher rd = request.getRequestDispatcher("DeleteContact.jsp");
-			request.setAttribute("contact", contact);
+			request.setAttribute("idcontact", contact.getIdContact());
+			RequestDispatcher rd = request.getRequestDispatcher("DeleteServlet");
 			rd.forward(request, response);
 		}
 		

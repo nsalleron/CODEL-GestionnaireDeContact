@@ -24,7 +24,7 @@
 <body>
 	<%
 		/* Debug pour le remplissage automatique des champs */
-		String debug = "0";
+		String debug = "1";
 		request.getSession().setAttribute("DEBUG", debug);
 		
 		/* Initialisation du groupe PAS_DE_GROUPE */
