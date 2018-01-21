@@ -39,6 +39,7 @@
 		"<th>Ville</th>"+
 		"<th>Code postal</th>"+
 		"<th>Pays</th>"+
+		"<th>Téléphones</th>"+
 		"</tr>" %>
 	<%
 		for (Contact c : contacts) {
