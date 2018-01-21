@@ -2,6 +2,8 @@
 <%@page import="services.ContactService"%>
 <%@page import="services.EntrepriseService"%>
 <%@page import="java.util.List"%>
+<%@page import="java.util.Set"%>
+<%@page import="java.util.Iterator"%>
 <%@page import="entities.Contact"%>
 <%@page import="entities.Entreprise"%>
 <%@page import="entities.PhoneNumber"%>
@@ -37,10 +39,13 @@
 			"<th>City</th>"+
 			"<th>Zip</th>"+
 			"<th>Country</th>"+
+			"<th>Téléphone</th>"+
 		"</tr>" %>
 	<%
 		for (Contact c : contacts) {
-			Address a = c.getAdd();%>
+			Address a = c.getAdd();
+			Iterator<PhoneNumber> monSet = c.getPhones().iterator();%>
+			
 			<%="<tr>"%>
 				<%="<td>"%>
 					<%=c.getFirstName()%>
@@ -63,6 +68,11 @@
 				<%="<td>"%>
 					<%=a.getCountry()%>
 				<%="</td>"%>
+				while(monSet.hasNext()){
+					<%="<td>"%>
+						<%=monSet.next().getPhoneNumber()%>
+    				<%="</td>"%>
+				}
 				
 			<%="</tr>"%>
 		<%}%>
