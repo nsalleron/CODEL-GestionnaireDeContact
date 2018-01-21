@@ -44,7 +44,7 @@ $(document).ready(function(){
 			
 			<form name="updateForm" method="post" 
 			<% if ((recherche != null && recherche.length() > 0) || (contacts != null && contacts.size()>0)) {
-				bAfficheTab = true; %>
+				bAfficheTab = true;%>
 				<%="action=\"/CODEL-GestionnaireDeContact/DeleteServlet\"" %>
 			<%}else{
 				recherche = "";%>
@@ -57,7 +57,7 @@ $(document).ready(function(){
 					class="form-control" name="recherche" id="recherche"
 					value="<%=recherche%>" placeholder="Recherche" autofocus
 					onchange="this.parentNode.submit()"> <br />
-					<input name="submit" type="submit" value="Envoyer">
+					<input name="submit" class="btn btn-lg btn-primary btn-block" type="submit" value="Rechercher">
 			</div>
 
 			<%if(bAfficheTab == true){ %>
@@ -84,7 +84,8 @@ $(document).ready(function(){
 			<%="</td>"%>
 			<%="<td>"%>
 			<%="<button class=\"editbtn\" name=\"idcontact\""%>
-			<%="value=\""+c.getIdContact()+"\">Editer</button></td>"%>
+			<%="value=\""+c.getIdContact()+"\">"%>
+			<%="Supprimer</button></td>"%>
 			<%="</td>"%>
 			<%="</tr>"%>
 			<%}%>
