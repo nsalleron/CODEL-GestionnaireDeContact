@@ -13,8 +13,8 @@ public class ContactService {
 		return ContactDAO.createContact(firstName,lastName,email,a);
 	}
 	
-	public static void deleteContact(long id) {
-		ContactDAO.deleteContact(id);
+	public static void deleteContact(long idContact) {
+		ContactDAO.deleteContact(idContact);
 	}
 	
 	public static List<Contact> listContacts() {
@@ -37,4 +37,5 @@ public class ContactService {
 		ContactDAO.updateContact(idContact, firstName, lastName, email);
 		
 	}
+
 }

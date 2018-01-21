@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@page import="services.ContactGroupService"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,6 +23,14 @@
 </head>
 <body>
 	<%
+		/* Debug pour le remplissage automatique des champs */
+		String debug = "0";
+		request.getSession().setAttribute("DEBUG", debug);
+		
+		/* Initialisation du groupe PAS_DE_GROUPE */
+		if(!ContactGroupService.checkIfGroupExist("_PAS_DE_GROUPE_"))
+			ContactGroupService.createContactGroup("_PAS_DE_GROUPE_");
+		
 		String name = (String) request.getSession().getAttribute("name");
 		String updateFailed = (String) request.getAttribute("updatefailed");
 		System.out.println("MAIN : " + updateFailed);

@@ -192,10 +192,7 @@ public class CreateServlet extends HttpServlet {
 					else
 						cg = ContactGroupService.getContactGroupByName(contactGroups);
 				}else {
-					if(!ContactGroupService.checkIfGroupExist("_PAS_DE_GROUPE_"))
-						cg = ContactGroupService.createContactGroup("_PAS_DE_GROUPE_");
-					else
-						cg = ContactGroupService.getContactGroupByName("_PAS_DE_GROUPE_");
+					cg = ContactGroupService.getContactGroupByName("_PAS_DE_GROUPE_");
 				}
 				ContactService.addContactInGroup(c.getIdContact(), cg.getIdContactGroup());
 			}

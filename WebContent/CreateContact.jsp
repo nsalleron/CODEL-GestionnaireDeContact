@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@page import="services.ContactService"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
@@ -22,6 +23,7 @@
 <%@page import="entities.Contact"%>
 <%@page import="java.util.List"%>
 <%@page import="java.util.ArrayList"%>
+<%@page import="java.util.HashSet" %>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Iterator" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -38,9 +40,48 @@
 		}
 	%></title>
 </head>
+<%
+		/* Déclaration des éléments */
+		String showError = "STYLE=\"color:#FFFFFF; border: solid 3px #6E6E6E; background-color: #ff6633; \"";
+		String noError = "STYLE=\"color: #000000; background-color: #FFFFFF;\"";
+		String create = "\"/CODEL-GestionnaireDeContact/CreateServlet\"";
+		String update = "\"/CODEL-GestionnaireDeContact/UpdateServlet\"";
+		String information, firstname ="", lastname="", email="", siret = "", street="", city="", zip="", country="", groupe="", version = "";
+		String nbNumero = "1";
+		String nbGroupe = "1";
+		ArrayList<String> alPhone = new ArrayList<String>();
+		ArrayList<String> alPhoneKind = new ArrayList<String>();
+		ArrayList<String> alGroupes = new ArrayList<String>();
+		
+		String[] whereFails;
+		boolean bFirstName = true, bLastName = true, bEmail = true, bStreet = true, bZip = true, bCity = true,
+				bCountry = true, bPhone = true, bPhoneKind = true;
+		Boolean success;
+		
+		contact = (Contact) request.getAttribute("contact");
+		String DEBUG = (String) request.getSession().getAttribute("DEBUG");
+		if(contact != null && DEBUG == null){
+			nbNumero = ""+contact.getPhones().size();
+			nbGroupe = ""+contact.getBooks().size();
+		}
+		if(DEBUG != null && DEBUG.equals("1") && contact == null){
+			int i = ContactService.listContacts().size();
+			firstname = "user"+i;
+			lastname = "last"+i;
+			email = "user"+i+"@"+firstname+".fr";
+			street = "street de "+firstname;
+			city = "CityOf"+firstname;
+			zip = "0"+i;
+			country = "CountryOf"+firstname;
+			groupe = "GroupOf"+firstname;
+			alPhone.add("000000000"+i);
+			alPhoneKind.add(firstname);
+			alGroupes.add(firstname);
+		}
+	%>
 <script type="text/javascript">
-	var nbNumero = 1;
-	var nbGroupe = 1;
+	var nbNumero = <%=nbNumero%>;
+	var nbGroupe = <%=nbGroupe%>;
 	
 	function changeGroups(e) {
 		document.getElementById("groupe"+e.target.name.substr(17,e.target.name.length)).value = e.target.value;
@@ -139,27 +180,12 @@
 </script>
 <body>
 <body class="my_background">
-	<%
-		/* Déclaration des éléments */
-		String showError = "STYLE=\"color:#FFFFFF; border: solid 3px #6E6E6E; background-color: #ff6633; \"";
-		String noError = "STYLE=\"color: #000000; background-color: #FFFFFF;\"";
-		String create = "\"/CODEL-GestionnaireDeContact/CreateServlet\"";
-		String update = "\"/CODEL-GestionnaireDeContact/UpdateServlet\"";
-		String information, firstname, lastname, email, siret = "", street, city, zip, country, groupe, version = "";
-		ArrayList<String> alPhone = new ArrayList<String>();
-		ArrayList<String> alPhoneKind = new ArrayList<String>();
-		ArrayList<String> alGroupes = new ArrayList<String>();
-		
-		String[] whereFails;
-		boolean bFirstName = true, bLastName = true, bEmail = true, bStreet = true, bZip = true, bCity = true,
-				bCountry = true, bPhone = true, bPhoneKind = true;
-		Boolean success;
-	%>
+	
 	<div class="container">
 		<div class="row">
 			<div class="col-md-offset-2 col-md-8">
 	<%	/* Vérification du mode (Création ou Update) */
-		contact = (Contact) request.getAttribute("contact");
+		
 		if(contact == null){
 	%>
 				<h1>
@@ -222,7 +248,7 @@
 		</h1>
 	<%	}
 	}
-	if(contact == null){ // récupération des éléments déjà renseignés (cas d'erreur)
+	if(contact == null && DEBUG == null ){ // récupération des éléments déjà renseignés (cas d'erreur)
 		firstname = request.getParameter("firstname") == null ? "" : request.getParameter("firstname");
 		lastname = request.getParameter("lastname") == null ? "" : request.getParameter("lastname");
 		email = request.getParameter("email") == null ? "" : request.getParameter("email");
@@ -272,29 +298,30 @@
 		
 		
 	}else {
-		firstname = contact.getFirstName();
-		lastname = contact.getLastName();
-		email = contact.getEmail();
-		if(contact instanceof Entreprise) {
-			siret = ""+((Entreprise)contact).getNumSiret();
+		if(contact != null){
+			firstname = contact.getFirstName();
+			lastname = contact.getLastName();
+			email = contact.getEmail();
+			if(contact instanceof Entreprise) {
+				siret = ""+((Entreprise)contact).getNumSiret();
+			}
+			street = contact.getAdd().getStreet();
+			city = contact.getAdd().getCity();
+			zip = contact.getAdd().getZip();
+			country = contact.getAdd().getCountry();
+			groupe = contact.getBooks().iterator().next().getGroupName();
+			
+			for(PhoneNumber pn: contact.getPhones()){
+				alPhone.add(pn.getPhoneNumber());
+				alPhoneKind.add(pn.getPhoneKind());
+			}
+			
+			for(ContactGroup cg: contact.getBooks()){
+				alGroupes.add(cg.getGroupName());
+			}
+			
+			version = ""+contact.getIdContact()+";"+contact.getVersion();
 		}
-		street = contact.getAdd().getStreet();
-		city = contact.getAdd().getCity();
-		zip = contact.getAdd().getZip();
-		country = contact.getAdd().getCountry();
-		groupe = contact.getBooks().iterator().next().getGroupName();
-		
-		for(PhoneNumber pn: contact.getPhones()){
-			alPhone.add(pn.getPhoneNumber());
-			alPhoneKind.add(pn.getPhoneKind());
-		}
-		
-		for(ContactGroup cg: contact.getBooks()){
-			alGroupes.add(cg.getGroupName());
-		}
-		
-		version = ""+contact.getIdContact()+";"+contact.getVersion();
-		
 	}
 	%>
 
@@ -430,7 +457,9 @@
 												tmp += "value=\""+alPhoneKind.get(i)+"\" placeholder=\"Type de téléphone\">";
 												tmp += " <select id=\"chgphonekind"+(i+1)+"\" name=\"chgphonekind"+(i+1)+"\"onchange=\"changePhoneKind(event)\">";
 												tmp += "<option value=\"\" selected>Choix d'un groupe existant</option>";
-												List<String> pkg = PhoneNumberService.listPhoneNumberGroups();
+												List<String> tmppkg = PhoneNumberService.listPhoneNumberGroups();
+												HashSet<String> pkg = new HashSet<String>();
+												pkg.addAll(tmppkg);
 												for (String cg : pkg) {
 													tmp += "<option value=\""+cg+"\">"+cg+"</option>";
 												}
@@ -444,11 +473,11 @@
 									</div> 
 									<% 
 									String tmp="";
-									if(contact == null){
+									//if(contact == null){
 										tmp="<br><input class=\"btn btn btn-primary btn-block\" style=\"width: 30%\"  type=\"button\" id=\"more_fields\" onclick=\"add_fields_telephone();\" value=\"Ajouter un numéro\" />";
-									}else{
-										tmp="";
-									}%>
+									//}else{
+									//	tmp="";
+									//}%>
 									<%=tmp %>
 <!-- 									<br> <br> -->
 									
@@ -476,15 +505,28 @@
 										<%		tmp = "<input type=\"text\"";
 												tmp += noError;
 												tmp += "class=\"form-control\" id=\"groupe"+(i+1)+"\" name=\"groupe"+(i+1)+"\"";
-												tmp += "value=\""+alGroupes.get(i)+"\" placeholder=\"Nom du groupe\">";
+												if(alGroupes.get(i).equals("_PAS_DE_GROUPE_")){
+													tmp += "value=\""+"\" placeholder=\"Nom du groupe\">";
+												}else{
+													tmp += "value=\""+alGroupes.get(i)+"\" placeholder=\"Nom du groupe\">";
+												}
+												
 												tmp += " <select id=\"chgcontact_groups"+(i+1)+"\" name=\"chgcontact_groups"+(i+1)+"\"onchange=\"changeGroups(event)\">";
 												tmp += "<option value=\"\" selected>Choix du groupe existant</option>";
-												List<ContactGroup> lcg = ContactGroupService.listContactGroups();
+												List<ContactGroup> ltmp = ContactGroupService.listContactGroups();
+												HashSet<ContactGroup> lcg = new HashSet<ContactGroup>();
+												lcg.addAll(ltmp);
 												for (ContactGroup cg : lcg) {
-													tmp += "<option value=\""+cg.getGroupName()+"\">"+cg.getGroupName()+"</option>";
+													if(cg.getGroupName().equals("_PAS_DE_GROUPE_")){
+														tmp += "";
+													}else{
+														tmp += "<option value=\""+cg.getGroupName()+"\">"+cg.getGroupName()+"</option>";
+													}
+														
+													
 												}
 												tmp += "</select>";
-												tmp += "";%>
+												tmp += "<br><br>";%>
 										<%=tmp%>
 										<%	} %>
 										<br>
@@ -492,11 +534,11 @@
 								
 								<% 
 								tmp="";
-								if(contact == null){
+								//if(contact == null){
 										tmp="<br><input class=\"btn btn btn-primary btn-block\" style=\"width: 30%\" type=\"button\" id=\"more_fields\" onclick=\"add_fields_groupe();\" value=\"Ajouter un autre groupe\" />";
-								}else{
-										tmp="";
-								}%>
+								//}else{
+								//		tmp="";
+								//}%>
 								<%=tmp %>
 								
 							</div>

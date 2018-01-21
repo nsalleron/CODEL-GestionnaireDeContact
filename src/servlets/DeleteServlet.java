@@ -9,7 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import entities.Contact;
+import entities.ContactGroup;
+import entities.PhoneNumber;
+import services.AddressService;
+import services.ContactGroupService;
 import services.ContactService;
+import services.PhoneNumberService;
 
 
 /**
@@ -40,10 +45,20 @@ public class DeleteServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Faire des checks
 		String contact = request.getParameter("idcontact");
+		System.out.println(request.getParameter("recherche"));
 			
 		Contact c = ContactService.getContactById(Long.parseLong(contact));
-		ContactService.deleteContact(c.getIdContact());
 		
+		for(PhoneNumber pb : c.getPhones()) {
+			PhoneNumberService.deletePhoneNumberById(pb.getIdPhoneNumber());
+		}
+		
+		ContactService.deleteContact(c.getIdContact());
+		for(ContactGroup cg : c.getBooks()){
+			ContactGroupService.deleteContactInGroup(cg.getIdContactGroup(), c.getIdContact());
+		}
+		AddressService.deleteAddress(c.getAdd().getIdAddress());
+		System.out.println("Byebye : "+c.getFirstName());
 	
 		RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
 		rd.forward(request, response);

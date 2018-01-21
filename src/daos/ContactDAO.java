@@ -36,14 +36,14 @@ public  class ContactDAO {
 		return c;
 	}
 	
-	public static void deleteContact(long id){
+	public static void deleteContact(long idContact){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
 			transaction = session.beginTransaction();
 		
-		Contact contact = (Contact) session.load(Contact.class, id);
+		Contact contact = (Contact) session.load(Contact.class, idContact);
 			
 			//On réouvre la session car delete deletePhoneNumber
 		session = HibernateUtil.getSessionFactory().getCurrentSession();

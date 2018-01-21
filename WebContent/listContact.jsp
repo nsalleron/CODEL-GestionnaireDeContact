@@ -40,18 +40,22 @@
 		"<th>Code postal</th>"+
 		"<th>Pays</th>"+
 		"<th>Téléphones</th>"+
+		"<th>PhoneKind</th>" +
 		"</tr>" %>
 	<%
+	if(contacts.size() == 0)
+		return;
+	
 		for (Contact c : contacts) {
 			Address a = c.getAdd();
 			Iterator<PhoneNumber> monSet = c.getPhones().iterator();%>
 			
 			<%="<tr>"%>
 				<%="<td>"%>
-					<%=c.getFirstName()%>
+					<%=c.getLastName()%>	
 				<%="</td>"%>
 				<%="<td>"%>
-					<%=c.getLastName()%>		
+					<%=c.getFirstName()%>
 				<%="</td>"%>
 				<%="<td>"%>
 					<%=c.getEmail()%>
@@ -69,11 +73,32 @@
 					<%=a.getCountry()%>
 				<%="</td>"%>
 				
-				<% while(monSet.hasNext()){ %>
+				<% while(monSet.hasNext()){ 
+					PhoneNumber pn = monSet.next();
+					%>
 				
 					<%="<td>"%>
-						<%=monSet.next().getPhoneNumber()%>
-    				<%="</td>"%>
+						<%=pn.getPhoneNumber()%>
+    					<%="</td>"%>
+    					<%="<td>"%>
+						<%=pn.getPhoneKind()%>
+    					<%="</td>"%>
+    					<%="</tr>"%>
+    					<%="<td>"%>
+					<%="</td>"%>
+					<%="<td>"%>
+					<%="</td>"%>
+					<%="<td>"%>
+					<%="</td>"%>
+					<%="<td>"%>
+					<%="</td>"%>
+					<%="<td>"%>
+					<%="</td>"%>
+					<%="<td>"%>
+					<%="</td>"%>
+					<%="<td>"%>
+					<%="</td>"%>
+    					
 				<%}%>
 				
 			<%="</tr>"%>
@@ -98,9 +123,12 @@
 			"<th>Ville</th>"+
 			"<th>Code postal</th>"+
 			"<th>Pays</th>"+
-		"</tr>" %>
+			"<th>Téléphones</th>"+
+			"<th>PhoneKind</th>" +
+			"</tr>" %>
 	<%
 		for (Entreprise c : entreprise) {
+			Iterator<PhoneNumber> monSet = c.getPhones().iterator();
 			Address a = c.getAdd();%>
 			<%="<tr>"%>
 				<%="<td>"%>
@@ -127,6 +155,33 @@
 				<%="<td>"%>
 					<%=a.getCountry()%>
 				<%="</td>"%>
+				<% while(monSet.hasNext()){ 
+					PhoneNumber pn = monSet.next();
+					%>
+				
+					<%="<td>"%>
+						<%=pn.getPhoneNumber()%>
+    					<%="</td>"%>
+    					<%="<td>"%>
+						<%=pn.getPhoneKind()%>
+    					<%="</td>"%>
+    					<%="</tr>"%>
+    					<%="<td>"%>
+					<%="</td>"%>
+					<%="<td>"%>
+					<%="</td>"%>
+					<%="<td>"%>
+					<%="</td>"%>
+					<%="<td>"%>
+					<%="</td>"%>
+					<%="<td>"%>
+					<%="</td>"%>
+					<%="<td>"%>
+					<%="</td>"%>
+					<%="<td>"%>
+					<%="</td>"%>
+    					
+				<%}%>
 			<%="</tr>"%>
 		<%}%>
 <%="</table>"%>

@@ -18,10 +18,11 @@ public class PhoneNumberService {
 		PhoneNumberDAO.deletePhoneNumberById(id);
 	}
 	
-	public static void deletePhoneNumberById(PhoneNumber number) {
+	/*
+	 
 		PhoneNumberDAO.deletePhoneNumberById(number);
 	}
-	
+	*/
 	public static boolean updatePhoneNumberById(long id, String phoneKind, String phoneNumber, Contact contact)  {
 		return PhoneNumberDAO.updatePhoneNumberById(id,phoneKind, phoneNumber, contact);
 	}

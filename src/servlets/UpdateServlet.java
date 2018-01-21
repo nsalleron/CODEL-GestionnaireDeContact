@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -185,7 +186,7 @@ public class UpdateServlet extends HttpServlet {
 		Address a = AddressService.getAddress(idAddressFromUser);
 		ArrayList<PhoneNumber> phonesDB = new ArrayList<PhoneNumber>();
 		ArrayList<ContactGroup> cgDB = new ArrayList<ContactGroup>();
-		boolean bAllOk = true;
+		boolean bAllOk = true, bRemoveFirst = false;
 		String rep = "";
 		
 		for(i = 0;i<tabPhones.length ; i++) {
@@ -240,14 +241,38 @@ public class UpdateServlet extends HttpServlet {
 				
 				if(alNewPhone.size() != 0 && tabPhones.length != 0)
 					for(i = 0;i < alNewPhone.size();i++) {
-						PhoneNumberService.updatePhoneNumberById(tabPhones[i],
-								alNewPhoneKind.get(i).value, alNewPhone.get(i).value, e);
-					}
-				if(alNewContactGroups.size() != 0 && tabCG.length != 0)
-					for(i = 0;i < alNewContactGroups.size();i++) {
-						ContactGroupService.updateContactGroupById(tabCG[i], alNewContactGroups.get(i).value);
+						if(i < (tabPhones.length - 1)) {
+							PhoneNumberService.updatePhoneNumberById(tabPhones[i],
+									alNewPhoneKind.get(i).value, alNewPhone.get(i).value, e);
+						}else {
+							PhoneNumberService.createPhoneNumber(alNewPhoneKind.get(i).value, alNewPhone.get(i).value, e);
+							bRemoveFirst = true;
+						}
 					}
 				
+				if(bRemoveFirst) {
+					Set<PhoneNumber> spn = e.getPhones();
+					PhoneNumber pn = spn.iterator().next();
+					PhoneNumberService.deletePhoneNumberById(pn.getIdPhoneNumber());
+					bRemoveFirst = false;
+				}
+					
+				if(alNewContactGroups.size() != 0 && tabCG.length != 0)
+					for(i = 0;i < alNewContactGroups.size();i++) {
+						if(i < (tabCG.length - 1)) {
+							ContactGroupService.updateContactGroupById(tabCG[i], alNewContactGroups.get(i).value);
+						}else {
+							ContactGroupService.createContactGroup(alNewContactGroups.get(i).value);
+							//bRemoveFirst = true;
+						}
+					}
+				/*
+				if(bRemoveFirst) {
+					Set<ContactGroup> scg = e.getBooks();
+					ContactGroup cg = scg.iterator().next();
+					ContactGroupService.deleteContactGroupById(cg.getIdContactGroup());
+					bRemoveFirst = false;
+				}*/
 			}else {
 				rep = "La mise à jour à échouer. "
 						+ "Il y a eu une update en concurrence avec la votre sur l'entreprise : "+e.getLastName() + " " + e.getFirstName();
@@ -265,12 +290,31 @@ public class UpdateServlet extends HttpServlet {
 				
 				if(alNewPhone.size() != 0 && tabPhones.length != 0)
 					for(i = 0;i < alNewPhone.size();i++) {
-						PhoneNumberService.updatePhoneNumberById(tabPhones[i],
-								alNewPhoneKind.get(i).value, alNewPhone.get(i).value, c);
+						if(i < (tabPhones.length - 1)) {
+							PhoneNumberService.updatePhoneNumberById(tabPhones[i],
+									alNewPhoneKind.get(i).value, alNewPhone.get(i).value, c);
+						}else {
+							PhoneNumberService.createPhoneNumber(alNewPhoneKind.get(i).value, alNewPhone.get(i).value, c);
+							bRemoveFirst = true;
+						}
+						
 					}
+
+				if(bRemoveFirst) {
+					Set<PhoneNumber> spn = c.getPhones();
+					PhoneNumber pn = spn.iterator().next();
+					PhoneNumberService.deletePhoneNumberById(pn.getIdPhoneNumber());
+					bRemoveFirst = false;
+				}
+				
 				if(alNewContactGroups.size() != 0 && tabCG.length != 0)
 					for(i = 0;i < alNewContactGroups.size();i++) {
-						ContactGroupService.updateContactGroupById(tabCG[i], alNewContactGroups.get(i).value);
+						if(i < (tabCG.length - 1)) {
+							ContactGroupService.updateContactGroupById(tabCG[i], alNewContactGroups.get(i).value);
+						}else {
+							ContactGroupService.createContactGroup(alNewContactGroups.get(i).value);
+						}
+						
 					}
 				
 			}else {

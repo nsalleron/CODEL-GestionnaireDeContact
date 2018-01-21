@@ -2,8 +2,12 @@ package daos;
 
 
 import java.util.List;
+import java.util.Set;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+
+import entities.Contact;
 import entities.ContactGroup;
 import utils.HibernateUtil;
 
@@ -72,12 +76,21 @@ public class ContactGroupDAO {
 			transaction = session.beginTransaction();
 
 		ContactGroup contactGroup = (ContactGroup) session.load(ContactGroup.class, idGroup);
+		Set<Contact> cg = contactGroup.getContacts();
+		
+		for(Contact c : cg) {
+			if(c.getIdContact() == idContact)
+				cg.remove(c);
+		}
+		contactGroup.setContacts(cg);
+		
 		transaction = session.getTransaction();
 		if (!transaction.isActive())
 			transaction = session.beginTransaction();
-		session.delete(contactGroup);
+		session.saveOrUpdate(contactGroup);
+		
 		transaction.commit();
-		System.out.println("deletePhoneNumber réussi");
+		
 	}
 	
 	public static boolean checkIfGroupExist(String nameGroup) {
