@@ -68,11 +68,13 @@
 				<%="<td>"%>
 					<%=a.getCountry()%>
 				<%="</td>"%>
-				while(monSet.hasNext()){
+				
+				<% while(monSet.hasNext()){ %>
+				
 					<%="<td>"%>
 						<%=monSet.next().getPhoneNumber()%>
     				<%="</td>"%>
-				}
+				<%}%>
 				
 			<%="</tr>"%>
 		<%}%>
