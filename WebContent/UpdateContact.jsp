@@ -53,7 +53,7 @@ $(document).ready(function(){
 					class="form-control" name="recherche" id="recherche"
 					value="<%=recherche%>" placeholder="Recherche" autofocus
 					onchange="this.parentNode.submit()"> <br />
-					<input name="submit" type="submit" value="Envoyer">
+					<input name="submit" class="btn btn-lg btn-primary btn-block" type="submit" value="Rechercher">
 			</div>
 
 			<%if(bAfficheTab == true){ %>
@@ -80,7 +80,7 @@ $(document).ready(function(){
 			<%="</td>"%>
 			<%="<td>"%>
 			<%="<button class=\"editbtn\" name=\"idcontact\""%>
-			<%="value=\""+c.getIdContact()+"\">Editer</button></td>"%>
+			<%="value=\""+c.getIdContact()+"\">Modifier</button></td>"%>
 			<%="</td>"%>
 			<%="</tr>"%>
 			<%}%>
