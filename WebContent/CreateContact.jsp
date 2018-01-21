@@ -26,6 +26,17 @@
 <%@page import="java.util.Iterator" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<title><%	/* Vérification du mode (Création ou Update) */
+		Contact contact;
+		contact = (Contact) request.getAttribute("contact");
+		if(contact == null){
+	%>
+				Créer un contact
+	<%
+		}else{%> Mettre un jour un contact
+		<%
+		}
+	%></title>
 </head>
 <script type="text/javascript">
 	var nbNumero = 1;
@@ -61,11 +72,11 @@
 			nbNumero = nbNumero+1;
 		  	
 		  	/* Modification du HTML */
-		   	d.innerHTML += "<br><span> Téléphone "+nbNumero+" : "; 
-		   	d.innerHTML += "<span> <input type=\"tel\" class=\"form-control\" name=\"telephone"+nbNumero+"\" id=\"tel"+nbNumero+"\" maxlength=\"10\" style=\"border-radius: 4px;\"> </span>";
-		   	d.innerHTML += " <label for=\"phonekind\">PhoneKind :  </label>\n";
-			d.innerHTML += "<input type=\"text\"" + "STYLE=\"color: #000000; background-color: #FFFFFF;\"" + 
-							"class=\"form-control\" id=\"phonekind"+nbNumero+"\" name=\"phonekind" + nbNumero+"\" value =\"\" placeholder=\"PhoneKind\">\n";
+		   	d.innerHTML += "<div><br></div><span><label>Téléphone "+nbNumero+"</label> : "; 
+		   	d.innerHTML += "<span> <input type=\"tel\" placeholder=\"Numéro de téléphone\" class=\"form-control\" name=\"telephone"+nbNumero+"\" id=\"tel"+nbNumero+"\" maxlength=\"10\" style=\"border-radius: 4px;\"> </span>";
+		   	d.innerHTML += " <label for=\"phonekind\"> Type de téléphone :  </label>\n";
+			d.innerHTML += "<input type=\"text\"" + "STYLE=\"background-color: #FFFFFF;\"" + 
+							"class=\"form-control\" id=\"phonekind"+nbNumero+"\" name=\"phonekind" + nbNumero+"\" value =\"\" placeholder=\"Type de téléphone\">\n";
 			var valueSelect = document.getElementById("chgphonekind1")		
 			var buildHtml = "<select id=\"chgphonekind"+nbNumero+"\" name=\"chgphonekind"+nbNumero+"\" onchange=\"changePhoneKind(event)\">";
 			for (i = 0; i < valueSelect.length; i++) {
@@ -105,7 +116,7 @@
 		  	
 		  	/* Augmentation du nombre de groupes */
 		   	nbGroupe = nbGroupe+1
-		   	d.innerHTML += "<br><label> Groupe "+nbGroupe+" : </label> "; 
+		   	d.innerHTML += "<div><br></div><label> Groupe "+nbGroupe+" : </label> "; 
 		   	d.innerHTML += "<input type=\"text\" class=\"form-control\" id=\"groupe"+nbGroupe+"\" name=\"groupe"+nbGroupe+"\""+"value=\"\" placeholder=\"Nom du groupe\"> ";
 		  	var buildHtml = "<select id=\"chgcontact_groups"+nbGroupe+"\" name=\"chgcontact_groups"+nbGroupe+"\" onchange=\"changeGroups(event)\">"
 			var valueSelect = document.getElementById("chgcontact_groups1");	
@@ -143,7 +154,6 @@
 		boolean bFirstName = true, bLastName = true, bEmail = true, bStreet = true, bZip = true, bCity = true,
 				bCountry = true, bPhone = true, bPhoneKind = true;
 		Boolean success;
-		Contact contact;
 	%>
 	<div class="container">
 		<div class="row">
@@ -315,20 +325,24 @@
 			<div class="row" >
 				<div class="col-md-offset-2 col-md-3" style="width: 80%">
 					<div class="form-group">
-						<label for="firstname">First name</label> 
+						<fieldset style="margin-bottom: -2%;">
+						<legend style="color: #5826AB80;">Information générales :</legend>
+					
+						<label for="firstname">Prénom</label> 
 						<input type="text"
 							<%if (!bFirstName) {%> <%=showError%> <%} else {%> <%=noError%>
 							<%}%> class="form-control" name="firstname"
-							value="<%=firstname%>" placeholder="First name">
+							value="<%=firstname%>" placeholder="Prénom">
 					</div>
+					<br>
 
 					<div class="from-group">
-						<label for="lastname">Last name</label> <input type="text"
+						<label for="lastname">Nom</label> <input type="text"
 							<%if (!bLastName) {%> <%=showError%> <%} else {%> <%=noError%>
 							<%}%> class="form-control" name="lastname" value="<%=lastname%>"
-							placeholder="Last name">
+							placeholder="Nom">
 					</div>
-
+					<br>
 
 					<div class="form-group">
 						<label for="email">Adresse email</label> <input type="email"
@@ -337,44 +351,51 @@
 							placeholder="Email">
 					</div>
 
-
-
 					<div class="from-group">
-						<label for="siret">Siret number</label> <input type="text"
+						<label for="siret">Numéro Siret</label> <input type="text"
 							class="form-control" name="siret" value="<%=siret%>"
-							placeholder="(optionnal) Siret number">
+							placeholder="Numéro Siret (optionnel)">
 					</div>
+					<br>
 
 					<fieldset style="margin-bottom: -2%;">
-						<legend style="color: #5826AB80;">Address</legend>
+						<legend style="color: #5826AB80;">Localisation :</legend>
 
 						<div class="from-group">
-							<label for="street">Street</label> <input type="text"
+							<label for="street">Rue</label> <input type="text"
 								<%if (!bStreet) {%> <%=showError%> <%} else {%> <%=noError%>
 								<%}%> class="form-control" name="street" value="<%=street%>"
-								placeholder="Street name">
+								placeholder="Rue">
 						</div>
+						<br>
+						
 						<div class="from-group">
-							<label for="city">City</label> <input type="text"
+							<label for="city">Ville</label> <input type="text"
 								<%if (!bCity) {%> <%=showError%> <%} else {%> <%=noError%> <%}%>
 								class="form-control" name="city" value="<%=city%>"
-								placeholder="City">
+								placeholder="Ville">
 						</div>
+						<br>
+						
 						<div class="from-group">
-							<label for="zip">Zip</label> <input type="number"
+							<label for="zip">Zip (code postal)</label> <input type="number"
 								<%if (!bZip) {%> <%=showError%> <%} else {%> <%=noError%> <%}%>
 								class="form-control" name="zip" value="<%=zip%>"
-								placeholder="Zip">
+								placeholder="Zip (code postal)">
 						</div>
+						<br>
+						
 						<div class="from-group">
-							<label for="country">Country</label> <input type="text"
+							<label for="country">Pays</label> <input type="text"
 								<%if (!bCountry) {%> <%=showError%> <%} else {%> <%=noError%>
 								<%}%> class="form-control" name="country" value="<%=country%>"
-								placeholder="City">
+								placeholder="Pays">
 						</div>
+						<br>
+						
 					</fieldset>
 					<fieldset style="margin-top: 3%;">
-						<legend style="color: #5826AB80;">Phones</legend>
+						<legend style="color: #5826AB80;">Numéros de téléphone :</legend>
 						<div class="phones">
 							<div class="form-inline" style="margin-bottom: 3px;">
 								<div class="form-group">
@@ -390,14 +411,14 @@
 												alPhoneKind.add("");
 											}
 											for(i = 0;i<alPhone.size();i++){
-												String tmp = "<span> Téléphone "+(i+1)+" : ";
-												tmp += "<input type=\"tel\" class=\"form-control\" name=\"telephone"+(i+1)+"\"";
+												String tmp = "<span> <label>Téléphone "+(i+1)+"</label> : ";
+												tmp += "<input type=\"tel\" placeholder=\"Numéro de téléphone\" class=\"form-control\" name=\"telephone"+(i+1)+"\"";
 												if(!bPhone)
 													tmp += showError;
 												else
 													tmp += noError;
 												tmp += " id=\"tel"+(i+1)+"\""+"value=\""+alPhone.get(i)+"\""+" maxlength=\"10\" style=\"border-radius: 4px;\"> </span>";
-												tmp += " <label for=\"phonekind\">PhoneKind : </label>";
+												tmp += " <label for=\"phonekind\"> Type de téléphone : </label>";
 										%>
 										<%=tmp%>
 										<%		tmp = "<input type=\"text\"";
@@ -406,7 +427,7 @@
 												else
 													tmp += noError;
 												tmp += "class=\"form-control\" id=\"phonekind"+(i+1)+"\" name=\"phonekind"+(i+1)+"\"";
-												tmp += "value=\""+alPhoneKind.get(i)+"\" placeholder=\"PhoneKind\">";
+												tmp += "value=\""+alPhoneKind.get(i)+"\" placeholder=\"Type de téléphone\">";
 												tmp += " <select id=\"chgphonekind"+(i+1)+"\" name=\"chgphonekind"+(i+1)+"\"onchange=\"changePhoneKind(event)\">";
 												tmp += "<option value=\"\" selected>Choix d'un groupe existant</option>";
 												List<String> pkg = PhoneNumberService.listPhoneNumberGroups();
@@ -414,7 +435,9 @@
 													tmp += "<option value=\""+cg+"\">"+cg+"</option>";
 												}
 												tmp += "</select>";
-												tmp += "<br>";%>
+												if(contact != null){
+													tmp += "<br><br>";
+												} %>
 										<%=tmp%>
 										<%	} %>
 										<br>
@@ -422,19 +445,19 @@
 									<% 
 									String tmp="";
 									if(contact == null){
-										tmp="<input class=\"btn btn btn-primary btn-block\" style=\"width: 20%\"  type=\"button\" id=\"more_fields\" onclick=\"add_fields_telephone();\" value=\"Ajouter un numéro\" />";
+										tmp="<br><input class=\"btn btn btn-primary btn-block\" style=\"width: 30%\"  type=\"button\" id=\"more_fields\" onclick=\"add_fields_telephone();\" value=\"Ajouter un numéro\" />";
 									}else{
 										tmp="";
 									}%>
 									<%=tmp %>
-									<br> <br>
+<!-- 									<br> <br> -->
 									
 								</div>
 							</div>
 						</div>
 					</fieldset>
 					<fieldset style="margin-top: 3%;">
-						<legend style="color: #5826AB80;">Groupe</legend>
+						<legend style="color: #5826AB80;">Groupe de contact :</legend>
 						<div class="contact_groups">
 							<div class="form-inline" style="margin-bottom: 3px;">
 								<div id="input-group-groupes" class="input-group-groupes">
@@ -461,7 +484,7 @@
 													tmp += "<option value=\""+cg.getGroupName()+"\">"+cg.getGroupName()+"</option>";
 												}
 												tmp += "</select>";
-												tmp += "<br>";%>
+												tmp += "";%>
 										<%=tmp%>
 										<%	} %>
 										<br>
@@ -470,7 +493,7 @@
 								<% 
 								tmp="";
 								if(contact == null){
-										tmp="<input class=\"btn btn btn-primary btn-block\" style=\"width: 20%\" type=\"button\" id=\"more_fields\" onclick=\"add_fields_groupe();\" value=\"Ajouter un autre groupe\" />";
+										tmp="<br><input class=\"btn btn btn-primary btn-block\" style=\"width: 30%\" type=\"button\" id=\"more_fields\" onclick=\"add_fields_groupe();\" value=\"Ajouter un autre groupe\" />";
 								}else{
 										tmp="";
 								}%>
