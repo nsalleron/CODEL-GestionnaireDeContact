@@ -32,14 +32,13 @@
 	<%="<div class=\"table-responsive\">"+
 	"<table class=\"table-striped\" style=\"width: 100%\">"+
 		"<tr>"+
-			"<th>Firstname</th>"+
-			"<th>Lastname</th>"+
-			"<th>Email</th>"+
-			"<th>Street</th>"+
-			"<th>City</th>"+
-			"<th>Zip</th>"+
-			"<th>Country</th>"+
-			"<th>Téléphone</th>"+
+		"<th>Nom</th>"+
+		"<th>Prénom</th>"+
+		"<th>Email</th>"+
+		"<th>Rue</th>"+
+		"<th>Ville</th>"+
+		"<th>Code postal</th>"+
+		"<th>Pays</th>"+
 		"</tr>" %>
 	<%
 		for (Contact c : contacts) {
@@ -83,21 +82,21 @@
 	</div>
 	
 	<div class="col-md-offset-2 col-md-3" style="width: 70%">
-	<h1 id="Entreprise"> Voici vos contacts (ENTREPRISE):</h1>
+	<h1 id="Entreprise"> Voici vos contacts (entreprises) :</h1>
 	<%
 	List<Entreprise> entreprise = EntrepriseService.listEntreprises();
 	%>
 	<%="<div class=\"table-responsive\">"+
 	"<table class=\"table-striped\" style=\"width: 100%\">"+
 		"<tr>"+
-			"<th>Firstname</th>"+
-			"<th>Lastname</th>"+
+			"<th>Nom</th>"+
+			"<th>Prénom</th>"+
 			"<th>Email</th>"+
 			"<th>Siret</th>" +
-			"<th>Street</th>"+
-			"<th>City</th>"+
-			"<th>Zip</th>"+
-			"<th>Country</th>"+
+			"<th>Rue</th>"+
+			"<th>Ville</th>"+
+			"<th>Code postal</th>"+
+			"<th>Pays</th>"+
 		"</tr>" %>
 	<%
 		for (Entreprise c : entreprise) {
@@ -133,7 +132,7 @@
 <%="</div>" %>
 	<br>
 	<form method="post" action="/CODEL-GestionnaireDeContact/Main.jsp">
-		<input type="submit" value="Retour">
+		<input type="submit" class="btn btn-lg btn-primary btn-block" value="Retour">
 	</form>
 	</div>
 	
