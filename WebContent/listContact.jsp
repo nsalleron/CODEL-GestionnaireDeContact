@@ -8,6 +8,8 @@
 <%@page import="entities.Entreprise"%>
 <%@page import="entities.PhoneNumber"%>
 <%@page import="entities.Address"%>
+<%@page import="org.springframework.context.ApplicationContext"%>
+<%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <html>
@@ -26,8 +28,11 @@
 	<h1 id="contacts">Voici vos contacts :</h1>
 	<br>
 	<%
+	ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+	ContactService contactService = (ContactService) context.getBean("beanContactService");
+	EntrepriseService entrepriseService = (EntrepriseService) context.getBean("beanEntrepriseService");
 	String allNumber = "";
-	List<Contact> contacts = ContactService.listContacts();
+	List<Contact> contacts = contactService.listContacts();
 	%>
 	<%="<div class=\"table-responsive\">"+
 	"<table class=\"table-striped\" style=\"width: 100%\">"+
@@ -110,7 +115,7 @@
 	<div class="col-md-offset-2 col-md-3" style="width: 70%">
 	<h1 id="Entreprise"> Voici vos contacts (entreprises) :</h1>
 	<%
-	List<Entreprise> entreprise = EntrepriseService.listEntreprises();
+	List<Entreprise> entreprise = entrepriseService.listEntreprises();
 	%>
 	<%="<div class=\"table-responsive\">"+
 	"<table class=\"table-striped\" style=\"width: 100%\">"+

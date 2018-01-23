@@ -9,6 +9,7 @@ import java.util.Set;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import entities.Address;
 import entities.Contact;
@@ -17,9 +18,9 @@ import entities.PhoneNumber;
 
 import utils.HibernateUtil;
 
-public  class ContactDAO {
+public  class ContactDAO extends HibernateDaoSupport{
 	
-	public static Contact createContact(String firstName, String lastName, String email, Address a) {
+	public Contact createContact(String firstName, String lastName, String email, Address a) {
 		//TODO Hibernate? alContact.add(new Contact(alContact.size(),firstName,lastName,email));
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -36,7 +37,7 @@ public  class ContactDAO {
 		return c;
 	}
 	
-	public static void deleteContact(long idContact){
+	public void deleteContact(long idContact){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
@@ -56,7 +57,7 @@ public  class ContactDAO {
 			
 	}
 	
-	public static void updateContact(long idContact, String firstName, String lastName, String email) {
+	public void updateContact(long idContact, String firstName, String lastName, String email) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
@@ -93,7 +94,7 @@ public  class ContactDAO {
 }*/
 	
 	@SuppressWarnings("unchecked")
-	public static ArrayList<Contact> researchContacts(String recherche) {
+	public ArrayList<Contact> researchContacts(String recherche) {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
@@ -122,7 +123,7 @@ public  class ContactDAO {
 		return listContact;
 	}
 	
-	public static Contact getContactById(long id){
+	public Contact getContactById(long id){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
@@ -136,7 +137,7 @@ public  class ContactDAO {
 		return contact;
 	}
 	
-	public static List<Contact> listContact(){
+	public List<Contact> listContact(){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		
 		Transaction transaction = session.getTransaction();
@@ -150,7 +151,7 @@ public  class ContactDAO {
 		
 	}
 	
-	public static void addContactInGroup(long id_cont, long id_group){
+	public void addContactInGroup(long id_cont, long id_group){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();

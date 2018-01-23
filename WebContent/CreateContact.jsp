@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <%@page import="services.ContactService"%>
+
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html;charset=ISO-8859-1">
@@ -26,6 +27,8 @@
 <%@page import="java.util.HashSet" %>
 <%@page import="java.util.List"%>
 <%@page import="java.util.Iterator" %>
+<%@page import="org.springframework.context.ApplicationContext"%>
+<%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 	<title><%	/* Vérification du mode (Création ou Update) */
@@ -53,6 +56,11 @@
 		ArrayList<String> alPhoneKind = new ArrayList<String>();
 		ArrayList<String> alGroupes = new ArrayList<String>();
 		
+		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+		ContactService contactService = (ContactService) context.getBean("beanContactService");
+		PhoneNumberService phoneNumberService = (PhoneNumberService) context.getBean("beanPhoneNumberService");
+		ContactGroupService contactGroupService = (ContactGroupService) context.getBean("beanContactGroupService");
+		
 		String[] whereFails;
 		boolean bFirstName = true, bLastName = true, bEmail = true, bStreet = true, bZip = true, bCity = true,
 				bCountry = true, bPhone = true, bPhoneKind = true;
@@ -65,7 +73,9 @@
 			nbGroupe = ""+contact.getBooks().size();
 		}
 		if(DEBUG != null && DEBUG.equals("1") && contact == null){
-			int i = ContactService.listContacts().size();
+			
+			
+			int i = contactService.listContacts().size();
 			firstname = "user"+i;
 			lastname = "last"+i;
 			email = "user"+i+"@"+firstname+".fr";
@@ -457,7 +467,7 @@
 												tmp += "value=\""+alPhoneKind.get(i)+"\" placeholder=\"Type de téléphone\">";
 												tmp += " <select id=\"chgphonekind"+(i+1)+"\" name=\"chgphonekind"+(i+1)+"\"onchange=\"changePhoneKind(event)\">";
 												tmp += "<option value=\"\" selected>Choix d'un groupe existant</option>";
-												List<String> tmppkg = PhoneNumberService.listPhoneNumberGroups();
+												List<String> tmppkg = phoneNumberService.listPhoneNumberGroups();
 												HashSet<String> pkg = new HashSet<String>();
 												pkg.addAll(tmppkg);
 												for (String cg : pkg) {
@@ -513,7 +523,7 @@
 												
 												tmp += " <select id=\"chgcontact_groups"+(i+1)+"\" name=\"chgcontact_groups"+(i+1)+"\"onchange=\"changeGroups(event)\">";
 												tmp += "<option value=\"\" selected>Choix du groupe existant</option>";
-												List<ContactGroup> ltmp = ContactGroupService.listContactGroups();
+												List<ContactGroup> ltmp = contactGroupService.listContactGroups();
 												HashSet<ContactGroup> lcg = new HashSet<ContactGroup>();
 												lcg.addAll(ltmp);
 												for (ContactGroup cg : lcg) {

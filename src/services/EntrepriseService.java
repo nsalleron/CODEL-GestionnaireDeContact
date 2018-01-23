@@ -7,34 +7,40 @@ import entities.Address;
 import entities.Entreprise;
 
 public class EntrepriseService {
+	private EntrepriseDAO eDAO;
+	private ContactDAO cDAO;
+	
+	public EntrepriseService(EntrepriseDAO eDAO, ContactDAO cDAO) {
+		this.eDAO = eDAO;
+		this.cDAO = cDAO;
+	}
+	
+	public Entreprise createEntreprise(String firstName, String lastName, String email, Address a, String siret) {
+		return eDAO.createEntreprise(firstName, lastName, email, a, siret);
+	}
+	
+	public void deleteEntreprise(String email) {
+		eDAO.deleteEntreprise(email);
+	}
+	
+	public void updateEntreprise(Long idEntreprise, String siret) {
+		eDAO.updateEntreprise(idEntreprise, siret);
+	}
+	
+	public List<Entreprise> listEntreprises() {
+		return eDAO.listEntreprise();
+	}
+	
+	public void addEntrepriseInGroup(long id_cont, long id_group) {
+		cDAO.addContactInGroup(id_cont, id_group);
+	}
+	
+	public Entreprise getEntrepriseById(long id) {
+		return eDAO.getEntrepriseById(id);
+	}
 
-	
-	public static Entreprise createEntreprise(String firstName, String lastName, String email, Address a, String siret) {
-		return EntrepriseDAO.createEntreprise(firstName, lastName, email, a, siret);
-	}
-	
-	public static void deleteEntreprise(String email) {
-		EntrepriseDAO.deleteEntreprise(email);
-	}
-	
-	public static void updateEntreprise(Long idEntreprise, String siret) {
-		EntrepriseDAO.updateEntreprise(idEntreprise, siret);
-	}
-	
-	public static List<Entreprise> listEntreprises() {
-		return EntrepriseDAO.listEntreprise();
-	}
-	
-	public static void addEntrepriseInGroup(long id_cont, long id_group) {
-		ContactDAO.addContactInGroup(id_cont, id_group);
-	}
-	
-	public static Entreprise getEntrepriseById(long id) {
-		return EntrepriseDAO.getEntrepriseById(id);
-	}
-
-	public static void updateEntreprise(long idEntreprise, String firstName, String lastName, String email, String siret) {
-		EntrepriseDAO.updateEntreprise(idEntreprise, firstName, lastName, email, siret);		
+	public void updateEntreprise(long idEntreprise, String firstName, String lastName, String email, String siret) {
+		eDAO.updateEntreprise(idEntreprise, firstName, lastName, email, siret);		
 	}
 
 }

@@ -8,33 +8,32 @@ import entities.Contact;
 import entities.PhoneNumber;
 
 public class PhoneNumberService {
-
+	private PhoneNumberDAO pnDAO;
 	
-	public static PhoneNumber createPhoneNumber(String phonekind, String phone,Contact c){
-		return PhoneNumberDAO.createPhoneNumber(phonekind, phone, c);
+	public PhoneNumberService(PhoneNumberDAO pnDAO) {
+		this.pnDAO = pnDAO;
 	}
 	
-	public static void deletePhoneNumberById(long id) {
-		PhoneNumberDAO.deletePhoneNumberById(id);
+	public PhoneNumber createPhoneNumber(String phonekind, String phone,Contact c){
+		return pnDAO.createPhoneNumber(phonekind, phone, c);
 	}
 	
-	/*
-	 
-		PhoneNumberDAO.deletePhoneNumberById(number);
-	}
-	*/
-	public static boolean updatePhoneNumberById(long id, String phoneKind, String phoneNumber, Contact contact)  {
-		return PhoneNumberDAO.updatePhoneNumberById(id,phoneKind, phoneNumber, contact);
+	public void deletePhoneNumberById(long id) {
+		pnDAO.deletePhoneNumberById(id);
 	}
 	
-	public static boolean updatePhoneNumberById(List<Long> idList, List<String> kindList, List<String> number,  Contact contact)  {
-		return PhoneNumberDAO.updatePhoneNumberById(idList, kindList, number,  contact);
+	public boolean updatePhoneNumberById(long id, String phoneKind, String phoneNumber, Contact contact)  {
+		return pnDAO.updatePhoneNumberById(id,phoneKind, phoneNumber, contact);
+	}
+	
+	public boolean updatePhoneNumberById(List<Long> idList, List<String> kindList, List<String> number,  Contact contact)  {
+		return pnDAO.updatePhoneNumberById(idList, kindList, number,  contact);
 }
-	public static PhoneNumber getPhoneNumberById(Long id) {
-		return PhoneNumberDAO.getPhoneNumberById(id);
+	public PhoneNumber getPhoneNumberById(Long id) {
+		return pnDAO.getPhoneNumberById(id);
 	}
-	public static List<String> listPhoneNumberGroups() {
-		return PhoneNumberDAO.listPhoneNumberGroups();
+	public List<String> listPhoneNumberGroups() {
+		return pnDAO.listPhoneNumberGroups();
 	}
 	
 }

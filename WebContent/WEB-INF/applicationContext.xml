@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="myDataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"/>
+		<property name="url" value="jdbc:mysql://localhost:3306/testdb"/>
+		<property name="username" value="root"/>
+		<property name="password" value="root"/>
+	</bean>
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+		<property name="dataSource" ref="myDataSource" />
+		<property name="configLocation" value="classpath:hibernate.cfg.xml" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+			    <prop key="connection.pool_size">1</prop>
+		        <prop key="hbm2ddl.auto">create</prop>
+		        <prop key="hibernate.show_sql">true</prop>
+		        <prop key="hibernate.format_sql">true</prop>
+		        <prop key="hibernate.generate_statistics">true</prop> <!-- POUR JCONSOLE -->
+	        </props>
+		</property>
+	</bean>
+	
+	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+<!--         <property name="checkWriteOperations" value="false"/> -->
+    </bean>
+	
+	<bean id="TransactionManager"
+		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	
+	<!-- DAO et Services -->
+
+	<bean id="beanAddressService" class="services.AddressService" scope="singleton">
+		<constructor-arg>
+			<ref bean="beanAddressDAO"/>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="beanContactService" class="services.ContactService" scope="singleton">
+		<constructor-arg>
+			<ref bean="beanContactDAO"/>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="beanContactGroupService" class="services.ContactGroupService" scope="singleton">
+		<constructor-arg>
+			<ref bean="beanContactGroupDAO"/>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="beanEntrepriseService" class="services.EntrepriseService" scope="singleton">
+		<constructor-arg>
+			<ref bean="beanEntrepriseDAO"/>
+		</constructor-arg>
+		
+		<constructor-arg>
+			<ref bean="beanContactDAO"/>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="beanPhoneNumberService" class="services.PhoneNumberService" scope="singleton">
+		<constructor-arg>
+			<ref bean="beanPhoneNumberDAO"/>
+		</constructor-arg>
+	</bean>
+
+	<bean id="beanAddressDAO" class="daos.AddressDAO" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	
+	<bean id="beanContactDAO" class="daos.ContactDAO" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="beanContactGroupDAO" class="daos.ContactGroupDAO" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="beanEntrepriseDAO" class="daos.EntrepriseDAO" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	<bean id="beanPhoneNumberDAO" class="daos.PhoneNumberDAO" scope="singleton">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+	
+	
+	<bean id="Contact1" class="entities.Contact" scope="prototype">
+		<property name="firstName"><value>Axel</value></property>
+		<property name="lastName"><value>Dupont</value></property>
+		<property name="email"><value>axel.dupont@gmail.com</value></property>
+		<property name="add"><ref bean="Address1"/></property>
+	</bean>
+	
+	<bean id="Contact2" class="entities.Contact" scope="prototype">
+		<property name="firstName"><value>Sabrina</value></property>
+		<property name="lastName"><value>Durobet</value></property>
+		<property name="email"><value>sabrina.durobet@gmail.com</value></property>
+		<property name="add"><ref bean="Address1"/></property>
+	</bean>
+	
+	<bean id="Contact3" class="entities.Contact" scope="prototype">
+		<property name="firstName"><value>Pierre</value></property>
+		<property name="lastName"><value>Delamotte</value></property>
+		<property name="email"><value>pierre@gmail.com</value></property>
+		<property name="add"><ref bean="Address2"/></property>
+	</bean>
+	
+	<bean id="Address1" class="entities.Address" scope="prototype">
+		<property name="street"><value>21 rue de jussieu</value></property>
+		<property name="city"><value>Paris</value></property>
+		<property name="zip"><value>75005</value></property>
+		<property name="country"><value>France</value></property>
+	</bean>
+	
+	<bean id="Address2" class="entities.Address" scope="prototype">
+		<property name="street"><value>1 boulevard Haussmann</value></property>
+		<property name="city"><value>Paris</value></property>
+		<property name="zip"><value>75009</value></property>
+		<property name="country"><value>France</value></property>
+	</bean>
+
+</beans>

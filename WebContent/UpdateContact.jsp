@@ -9,6 +9,10 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html >
 <html>
+<link href="./bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="./bootstrap-theme.min.css" rel="stylesheet"  type="text/css"/>
+<link rel="stylesheet" href="style.css" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <head>
 <script type="text/javascript">
 $(document).ready(function(){
@@ -17,12 +21,6 @@ $(document).ready(function(){
    });
 });
 </script>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
-<link rel="stylesheet" href="style.css" />
 <title>Mise à jour d'un contact</title>
 </head>
 <body>

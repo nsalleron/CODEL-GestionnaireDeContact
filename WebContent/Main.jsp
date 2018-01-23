@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@page import="services.ContactGroupService"%>
+<%@page import="org.springframework.context.ApplicationContext"%>
+<%@page import="org.springframework.web.context.support.WebApplicationContextUtils"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,10 +28,14 @@
 		/* Debug pour le remplissage automatique des champs */
 		String debug = "1";
 		request.getSession().setAttribute("DEBUG", debug);
-		
+		System.out.println("TEST1");
+		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+		System.out.println("TEST2");
+		ContactGroupService contactGroupService = (ContactGroupService) context.getBean("beanContactGroupService");
+		System.out.println("TEST3");
 		/* Initialisation du groupe PAS_DE_GROUPE */
-		if(!ContactGroupService.checkIfGroupExist("_PAS_DE_GROUPE_"))
-			ContactGroupService.createContactGroup("_PAS_DE_GROUPE_");
+		if(!contactGroupService.checkIfGroupExist("_PAS_DE_GROUPE_"))
+			contactGroupService.createContactGroup("_PAS_DE_GROUPE_");
 		
 		String name = (String) request.getSession().getAttribute("name");
 		String updateFailed = (String) request.getAttribute("updatefailed");

@@ -7,35 +7,37 @@ import entities.Contact;
 import entities.Address;
 
 public class ContactService {
+	private ContactDAO cDAO;
+	
+	public ContactService(ContactDAO cDAO) {
+		this.cDAO = cDAO;
+	}
+	
+	public Contact createContact(String firstName, String lastName, String email, Address a) {
+		return cDAO.createContact(firstName,lastName,email,a);
+	}
+	
+	public void deleteContact(long idContact) {
+		cDAO.deleteContact(idContact);
+	}
+	
+	public List<Contact> listContacts() {
+		return cDAO.listContact();
+	}
+	
+	public Contact getContactById(long id){
+		return cDAO.getContactById(id);
+	}
+	
+	public void addContactInGroup(long id_cont, long id_group) {
+		cDAO.addContactInGroup(id_cont, id_group);
+	}
+	
+	public ArrayList<Contact> researchContacts(String recherche) {
+		return cDAO.researchContacts(recherche);
+	}
 
-	
-	public static Contact createContact(String firstName, String lastName, String email, Address a) {
-		return ContactDAO.createContact(firstName,lastName,email,a);
+	public void updateContact(long idContact, String firstName, String lastName, String email) {
+		cDAO.updateContact(idContact, firstName, lastName, email);
 	}
-	
-	public static void deleteContact(long idContact) {
-		ContactDAO.deleteContact(idContact);
-	}
-	
-	public static List<Contact> listContacts() {
-		return ContactDAO.listContact();
-	}
-	
-	public static Contact getContactById(long id){
-		return ContactDAO.getContactById(id);
-	}
-	
-	public static void addContactInGroup(long id_cont, long id_group) {
-		ContactDAO.addContactInGroup(id_cont, id_group);
-	}
-	
-	public static ArrayList<Contact> researchContacts(String recherche) {
-		return ContactDAO.researchContacts(recherche);
-	}
-
-	public static void updateContact(long idContact, String firstName, String lastName, String email) {
-		ContactDAO.updateContact(idContact, firstName, lastName, email);
-		
-	}
-
 }

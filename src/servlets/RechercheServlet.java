@@ -10,8 +10,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import entities.Contact;
+import services.AddressService;
+import services.ContactGroupService;
 import services.ContactService;
+import services.EntrepriseService;
+import services.PhoneNumberService;
 
 /**
  * Servlet implementation class RechercheServlet
@@ -44,25 +51,29 @@ public class RechercheServlet extends HttpServlet {
 		String recherche = request.getParameter("recherche");
 		String modeDelete = request.getParameter("delete");
 		
+		
+		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+		ContactService contactService = (ContactService) context.getBean("beanContactService");
+		
 		if(idContact == null && modeDelete == null) {
-			ArrayList<Contact> contacts = ContactService.researchContacts(recherche);
+			ArrayList<Contact> contacts = contactService.researchContacts(recherche);
 			RequestDispatcher rd = request.getRequestDispatcher("UpdateContact.jsp");
 			request.setAttribute("contacts", contacts);
 			request.setAttribute("recherche", recherche);
 			rd.forward(request, response);
 		}else if (idContact == null && modeDelete != null){
-			ArrayList<Contact> contacts = ContactService.researchContacts(recherche);
+			ArrayList<Contact> contacts = contactService.researchContacts(recherche);
 			RequestDispatcher rd = request.getRequestDispatcher("DeleteContact.jsp");
 			request.setAttribute("contacts", contacts);
 			request.setAttribute("recherche", recherche);
 			rd.forward(request, response);
 		}else if(modeDelete == null && idContact.length() > 0){
-			Contact contact = ContactService.getContactById(Long.parseLong(idContact));
+			Contact contact = contactService.getContactById(Long.parseLong(idContact));
 			RequestDispatcher rd = request.getRequestDispatcher("CreateContact.jsp");
 			request.setAttribute("contact", contact);
 			rd.forward(request, response);
 		}else if(modeDelete != null && idContact.length() > 0){
-			Contact contact = ContactService.getContactById(Long.parseLong(idContact));
+			Contact contact = contactService.getContactById(Long.parseLong(idContact));
 			request.setAttribute("idcontact", contact.getIdContact());
 			RequestDispatcher rd = request.getRequestDispatcher("DeleteServlet");
 			rd.forward(request, response);

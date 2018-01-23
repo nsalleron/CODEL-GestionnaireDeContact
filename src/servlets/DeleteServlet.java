@@ -8,12 +8,16 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import entities.Contact;
 import entities.ContactGroup;
 import entities.PhoneNumber;
 import services.AddressService;
 import services.ContactGroupService;
 import services.ContactService;
+import services.EntrepriseService;
 import services.PhoneNumberService;
 
 
@@ -47,17 +51,23 @@ public class DeleteServlet extends HttpServlet {
 		String contact = request.getParameter("idcontact");
 		System.out.println(request.getParameter("recherche"));
 			
-		Contact c = ContactService.getContactById(Long.parseLong(contact));
+		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+		ContactService contactService = (ContactService) context.getBean("beanContactService");
+		AddressService addressService = (AddressService) context.getBean("beanAddressService");
+		PhoneNumberService phoneNumberService = (PhoneNumberService) context.getBean("beanPhoneNumberService");
+		ContactGroupService contactGroupService = (ContactGroupService) context.getBean("beanContactGroupService");
+		
+		Contact c = contactService.getContactById(Long.parseLong(contact));
 		
 		for(PhoneNumber pb : c.getPhones()) {
-			PhoneNumberService.deletePhoneNumberById(pb.getIdPhoneNumber());
+			phoneNumberService.deletePhoneNumberById(pb.getIdPhoneNumber());
 		}
 		
-		ContactService.deleteContact(c.getIdContact());
+		contactService.deleteContact(c.getIdContact());
 		for(ContactGroup cg : c.getBooks()){
-			ContactGroupService.deleteContactInGroup(cg.getIdContactGroup(), c.getIdContact());
+			contactGroupService.deleteContactInGroup(cg.getIdContactGroup(), c.getIdContact());
 		}
-		AddressService.deleteAddress(c.getAdd().getIdAddress());
+		addressService.deleteAddress(c.getAdd().getIdAddress());
 		System.out.println("Byebye : "+c.getFirstName());
 	
 		RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");

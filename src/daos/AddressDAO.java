@@ -1,17 +1,15 @@
 package daos;
 
-import java.util.ArrayList;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
 import entities.Address;
-import entities.Contact;
 import utils.HibernateUtil;
 
-public  class AddressDAO {
-
-	static ArrayList<Contact> alContact = new ArrayList<Contact>();
+public  class AddressDAO extends HibernateDaoSupport{
 	
-	public static Address createAddress(String street, String city, String zip, String country){
+	public Address createAddress(String street, String city, String zip, String country){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		
 		Address address = new Address();
@@ -28,7 +26,7 @@ public  class AddressDAO {
 		return address;
 	}
 	
-	public static void deleteAddress(long id) {
+	public void deleteAddress(long id) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 	
 		Transaction tx = session.getTransaction();
@@ -42,7 +40,7 @@ public  class AddressDAO {
 		tx.commit();		
 	}
 	
-	public static void deleteAddress(Address address) {
+	public void deleteAddress(Address address) {
 		Session session =  HibernateUtil.getSessionFactory().getCurrentSession();
 		
 		Transaction transaction = session.getTransaction();
@@ -55,7 +53,7 @@ public  class AddressDAO {
 		//transaction.commit();
 	} 
 	
-	public static boolean updateAddress(long id, String street, String city, String zip, String country) {
+	public boolean updateAddress(long id, String street, String city, String zip, String country) {
 		try{
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 			
@@ -77,7 +75,7 @@ public  class AddressDAO {
 		}
 	}
 	
-	public static Address getAddressById(long id){
+	public Address getAddressById(long id){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		
 		Transaction tx = session.getTransaction();

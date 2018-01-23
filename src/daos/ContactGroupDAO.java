@@ -6,14 +6,15 @@ import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import entities.Contact;
 import entities.ContactGroup;
 import utils.HibernateUtil;
 
-public class ContactGroupDAO {
+public class ContactGroupDAO extends HibernateDaoSupport{
 
-	public static ContactGroup createContactGroup(String groupName) {
+	public ContactGroup createContactGroup(String groupName) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 
 		ContactGroup contactGroup = new ContactGroup();
@@ -29,7 +30,7 @@ public class ContactGroupDAO {
 
 	}
 
-	public static boolean updateContactGroup(long id, String groupName) {
+	public boolean updateContactGroup(long id, String groupName) {
 		// TryCatch versionning?
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 
@@ -43,7 +44,7 @@ public class ContactGroupDAO {
 		return true;
 	}
 
-	public static  ContactGroup getContactGroupById(long id) {
+	public  ContactGroup getContactGroupById(long id) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
 		if (!transaction.isActive())
@@ -52,7 +53,7 @@ public class ContactGroupDAO {
 		return contact;
 	}
 
-	public  static boolean deleteContactGroup(long id) {
+	public boolean deleteContactGroup(long id) {
 		//TryCatch versionning?
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
@@ -69,7 +70,7 @@ public class ContactGroupDAO {
 
 	}
 	
-	public static void deleteContactInGroup(long idGroup, long idContact) {
+	public void deleteContactInGroup(long idGroup, long idContact) {
 		Session session =  HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
 		if (!transaction.isActive())
@@ -93,7 +94,7 @@ public class ContactGroupDAO {
 		
 	}
 	
-	public static boolean checkIfGroupExist(String nameGroup) {
+	public boolean checkIfGroupExist(String nameGroup) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 
 		Transaction transaction = session.getTransaction();
@@ -110,7 +111,7 @@ public class ContactGroupDAO {
 		return false;
 	}
 
-	public static ContactGroup getContactGroupByName(String contactGroups) {
+	public ContactGroup getContactGroupByName(String contactGroups) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 
 		Transaction transaction = session.getTransaction();
@@ -121,7 +122,7 @@ public class ContactGroupDAO {
 																"where contactGroup.groupName like '"+contactGroups+"'").uniqueResult();	
 	}
 	
-	public static List<ContactGroup> listContactGroup(){
+	public List<ContactGroup> listContactGroup(){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		
 		Transaction transaction = session.getTransaction();

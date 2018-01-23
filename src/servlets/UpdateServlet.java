@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
+
 import entities.Address;
 import entities.Contact;
 import entities.ContactGroup;
@@ -76,6 +79,13 @@ public class UpdateServlet extends HttpServlet {
 		ArrayList<StringAndBoolean>alNewPhone = new ArrayList<StringAndBoolean>();
 		ArrayList<StringAndBoolean>alNewPhoneKind = new ArrayList<StringAndBoolean>();
 		ArrayList<StringAndBoolean>alNewContactGroups = new ArrayList<StringAndBoolean>();
+		
+		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+		ContactService contactService = (ContactService) context.getBean("beanContactService");
+		AddressService addressService = (AddressService) context.getBean("beanAddressService");
+		EntrepriseService entrepriseService = (EntrepriseService) context.getBean("beanEntrepriseService");
+		PhoneNumberService phoneNumberService = (PhoneNumberService) context.getBean("beanPhoneNumberService");
+		ContactGroupService contactGroupService = (ContactGroupService) context.getBean("beanContactGroupService");
 		
 		int i = 0;
 
@@ -183,18 +193,18 @@ public class UpdateServlet extends HttpServlet {
 			verCG[i] = Long.parseLong(idAndVerCG[1]);
 		}
 		
-		Address a = AddressService.getAddress(idAddressFromUser);
+		Address a = addressService.getAddress(idAddressFromUser);
 		ArrayList<PhoneNumber> phonesDB = new ArrayList<PhoneNumber>();
 		ArrayList<ContactGroup> cgDB = new ArrayList<ContactGroup>();
 		boolean bAllOk = true, bRemoveFirst = false;
 		String rep = "";
 		
 		for(i = 0;i<tabPhones.length ; i++) {
-			phonesDB.add(PhoneNumberService.getPhoneNumberById(tabPhones[i]));
+			phonesDB.add(phoneNumberService.getPhoneNumberById(tabPhones[i]));
 		}
 		
 		for(i = 0;i<tabCG.length ; i++) {
-			cgDB.add(ContactGroupService.getContactGroupById(tabCG[i]));
+			cgDB.add(contactGroupService.getContactGroupById(tabCG[i]));
 		}
 		
 		if(a.getVersion() != verAddressFromUser) {
@@ -228,7 +238,7 @@ public class UpdateServlet extends HttpServlet {
 			}
 
 		if(siret != null && siret.length() > 0) {	//Cas entreprise
-			Entreprise e = EntrepriseService.getEntrepriseById(idContactFromUser);
+			Entreprise e = entrepriseService.getEntrepriseById(idContactFromUser);
 			if(e.getVersion() != verContactFromUser) {
 				bAllOk = false;
 			}
@@ -237,15 +247,15 @@ public class UpdateServlet extends HttpServlet {
 				e.setFirstName(firstName);
 				e.setLastName(lastName);
 				e.setEmail(email);
-				EntrepriseService.updateEntreprise(e.getIdContact(), firstName, lastName, email, siret);
+				entrepriseService.updateEntreprise(e.getIdContact(), firstName, lastName, email, siret);
 				
 				if(alNewPhone.size() != 0 && tabPhones.length != 0)
 					for(i = 0;i < alNewPhone.size();i++) {
 						if(i < (tabPhones.length - 1)) {
-							PhoneNumberService.updatePhoneNumberById(tabPhones[i],
+							phoneNumberService.updatePhoneNumberById(tabPhones[i],
 									alNewPhoneKind.get(i).value, alNewPhone.get(i).value, e);
 						}else {
-							PhoneNumberService.createPhoneNumber(alNewPhoneKind.get(i).value, alNewPhone.get(i).value, e);
+							phoneNumberService.createPhoneNumber(alNewPhoneKind.get(i).value, alNewPhone.get(i).value, e);
 							bRemoveFirst = true;
 						}
 					}
@@ -253,16 +263,16 @@ public class UpdateServlet extends HttpServlet {
 				if(bRemoveFirst) {
 					Set<PhoneNumber> spn = e.getPhones();
 					PhoneNumber pn = spn.iterator().next();
-					PhoneNumberService.deletePhoneNumberById(pn.getIdPhoneNumber());
+					phoneNumberService.deletePhoneNumberById(pn.getIdPhoneNumber());
 					bRemoveFirst = false;
 				}
 					
 				if(alNewContactGroups.size() != 0 && tabCG.length != 0)
 					for(i = 0;i < alNewContactGroups.size();i++) {
 						if(i < (tabCG.length - 1)) {
-							ContactGroupService.updateContactGroupById(tabCG[i], alNewContactGroups.get(i).value);
+							contactGroupService.updateContactGroupById(tabCG[i], alNewContactGroups.get(i).value);
 						}else {
-							ContactGroupService.createContactGroup(alNewContactGroups.get(i).value);
+							contactGroupService.createContactGroup(alNewContactGroups.get(i).value);
 							//bRemoveFirst = true;
 						}
 					}
@@ -278,7 +288,7 @@ public class UpdateServlet extends HttpServlet {
 						+ "Il y a eu une update en concurrence avec la votre sur l'entreprise : "+e.getLastName() + " " + e.getFirstName();
 			}
 		}else {										//Cas Contact
-			Contact c = ContactService.getContactById(idContactFromUser);
+			Contact c = contactService.getContactById(idContactFromUser);
 			if(c.getVersion() != verContactFromUser) 
 				bAllOk = false;
 			
@@ -286,15 +296,15 @@ public class UpdateServlet extends HttpServlet {
 				c.setFirstName(firstName);
 				c.setLastName(lastName);
 				c.setEmail(email);
-				ContactService.updateContact(c.getIdContact(), firstName, lastName, email);
+				contactService.updateContact(c.getIdContact(), firstName, lastName, email);
 				
 				if(alNewPhone.size() != 0 && tabPhones.length != 0)
 					for(i = 0;i < alNewPhone.size();i++) {
 						if(i < (tabPhones.length - 1)) {
-							PhoneNumberService.updatePhoneNumberById(tabPhones[i],
+							phoneNumberService.updatePhoneNumberById(tabPhones[i],
 									alNewPhoneKind.get(i).value, alNewPhone.get(i).value, c);
 						}else {
-							PhoneNumberService.createPhoneNumber(alNewPhoneKind.get(i).value, alNewPhone.get(i).value, c);
+							phoneNumberService.createPhoneNumber(alNewPhoneKind.get(i).value, alNewPhone.get(i).value, c);
 							bRemoveFirst = true;
 						}
 						
@@ -303,16 +313,16 @@ public class UpdateServlet extends HttpServlet {
 				if(bRemoveFirst) {
 					Set<PhoneNumber> spn = c.getPhones();
 					PhoneNumber pn = spn.iterator().next();
-					PhoneNumberService.deletePhoneNumberById(pn.getIdPhoneNumber());
+					phoneNumberService.deletePhoneNumberById(pn.getIdPhoneNumber());
 					bRemoveFirst = false;
 				}
 				
 				if(alNewContactGroups.size() != 0 && tabCG.length != 0)
 					for(i = 0;i < alNewContactGroups.size();i++) {
 						if(i < (tabCG.length - 1)) {
-							ContactGroupService.updateContactGroupById(tabCG[i], alNewContactGroups.get(i).value);
+							contactGroupService.updateContactGroupById(tabCG[i], alNewContactGroups.get(i).value);
 						}else {
-							ContactGroupService.createContactGroup(alNewContactGroups.get(i).value);
+							contactGroupService.createContactGroup(alNewContactGroups.get(i).value);
 						}
 						
 					}
@@ -332,7 +342,7 @@ public class UpdateServlet extends HttpServlet {
 		
 		if(bAllOk) {
 			
-			AddressService.updateAddress(a.getIdAddress(), street, city, zip, country);
+			addressService.updateAddress(a.getIdAddress(), street, city, zip, country);
 
 			RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
 			rd.forward(request, response);

@@ -2,7 +2,8 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-
+import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -161,17 +162,23 @@ public class CreateServlet extends HttpServlet {
 				break;
 			}
 		
-		/* CrÃ©ation */
+		/* Création */
 		if(okFirstName && okLastName && okEmail && okStreet && okZip && okCity && okCountry && okPhone && okPhoneKind){
+			ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
+			ContactService contactService = (ContactService) context.getBean("beanContactService");
+			AddressService addressService = (AddressService) context.getBean("beanAddressService");
+			EntrepriseService entrepriseService = (EntrepriseService) context.getBean("beanEntrepriseService");
+			PhoneNumberService phoneNumberService = (PhoneNumberService) context.getBean("beanPhoneNumberService");
+			ContactGroupService contactGroupService = (ContactGroupService) context.getBean("beanContactGroupService");
 			
-			Address add = AddressService.createAddress(street, city, zip, country);
+			Address add = addressService.createAddress(street, city, zip, country);
 			Contact c = null;
 			ContactGroup cg = null;
 			
 			if(siret!=null && !siret.isEmpty()){
-				c = EntrepriseService.createEntreprise(firstName, lastName, email, add, siret);
+				c = entrepriseService.createEntreprise(firstName, lastName, email, add, siret);
 			} else {
-				c = ContactService.createContact(firstName, lastName, email, add);
+				c = contactService.createContact(firstName, lastName, email, add);
 			}
 			if(c == null && siret!= null && !siret.isEmpty()) {
 				request.setAttribute("success", false);
@@ -181,20 +188,20 @@ public class CreateServlet extends HttpServlet {
 			}
 			
 			for(i = 0; i < alPhone.size(); i++) {
-				PhoneNumberService.createPhoneNumber(alPhoneKind.get(i).value, alPhone.get(i).value, c);
+				phoneNumberService.createPhoneNumber(alPhoneKind.get(i).value, alPhone.get(i).value, c);
 			}
 			
 			for(i = 0; i< alContactGroups.size();i++) {
 				String contactGroups = alContactGroups.get(i).value;
 				if(contactGroups != null && !contactGroups.isEmpty()) {
-					if(!ContactGroupService.checkIfGroupExist(contactGroups))
-						cg = ContactGroupService.createContactGroup(contactGroups);
+					if(!contactGroupService.checkIfGroupExist(contactGroups))
+						cg = contactGroupService.createContactGroup(contactGroups);
 					else
-						cg = ContactGroupService.getContactGroupByName(contactGroups);
+						cg = contactGroupService.getContactGroupByName(contactGroups);
 				}else {
-					cg = ContactGroupService.getContactGroupByName("_PAS_DE_GROUPE_");
+					cg = contactGroupService.getContactGroupByName("_PAS_DE_GROUPE_");
 				}
-				ContactService.addContactInGroup(c.getIdContact(), cg.getIdContactGroup());
+				contactService.addContactInGroup(c.getIdContact(), cg.getIdContactGroup());
 			}
 			
 			request.setAttribute("success", true);

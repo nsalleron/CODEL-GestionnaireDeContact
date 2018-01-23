@@ -5,13 +5,15 @@ import java.util.List;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+
 import entities.Contact;
 import entities.PhoneNumber;
 import utils.HibernateUtil;
 
-public  class PhoneNumberDAO {
+public class PhoneNumberDAO extends HibernateDaoSupport{
 	
-	public static PhoneNumber createPhoneNumber(String phoneKind, String phoneNumber, Contact contact) {
+	public PhoneNumber createPhoneNumber(String phoneKind, String phoneNumber, Contact contact) {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		
@@ -32,7 +34,7 @@ public  class PhoneNumberDAO {
 		return phone;
 	}
 	
-	public static void deletePhoneNumberById(long id) {
+	public void deletePhoneNumberById(long id) {
 		Session session =  HibernateUtil.getSessionFactory().getCurrentSession();
 
 		Transaction transaction = session.getTransaction();
@@ -50,7 +52,7 @@ public  class PhoneNumberDAO {
 		transaction.commit();
 	}
 	
-	public static void deletePhoneNumberById(PhoneNumber phone) {
+	public void deletePhoneNumberById(PhoneNumber phone) {
 		Session session =  HibernateUtil.getSessionFactory().getCurrentSession();
 	
 		Transaction transaction = session.getTransaction();
@@ -63,7 +65,7 @@ public  class PhoneNumberDAO {
 		//transaction.commit();
 	}
 	
-	public static boolean updatePhoneNumberById(long id, String phoneKind, String phoneNumber, Contact contact) {
+	public boolean updatePhoneNumberById(long id, String phoneKind, String phoneNumber, Contact contact) {
 		boolean bPhoneKind = false, bPhoneNumber = false;
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -94,7 +96,7 @@ public  class PhoneNumberDAO {
 		return true;
 	}
 	
-	public static boolean updatePhoneNumberById(List<Long> idList, List<String> kindList, List<String> number, Contact contact) {
+	public boolean updatePhoneNumberById(List<Long> idList, List<String> kindList, List<String> number, Contact contact) {
 		
 		for(int i=0; i<idList.size(); i++) {
 			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -113,7 +115,7 @@ public  class PhoneNumberDAO {
 		return true;
 	}
 	
-	public static PhoneNumber getPhoneNumberById(long id){
+	public PhoneNumber getPhoneNumberById(long id){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
@@ -123,7 +125,7 @@ public  class PhoneNumberDAO {
 		return phone;
 	}
 	
-	public static List<String> listPhoneNumberGroups(){
+	public List<String> listPhoneNumberGroups(){
 		List<String> rm = new ArrayList<String>();
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -139,6 +141,5 @@ public  class PhoneNumberDAO {
 		}
 	
 		return rm;
-	}
-	
+	}	
 }

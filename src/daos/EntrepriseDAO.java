@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
 import entities.Address;
 import entities.Contact;
@@ -14,10 +15,10 @@ import entities.Entreprise;
 import entities.PhoneNumber;
 import utils.HibernateUtil;
 
-public  class EntrepriseDAO {
+public  class EntrepriseDAO extends HibernateDaoSupport{
 
 	
-	public static Entreprise createEntreprise(String firstName, String lastName, String email, Address a, String siret) {
+	public Entreprise createEntreprise(String firstName, String lastName, String email, Address a, String siret) {
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		long longSiret = 0;
@@ -40,11 +41,11 @@ public  class EntrepriseDAO {
 	
 	
 	
-	public static void deleteEntreprise(String email) {
+	public void deleteEntreprise(String email) {
 		//TODO
 		
 	}
-	public static void updateEntreprise(long idEntreprise, String firstName, String lastName, String email, String siret) {
+	public void updateEntreprise(long idEntreprise, String firstName, String lastName, String email, String siret) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
@@ -61,7 +62,7 @@ public  class EntrepriseDAO {
 	}
 	
 	
-	public static void updateEntreprise(Long idEntreprise, String siret) {
+	public void updateEntreprise(Long idEntreprise, String siret) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
@@ -74,7 +75,7 @@ public  class EntrepriseDAO {
 		transaction.commit();
 	}
 	
-	public static List<Entreprise> listEntreprise(){
+	public List<Entreprise> listEntreprise(){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		
 		Transaction transaction = session.getTransaction();
@@ -88,7 +89,7 @@ public  class EntrepriseDAO {
 		
 	}
 	
-	public static void addEntrepriseInGroup(long id_cont, long id_group){
+	public void addEntrepriseInGroup(long id_cont, long id_group){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
@@ -120,7 +121,7 @@ public  class EntrepriseDAO {
 
 
 
-	public static Entreprise getEntrepriseById(long id) {
+	public Entreprise getEntrepriseById(long id) {
 		// TODO Auto-generated method stub
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();

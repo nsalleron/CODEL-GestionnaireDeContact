@@ -6,38 +6,42 @@ import daos.ContactGroupDAO;
 import entities.ContactGroup;
 
 public class ContactGroupService {
+	private ContactGroupDAO cgDAO;
+	
+	public ContactGroupService(ContactGroupDAO cgDAO) {
+		this.cgDAO = cgDAO;
+	}
+	
+	public ContactGroup createContactGroup(String groupName){
+		return cgDAO.createContactGroup(groupName);
+	}
+	
+	public void deleteContactGroupById(long id) {
+		cgDAO.deleteContactGroup(id);
+	}
+	
+	public boolean updateContactGroupById(long id, String groupName)  {
+		return cgDAO.updateContactGroup(id,groupName);
+	}
+	
+	public ContactGroup getContactGroupById(Long id) {
+		return cgDAO.getContactGroupById(id);
+	}
+	
+	public void deleteContactInGroup(long id, long idContact)  {
+		cgDAO.deleteContactInGroup(id, idContact);
+	}
+	
+	public boolean checkIfGroupExist(String nameGroup) {
+		return cgDAO.checkIfGroupExist(nameGroup);
+	}
 
-	
-	public static ContactGroup createContactGroup(String groupName){
-		return ContactGroupDAO.createContactGroup(groupName);
+	public ContactGroup getContactGroupByName(String contactGroups) {
+		return cgDAO.getContactGroupByName(contactGroups);
 	}
 	
-	public static void deleteContactGroupById(long id) {
-		ContactGroupDAO.deleteContactGroup(id);
-	}
-	
-	public static boolean updateContactGroupById(long id, String groupName)  {
-		return ContactGroupDAO.updateContactGroup(id,groupName);
-	}
-	
-	public static ContactGroup getContactGroupById(Long id) {
-		return ContactGroupDAO.getContactGroupById(id);
-	}
-	
-	public static void deleteContactInGroup(long id, long idContact)  {
-		ContactGroupDAO.deleteContactInGroup(id, idContact);
-	}
-	
-	public static boolean checkIfGroupExist(String nameGroup) {
-		return ContactGroupDAO.checkIfGroupExist(nameGroup);
-	}
-
-	public static ContactGroup getContactGroupByName(String contactGroups) {
-		return ContactGroupDAO.getContactGroupByName(contactGroups);
-	}
-	
-	public static List<ContactGroup> listContactGroups() {
-		return ContactGroupDAO.listContactGroup();
+	public List<ContactGroup> listContactGroups() {
+		return cgDAO.listContactGroup();
 	}
 	
 }
