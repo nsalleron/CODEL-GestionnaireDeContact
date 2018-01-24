@@ -14,15 +14,64 @@
 	pageEncoding="UTF-8"%>
 <html>
 <!-- Bootstrap core CSS -->
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
-<link rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+<link href="./bootstrap-theme.min.css" rel="stylesheet" />
+<link href="./bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Liste des contacts</title>
 </head>
+<script type="text/javascript">
+  function tri_nom(){
+	  var arrayLignes = document.getElementById("monTableau").rows; 
+	  var longueur = arrayLignes.length;
+
+	  
+	  for(var i=1; i<longueur; i++){
+	  	var arrayColonnes = arrayLignes[i].cells;
+	  	var nom = new String(arrayColonnes[0].innerText);
+	  	
+	  	for(var j=1; j<longueur; j++){
+	  		 var arrayColonnes2 = arrayLignes[j].cells;
+	  		 var nom2 = new String(arrayColonnes2[0].innerText);
+	  		 if(nom.valueOf() < nom2.valueOf()){
+	  			 
+	  			 for(var k=0; k<arrayColonnes2.length; k++){
+	  				var tmp = arrayColonnes[k].innerText;
+	  				arrayColonnes[k].innerText = arrayColonnes2[k].innerText;
+	  				arrayColonnes2[k].innerText = tmp;
+	  			 }
+	  		 }
+	  	}
+	  }
+  }
+  
+  function tri_code_postale(){
+	  
+	  var arrayLignes = document.getElementById("monTableau").rows; 
+	  var longueur = arrayLignes.length;
+
+	  
+	  for(var i=1; i<longueur; i++){
+	  	var arrayColonnes = arrayLignes[i].cells;
+	  	var code_postal = new String(arrayColonnes[5].innerText);
+	  	
+	  	for(var j=1; j<longueur; j++){
+	  		 var arrayColonnes2 = arrayLignes[j].cells;
+	  		 var code_postal2  = new String(arrayColonnes2[5].innerText);
+	  		 
+	  		if(parseInt(code_postal,10) < parseInt(code_postal2,10)){
+	  			 for(var k=0; k<arrayColonnes2.length; k++){
+	  				var tmp = arrayColonnes[k].innerText;
+	  				arrayColonnes[k].innerText = arrayColonnes2[k].innerText;
+	  				arrayColonnes2[k].innerText = tmp;
+	  			 }
+	  		 }
+	  	}
+	  }
+  }
+
+</script>
 <body>
 	<div class="col-md-offset-2 col-md-3" style="width: 70%">
 	<h1 id="contacts">Voici vos contacts :</h1>
@@ -34,19 +83,19 @@
 	String allNumber = "";
 	List<Contact> contacts = contactService.listContacts();
 	%>
-	<%="<div class=\"table-responsive\">"+
-	"<table class=\"table-striped\" style=\"width: 100%\">"+
-		"<tr>"+
-		"<th>Nom</th>"+
-		"<th>Prénom</th>"+
-		"<th>Email</th>"+
-		"<th>Rue</th>"+
-		"<th>Ville</th>"+
-		"<th>Code postal</th>"+
-		"<th>Pays</th>"+
-		"<th>Téléphones</th>"+
-		"<th>PhoneKind</th>" +
-		"</tr>" %>
+	<div class="table-responsive">
+	<table id ="monTableau" class="table-striped" style="width: 100%\">
+		<tr>
+		<th onclick="tri_nom();">Nom</th>
+		<th>Prénom</th>
+		<th>Email</th>
+		<th>Rue</th>
+		<th>Ville</th>
+		<th onclick="tri_code_postale();">Code postal</th>
+		<th>Pays</th>
+		<th>Téléphones</th>
+		<th>PhoneKind</th>
+		</tr>
 	<%
 	if(contacts.size() == 0)
 		return;
