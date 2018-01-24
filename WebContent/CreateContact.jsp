@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%@page import="services.ContactService"%>
+<%@page import="services.IContactService"%>
 
 <html>
 <head>
@@ -56,16 +56,26 @@
 		ArrayList<String> alGroupes = new ArrayList<String>();
 		
 		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-		ContactService contactService = (ContactService) context.getBean("beanContactService");
+		IContactService contactService = (IContactService) context.getBean("beanContactService");
 		PhoneNumberService phoneNumberService = (PhoneNumberService) context.getBean("beanPhoneNumberService");
 		ContactGroupService contactGroupService = (ContactGroupService) context.getBean("beanContactGroupService");
 		
 		String[] whereFails;
 		boolean bFirstName = true, bLastName = true, bEmail = true, bStreet = true, bZip = true, bCity = true,
-				bCountry = true, bPhone = true, bPhoneKind = true;
+				bCountry = true, bPhone = true, bPhoneKind = true, bEntreprise = false;
 		Boolean success;
 		
 		contact = (Contact) request.getAttribute("contact");
+		request.getSession().setAttribute("CONTACTOBJ", contact);
+		
+		if(contact instanceof Entreprise){
+			bEntreprise = true;
+		}else{
+			bEntreprise = false;
+		}
+		System.out.println("Entreprise : "+bEntreprise);
+		
+		
 		String DEBUG = (String) request.getSession().getAttribute("DEBUG");
 		System.out.println("DEBUG : "+DEBUG);
 		if(contact != null){
@@ -388,12 +398,20 @@
 							placeholder="Email">
 					</div>
 
+					<% 
+					String casEntreprise = "";
+						
+					if(bEntreprise){
+						casEntreprise += "<label for=\"siret\">Numéro Siret</label>";
+						casEntreprise += "<input type=\"text\" class=\"form-control\" name=\"siret\" value=" + siret +"\""+ 
+								" placeholder=\"Numéro Siret (Obligatoire)\">";
+					}
+					%>
 					<div class="from-group">
-						<label for="siret">Numéro Siret</label> <input type="text"
-							class="form-control" name="siret" value="<%=siret%>"
-							placeholder="Numéro Siret (optionnel)">
+						<%=casEntreprise%>
 					</div>
 					<br>
+					
 
 					<fieldset style="margin-bottom: -2%;">
 						<legend style="color: #5826AB80;">Localisation :</legend>
@@ -478,7 +496,7 @@
 													tmp += "<br><br>";
 												} %>
 										<%=tmp%>
-										<%	} %>
+										<%}%>
 										<br>
 									</div> 
 									<% 

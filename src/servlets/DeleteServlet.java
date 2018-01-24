@@ -11,13 +11,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
-import entities.Contact;
 import entities.ContactGroup;
+import entities.IContact;
 import entities.PhoneNumber;
 import services.AddressService;
 import services.ContactGroupService;
-import services.ContactService;
 import services.EntrepriseService;
+import services.IContactService;
 import services.PhoneNumberService;
 
 
@@ -52,12 +52,12 @@ public class DeleteServlet extends HttpServlet {
 		System.out.println(request.getParameter("recherche"));
 			
 		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-		ContactService contactService = (ContactService) context.getBean("beanContactService");
+		IContactService contactService = (IContactService) context.getBean("beanContactService");
 		AddressService addressService = (AddressService) context.getBean("beanAddressService");
 		PhoneNumberService phoneNumberService = (PhoneNumberService) context.getBean("beanPhoneNumberService");
 		ContactGroupService contactGroupService = (ContactGroupService) context.getBean("beanContactGroupService");
 		
-		Contact c = contactService.getContactById(Long.parseLong(contact));
+		IContact c = contactService.getContactById(Long.parseLong(contact));
 		
 		for(PhoneNumber pb : c.getPhones()) {
 			phoneNumberService.deletePhoneNumberById(pb.getIdPhoneNumber());

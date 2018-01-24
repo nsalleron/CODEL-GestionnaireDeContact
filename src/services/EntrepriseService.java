@@ -5,6 +5,7 @@ import daos.ContactDAO;
 import daos.EntrepriseDAO;
 import entities.Address;
 import entities.Entreprise;
+import entities.IContact;
 
 public class EntrepriseService {
 	private EntrepriseDAO eDAO;
@@ -41,6 +42,11 @@ public class EntrepriseService {
 
 	public void updateEntreprise(long idEntreprise, String firstName, String lastName, String email, String siret) {
 		eDAO.updateEntreprise(idEntreprise, firstName, lastName, email, siret);		
+	}
+
+	public boolean updateEntreprise(IContact e, String firstName, String lastName, String email, String siret) {
+		// TODO Auto-generated method stub
+		return eDAO.updateEntreprise(e, firstName, lastName, email, siret);	
 	}
 
 }

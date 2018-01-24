@@ -5,25 +5,25 @@ public class PhoneNumber {
 	private long idPhoneNumber;
 	private String phoneKind;
 	private String phoneNumber;
-	private Contact contact;
+	private IContact contact;
 	private int version;
 	
 	public PhoneNumber() {	
 		this("DEFAULT","DEFAULT",new Contact("DEFAULT","DEFAULT","DEFAULT@DEFAULT.COM"));
 	}
 
-	public PhoneNumber(String phoneKind, String phoneNumber, Contact contact) {
+	public PhoneNumber(String phoneKind, String phoneNumber, IContact contact) {
 		super();
 		this.contact = contact;
 		this.phoneKind = phoneKind;
 		this.phoneNumber = phoneNumber;
 	}
 	
-	public Contact getContact() {
+	public IContact getContact() {
 		return contact;
 	}
 
-	public void setContact(Contact contact) {
+	public void setContact(IContact contact) {
 		this.contact = contact;
 	}
 

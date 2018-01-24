@@ -4,7 +4,7 @@ import java.util.List;
 
 
 import daos.PhoneNumberDAO;
-import entities.Contact;
+import entities.IContact;
 import entities.PhoneNumber;
 
 public class PhoneNumberService {
@@ -14,7 +14,7 @@ public class PhoneNumberService {
 		this.pnDAO = pnDAO;
 	}
 	
-	public PhoneNumber createPhoneNumber(String phonekind, String phone,Contact c){
+	public PhoneNumber createPhoneNumber(String phonekind, String phone,IContact c){
 		return pnDAO.createPhoneNumber(phonekind, phone, c);
 	}
 	
@@ -22,18 +22,22 @@ public class PhoneNumberService {
 		pnDAO.deletePhoneNumberById(id);
 	}
 	
-	public boolean updatePhoneNumberById(long id, String phoneKind, String phoneNumber, Contact contact)  {
+	public boolean updatePhoneNumberById(long id, String phoneKind, String phoneNumber, IContact contact)  {
 		return pnDAO.updatePhoneNumberById(id,phoneKind, phoneNumber, contact);
 	}
 	
-	public boolean updatePhoneNumberById(List<Long> idList, List<String> kindList, List<String> number,  Contact contact)  {
-		return pnDAO.updatePhoneNumberById(idList, kindList, number,  contact);
-}
+//	public boolean updatePhoneNumberById(List<Long> idList, List<String> kindList, List<String> number,  IContact contact)  {
+//		return pnDAO.updatePhoneNumberById(idList, kindList, number,  contact);
+//	}
 	public PhoneNumber getPhoneNumberById(Long id) {
 		return pnDAO.getPhoneNumberById(id);
 	}
 	public List<String> listPhoneNumberGroups() {
 		return pnDAO.listPhoneNumberGroups();
+	}
+
+	public boolean updatePhoneNumberByPN(PhoneNumber phone, String value, String value2, IContact c) {
+		return pnDAO.updatePhoneNumberByPN(phone, value, value2, c);
 	}
 	
 }

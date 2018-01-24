@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.hibernate.Session;
+import org.hibernate.StaleObjectStateException;
 import org.hibernate.Transaction;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -12,6 +13,7 @@ import entities.Address;
 import entities.Contact;
 import entities.ContactGroup;
 import entities.Entreprise;
+import entities.IContact;
 import entities.PhoneNumber;
 import utils.HibernateUtil;
 
@@ -134,6 +136,32 @@ public  class EntrepriseDAO extends HibernateDaoSupport{
 		
 		return entreprise;
 	}
+
+
+
+	public boolean updateEntreprise(IContact c, String firstName, String lastName, String email, String siret) {
+		// TODO Auto-generated method stub
+				try {
+					c.setFirstName(firstName);
+					c.setLastName(lastName);
+					c.setEmail(email);
+					
+					Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+					Transaction transaction = session.getTransaction();
+					if(!transaction.isActive()) 
+						transaction = session.beginTransaction();
+					
+					//session.saveOrUpdate(c);	//throw ?
+					session.merge(c); //throw?
+					
+					transaction.commit();
+					return true;
+				}catch(StaleObjectStateException e) {
+					e.printStackTrace();
+					return false;
+				}
+	}
+	
 
 	
 }

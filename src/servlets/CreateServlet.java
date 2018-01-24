@@ -10,12 +10,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import entities.Address;
-import entities.Contact;
 import entities.ContactGroup;
+import entities.IContact;
 import services.AddressService;
 import services.ContactGroupService;
-import services.ContactService;
 import services.EntrepriseService;
+import services.IContactService;
 import services.PhoneNumberService;
 
 /**
@@ -165,14 +165,14 @@ public class CreateServlet extends HttpServlet {
 		/* Création */
 		if(okFirstName && okLastName && okEmail && okStreet && okZip && okCity && okCountry && okPhone && okPhoneKind){
 			ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-			ContactService contactService = (ContactService) context.getBean("beanContactService");
+			IContactService contactService = (IContactService) context.getBean("beanContactService");
 			AddressService addressService = (AddressService) context.getBean("beanAddressService");
 			EntrepriseService entrepriseService = (EntrepriseService) context.getBean("beanEntrepriseService");
 			PhoneNumberService phoneNumberService = (PhoneNumberService) context.getBean("beanPhoneNumberService");
 			ContactGroupService contactGroupService = (ContactGroupService) context.getBean("beanContactGroupService");
 			
 			Address add = addressService.createAddress(street, city, zip, country);
-			Contact c = null;
+			IContact c = null;
 			ContactGroup cg = null;
 			
 			if(siret!=null && !siret.isEmpty()){

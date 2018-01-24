@@ -14,10 +14,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import entities.Contact;
+import entities.IContact;
 import services.AddressService;
 import services.ContactGroupService;
-import services.ContactService;
 import services.EntrepriseService;
+import services.IContactService;
 import services.PhoneNumberService;
 
 /**
@@ -53,8 +54,8 @@ public class RechercheServlet extends HttpServlet {
 		
 		
 		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-		ContactService contactService = (ContactService) context.getBean("beanContactService");
-		
+		IContactService contactService = (IContactService) context.getBean("beanContactService");
+		EntrepriseService entrepriseService =  (EntrepriseService) context.getBean("beanEntrepriseService");
 		if(idContact == null && modeDelete == null) {
 			ArrayList<Contact> contacts = contactService.researchContacts(recherche);
 			RequestDispatcher rd = request.getRequestDispatcher("UpdateContact.jsp");
@@ -68,12 +69,15 @@ public class RechercheServlet extends HttpServlet {
 			request.setAttribute("recherche", recherche);
 			rd.forward(request, response);
 		}else if(modeDelete == null && idContact.length() > 0){
-			Contact contact = contactService.getContactById(Long.parseLong(idContact));
+			IContact contact = contactService.getContactById(Long.parseLong(idContact));
+			if(contact == null ) {
+				contact = entrepriseService.getEntrepriseById(Long.parseLong(idContact));
+			}
 			RequestDispatcher rd = request.getRequestDispatcher("CreateContact.jsp");
 			request.setAttribute("contact", contact);
 			rd.forward(request, response);
 		}else if(modeDelete != null && idContact.length() > 0){
-			Contact contact = contactService.getContactById(Long.parseLong(idContact));
+			IContact contact = contactService.getContactById(Long.parseLong(idContact));
 			request.setAttribute("idcontact", contact.getIdContact());
 			RequestDispatcher rd = request.getRequestDispatcher("DeleteServlet");
 			rd.forward(request, response);

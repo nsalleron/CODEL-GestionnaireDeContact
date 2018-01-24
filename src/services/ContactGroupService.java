@@ -43,6 +43,10 @@ public class ContactGroupService {
 	public List<ContactGroup> listContactGroups() {
 		return cgDAO.listContactGroup();
 	}
+
+	public boolean updateContactGroupByCG(ContactGroup contactGroup, String value) {
+		return cgDAO.updateContactGroup(contactGroup, value);
+	}
 	
 }
 
