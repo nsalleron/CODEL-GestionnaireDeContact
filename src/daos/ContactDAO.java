@@ -29,7 +29,7 @@ public  class ContactDAO extends HibernateDaoSupport{
 		c.setAdd(a);
 		c.setPhones(new HashSet<PhoneNumber>());
 		c.setBooks(new HashSet<ContactGroup>());
-		
+	
 		session.beginTransaction();
 		session.save(c);
 		session.getTransaction().commit();

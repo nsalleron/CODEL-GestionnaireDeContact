@@ -162,7 +162,7 @@ public class CreateServlet extends HttpServlet {
 				break;
 			}
 		
-		/* Création */
+		/* CrÃ©ation */
 		if(okFirstName && okLastName && okEmail && okStreet && okZip && okCity && okCountry && okPhone && okPhoneKind){
 			ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 			ContactService contactService = (ContactService) context.getBean("beanContactService");

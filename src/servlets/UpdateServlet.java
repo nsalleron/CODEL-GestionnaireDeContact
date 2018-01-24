@@ -196,7 +196,7 @@ public class UpdateServlet extends HttpServlet {
 		Address a = addressService.getAddress(idAddressFromUser);
 		ArrayList<PhoneNumber> phonesDB = new ArrayList<PhoneNumber>();
 		ArrayList<ContactGroup> cgDB = new ArrayList<ContactGroup>();
-		boolean bAllOk = true, bRemoveFirst = false;
+		boolean bAllOk = true;
 		String rep = "";
 		
 		for(i = 0;i<tabPhones.length ; i++) {
@@ -208,6 +208,7 @@ public class UpdateServlet extends HttpServlet {
 		}
 		
 		if(a.getVersion() != verAddressFromUser) {
+			System.out.println("-> Problème address");
 			bAllOk = false;
 			
 		}
@@ -226,6 +227,7 @@ public class UpdateServlet extends HttpServlet {
 		for(StringAndBoolean phone : alNewPhone)
 			if(phone.value!=null && phone.value.length()>0) {}
 			else {
+				System.out.println("-> Problème phone");
 				bAllOk = false;
 				break;
 			}
@@ -233,6 +235,7 @@ public class UpdateServlet extends HttpServlet {
 		for(StringAndBoolean phonekind : alNewPhoneKind)
 			if(phonekind.value!=null && phonekind.value.length()>0) {}
 			else {
+				System.out.println("-> Problème phoneKind");
 				bAllOk = false;
 				break;
 			}
@@ -251,46 +254,34 @@ public class UpdateServlet extends HttpServlet {
 				
 				if(alNewPhone.size() != 0 && tabPhones.length != 0)
 					for(i = 0;i < alNewPhone.size();i++) {
-						if(i < (tabPhones.length - 1)) {
+						if(i <= (tabPhones.length - 1)) {
 							phoneNumberService.updatePhoneNumberById(tabPhones[i],
 									alNewPhoneKind.get(i).value, alNewPhone.get(i).value, e);
 						}else {
 							phoneNumberService.createPhoneNumber(alNewPhoneKind.get(i).value, alNewPhone.get(i).value, e);
-							bRemoveFirst = true;
+							
 						}
 					}
-				
-				if(bRemoveFirst) {
-					Set<PhoneNumber> spn = e.getPhones();
-					PhoneNumber pn = spn.iterator().next();
-					phoneNumberService.deletePhoneNumberById(pn.getIdPhoneNumber());
-					bRemoveFirst = false;
-				}
 					
 				if(alNewContactGroups.size() != 0 && tabCG.length != 0)
 					for(i = 0;i < alNewContactGroups.size();i++) {
-						if(i < (tabCG.length - 1)) {
+						if(i <= (tabCG.length - 1)) {
 							contactGroupService.updateContactGroupById(tabCG[i], alNewContactGroups.get(i).value);
 						}else {
 							contactGroupService.createContactGroup(alNewContactGroups.get(i).value);
-							//bRemoveFirst = true;
+							contactService.addContactInGroup(e.getIdContact(),
+									contactGroupService.getContactGroupByName(alNewContactGroups.get(i).value).getIdContactGroup());
 						}
 					}
-				/*
-				if(bRemoveFirst) {
-					Set<ContactGroup> scg = e.getBooks();
-					ContactGroup cg = scg.iterator().next();
-					ContactGroupService.deleteContactGroupById(cg.getIdContactGroup());
-					bRemoveFirst = false;
-				}*/
+			
 			}else {
 				rep = "La mise à jour à échouer. "
 						+ "Il y a eu une update en concurrence avec la votre sur l'entreprise : "+e.getLastName() + " " + e.getFirstName();
 			}
 		}else {										//Cas Contact
 			Contact c = contactService.getContactById(idContactFromUser);
-			if(c.getVersion() != verContactFromUser) 
-				bAllOk = false;
+			//if(c.getVersion() != verContactFromUser) 
+			//	bAllOk = false;
 			
 			if(bAllOk) {
 				c.setFirstName(firstName);
@@ -300,29 +291,27 @@ public class UpdateServlet extends HttpServlet {
 				
 				if(alNewPhone.size() != 0 && tabPhones.length != 0)
 					for(i = 0;i < alNewPhone.size();i++) {
-						if(i < (tabPhones.length - 1)) {
+						System.out.println("->for loop alNewPhone : "+i);
+						if(i <= (tabPhones.length - 1)) {
+							System.out.println("-->UpdatePhoneNumberById");
 							phoneNumberService.updatePhoneNumberById(tabPhones[i],
 									alNewPhoneKind.get(i).value, alNewPhone.get(i).value, c);
 						}else {
+							System.out.println("-->createPhoneNumber");
 							phoneNumberService.createPhoneNumber(alNewPhoneKind.get(i).value, alNewPhone.get(i).value, c);
-							bRemoveFirst = true;
+							
 						}
 						
 					}
-
-				if(bRemoveFirst) {
-					Set<PhoneNumber> spn = c.getPhones();
-					PhoneNumber pn = spn.iterator().next();
-					phoneNumberService.deletePhoneNumberById(pn.getIdPhoneNumber());
-					bRemoveFirst = false;
-				}
 				
 				if(alNewContactGroups.size() != 0 && tabCG.length != 0)
 					for(i = 0;i < alNewContactGroups.size();i++) {
-						if(i < (tabCG.length - 1)) {
+						if(i <= (tabCG.length - 1)) {
 							contactGroupService.updateContactGroupById(tabCG[i], alNewContactGroups.get(i).value);
 						}else {
 							contactGroupService.createContactGroup(alNewContactGroups.get(i).value);
+							contactService.addContactInGroup(c.getIdContact(),
+									contactGroupService.getContactGroupByName(alNewContactGroups.get(i).value).getIdContactGroup());
 						}
 						
 					}

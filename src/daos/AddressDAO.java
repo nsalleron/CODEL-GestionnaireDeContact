@@ -80,7 +80,12 @@ public  class AddressDAO extends HibernateDaoSupport{
 		
 		Transaction tx = session.getTransaction();
 		if(!tx.isActive()) tx = session.beginTransaction();
+		System.out.println("Identifiant de l'addresse : "+id);
 		Address address = (Address) session.get(Address.class, id);
+		if(address == null) {
+			 address = (Address) session.load(Address.class, id);
+			 address.getCity();
+		}
 		tx.commit();
 		return address;
 	}

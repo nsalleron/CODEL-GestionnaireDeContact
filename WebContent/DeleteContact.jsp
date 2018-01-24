@@ -11,8 +11,8 @@
 
 <html>
 <!-- Bootstrap core CSS -->
-<link href="./bootstrap.min.css" rel="stylesheet" />
 <link href="./bootstrap-theme.min.css" rel="stylesheet" />
+<link href="./bootstrap.min.css" rel="stylesheet" />
 <link rel="stylesheet" href="style.css" />
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -20,16 +20,6 @@
 </head>
 <body>
 	<div class="col-md-offset-2 col-md-8">
-
-
-
-
-
-
-
-
-
-
 
 		<h1>
 			Suppression de contact <br /> <small> Merci de rechercher

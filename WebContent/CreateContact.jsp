@@ -68,13 +68,14 @@
 		
 		contact = (Contact) request.getAttribute("contact");
 		String DEBUG = (String) request.getSession().getAttribute("DEBUG");
-		if(contact != null && DEBUG == null){
+		System.out.println("DEBUG : "+DEBUG);
+		if(contact != null){
 			nbNumero = ""+contact.getPhones().size();
 			nbGroupe = ""+contact.getBooks().size();
+			System.out.println("NbNumero : "+ nbNumero);
+			System.out.println("NbGroupe : "+ nbGroupe);
 		}
 		if(DEBUG != null && DEBUG.equals("1") && contact == null){
-			
-			
 			int i = contactService.listContacts().size();
 			firstname = "user"+i;
 			lastname = "last"+i;

@@ -6,7 +6,7 @@
 	<class name="Address" table="ADDRESS_TABLE">
 	
  	 <cache usage="read-write"/>
-		<id name="idAddress" type="long" column="ID_ADDRESS">
+		<id name="idAddress" type="long" column="ID_ADDRESS" >
 			<generator class="increment" />
 		</id>
 		<version name="version" access="field" column="version"/>

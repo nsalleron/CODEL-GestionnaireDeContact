@@ -73,6 +73,9 @@ public class PhoneNumberDAO extends HibernateDaoSupport{
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
 			transaction = session.beginTransaction();
+		
+		System.out.println("----> Identifiant de PhoneNumber : "+id);
+		
 		PhoneNumber phone = (PhoneNumber) session.load(PhoneNumber.class, id);
 		
 		/* Ctrl errors */
@@ -80,11 +83,15 @@ public class PhoneNumberDAO extends HibernateDaoSupport{
 			bPhoneKind = true;
 		if(phoneNumber!=null && !phoneNumber.isEmpty())
 			bPhoneNumber = true;
+		System.out.println("----> Valeur de bPhoneKind :" +bPhoneKind);
+		System.out.println("----> Valeur de bPhoneNumber :"+bPhoneNumber);
 		
 		/* Try Catch? */
 		if(bPhoneKind && bPhoneNumber) {
+			System.out.println("----> PhoneNumber getID : "+phone.getIdPhoneNumber());
 			phone.setPhoneKind(phoneKind);
 			phone.setPhoneNumber(phoneNumber);
+			
 		}else {
 			transaction.commit();
 			return false;
@@ -120,6 +127,8 @@ public class PhoneNumberDAO extends HibernateDaoSupport{
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
 			transaction = session.beginTransaction();
+		
+		System.out.println("VALEUR DE LA LIGNE ID : "+id);
 		PhoneNumber phone = (PhoneNumber) session.get(PhoneNumber.class, id);
 		transaction.commit();
 		return phone;
