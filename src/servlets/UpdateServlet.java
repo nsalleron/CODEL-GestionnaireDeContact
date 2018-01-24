@@ -196,9 +196,7 @@ public class UpdateServlet extends HttpServlet {
 			tabCG[i] = Long.parseLong(idAndVerCG[0]);
 			verCG[i] = Long.parseLong(idAndVerCG[1]);
 		}
-
-		Address a = addressService.getAddress(idAddressFromUser);
-
+		
 		boolean bAllOk = true;
 		String rep = "";
 
@@ -271,6 +269,11 @@ public class UpdateServlet extends HttpServlet {
 							}
 						}
 
+				bAllOk = addressService.updateAddress(e.getAdd(), street, city, zip, country);
+				if(!bAllOk) {
+					rep = setError(e);
+				}
+
 			}else {
 				rep = "La mise à jour à échouer. "
 						+ "Il y a eu une update en concurrence avec la votre sur l'entreprise : "+e.getLastName() + " " + e.getFirstName();
@@ -333,7 +336,10 @@ public class UpdateServlet extends HttpServlet {
 
 						}
 
-
+				bAllOk = addressService.updateAddress(c.getAdd(), street, city, zip, country);
+				if(!bAllOk) {
+					rep = setError(c);
+				}
 			}else {
 				rep = setError(c);
 			}
@@ -346,10 +352,7 @@ public class UpdateServlet extends HttpServlet {
 			rd.forward(request, response);
 		}
 
-		if(bAllOk) {
-
-			addressService.updateAddress(a.getIdAddress(), street, city, zip, country);
-
+		if(bAllOk) {		
 			RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
 			rd.forward(request, response);
 		}		

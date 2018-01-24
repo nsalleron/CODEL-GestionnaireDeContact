@@ -29,4 +29,9 @@ public class AddressService {
 	public Address getAddress(Long id) {
 		return aDAO.getAddressById(id);
 	}
+
+	public boolean updateAddress(Address add, String street, String city, String zip, String country) {
+		// TODO Auto-generated method stub
+		return aDAO.updateAddress(add, street, city, zip, country);
+	}
 }

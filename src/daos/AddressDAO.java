@@ -1,6 +1,7 @@
 package daos;
 
 import org.hibernate.Session;
+import org.hibernate.StaleObjectStateException;
 import org.hibernate.Transaction;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 
@@ -88,6 +89,32 @@ public  class AddressDAO extends HibernateDaoSupport{
 		}
 		tx.commit();
 		return address;
+	}
+
+	public boolean updateAddress(Address add, String street, String city, String zip, String country) {
+		
+		if(street!=null && !street.isEmpty()) add.setStreet(street);
+		if(city!=null && !city.isEmpty()) add.setCity(city);
+		if(zip!=null && !zip.isEmpty()) add.setZip(zip);
+		if(country!=null && !country.isEmpty()) add.setCountry(country);
+		
+		try{
+			Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+			
+			Transaction transaction = session.getTransaction();
+			if(!transaction.isActive()) transaction = session.beginTransaction();
+			
+			//session.saveOrUpdate(c);	//throw ?
+			session.merge(add); //throw?
+			
+			transaction.commit();
+			
+			return true;
+		} catch (Exception e){
+			e.printStackTrace();
+			return false;
+		}
+		
 	}
 	
 }
