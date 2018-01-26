@@ -1,17 +1,18 @@
 package services;
 
 import java.util.List;
-import daos.ContactDAO;
+
 import daos.EntrepriseDAO;
+import daos.IContactDAO;
 import entities.Address;
 import entities.Entreprise;
 import entities.IContact;
 
 public class EntrepriseService {
 	private EntrepriseDAO eDAO;
-	private ContactDAO cDAO;
+	private IContactDAO cDAO;
 	
-	public EntrepriseService(EntrepriseDAO eDAO, ContactDAO cDAO) {
+	public EntrepriseService(EntrepriseDAO eDAO, IContactDAO cDAO) {
 		this.eDAO = eDAO;
 		this.cDAO = cDAO;
 	}

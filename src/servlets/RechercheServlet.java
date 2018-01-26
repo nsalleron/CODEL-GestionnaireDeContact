@@ -2,6 +2,7 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -63,7 +64,28 @@ public class RechercheServlet extends HttpServlet {
 			request.setAttribute("recherche", recherche);
 			rd.forward(request, response);
 		}else if (idContact == null && modeDelete != null){	/* En mode delete */
-			ArrayList<Contact> contacts = contactService.researchContactsParam(recherche);
+			ArrayList<Contact> contacts;
+			
+			/* Le code suivant sert juste à montrer que les deux requêtes retourne des résultats identiques */
+			ArrayList<Contact> rechercheAvecParam = contactService.researchContactsParam(recherche);	//Avec Param
+			ArrayList<Contact> rechercheSimple = contactService.researchContactsSimple(recherche); // Simple
+			ArrayList<Contact> listResult = new ArrayList<Contact>();
+			
+		
+			for(Contact c : rechercheAvecParam) 
+				for(Contact cs : rechercheSimple) 
+					if(c.getIdContact() == cs.getIdContact())
+						listResult.add(c);		
+			
+			if(listResult.size() != rechercheAvecParam.size() &&
+					listResult.size() != rechercheSimple.size()) {
+				throw new ArrayStoreException();
+			}else {
+				System.out.println("La recherche simple et la recherche par paramètre ont retournées les mêmes résultats !");
+				contacts = rechercheSimple;
+			}
+			/*Fin de vérification */
+			
 			RequestDispatcher rd = request.getRequestDispatcher("DeleteContact.jsp");
 			request.setAttribute("contacts", contacts);
 			request.setAttribute("recherche", recherche);

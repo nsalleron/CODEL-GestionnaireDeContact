@@ -23,16 +23,17 @@ import entities.PhoneNumber;
 
 import utils.HibernateUtil;
 
-public  class ContactDAO extends HibernateDaoSupport{
+public  class ContactDAO implements IContactDAO{
 	
-	private HibernateTemplate hibernateTemplate; //Attention à l'import, prendre la V3
+	HibernateTemplate template;  
+	public void setTemplate(HibernateTemplate template) {  
+	    this.template = template;  
+	}  
 	
-	public void setHibernateTemplate(SessionFactory sessionFactory){
-		System.out.println("Instanciation HT Contact");
-		this.hibernateTemplate = new HibernateTemplate(sessionFactory); 
-	}
-	
-	@Transactional
+	/* (non-Javadoc)
+	 * @see daos.IContactDAO#createContact(java.lang.String, java.lang.String, java.lang.String, entities.Address)
+	 */
+	@Override
 	public IContact createContact(String firstName, String lastName, String email, Address a) {
 		//TODO Hibernate? alContact.add(new Contact(alContact.size(),firstName,lastName,email));
 		
@@ -48,13 +49,20 @@ public  class ContactDAO extends HibernateDaoSupport{
 		session.beginTransaction();
 		session.save(c);
 		session.getTransaction().commit();
+		
 		System.out.println("Before hibernateTemplace.save(c)");
+		//System.out.println(template.toString());
+		//template.save(c);
 		//hibernateTemplate.save(c);
 		//this.getHibernateTemplate().save(c);
-		//System.out.println("After hibernateTemplace.save(c): "+hibernateTemplate.toString());
+		//System.out.println("After hibernateTemplace.save(c): "+template.toString());
 		return c;
 	}
 	
+	/* (non-Javadoc)
+	 * @see daos.IContactDAO#deleteContact(long)
+	 */
+	@Override
 	public void deleteContact(long idContact){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -75,6 +83,10 @@ public  class ContactDAO extends HibernateDaoSupport{
 			
 	}
 	
+	/* (non-Javadoc)
+	 * @see daos.IContactDAO#updateContact(long, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
 	public void updateContact(long idContact, String firstName, String lastName, String email) {
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
@@ -92,6 +104,10 @@ public  class ContactDAO extends HibernateDaoSupport{
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see daos.IContactDAO#updateContact(entities.IContact, java.lang.String, java.lang.String, java.lang.String)
+	 */
+	@Override
 	public boolean updateContact(IContact c, String firstName, String lastName, String email) {
 		// TODO Auto-generated method stub
 		try {
@@ -134,6 +150,10 @@ public  class ContactDAO extends HibernateDaoSupport{
 		transaction.commit();
 }*/
 	
+	/* (non-Javadoc)
+	 * @see daos.IContactDAO#researchContacts(java.lang.String)
+	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public ArrayList<Contact> researchContacts(String recherche) {
 		System.out.println("Utilisation de la researchContacts()");
@@ -164,6 +184,10 @@ public  class ContactDAO extends HibernateDaoSupport{
 		return listContact;
 	}
 	
+	/* (non-Javadoc)
+	 * @see daos.IContactDAO#researchContactsParam(java.lang.String)
+	 */
+	@Override
 	@SuppressWarnings("unchecked")
     public ArrayList<Contact> researchContactsParam(String recherche) {
 
@@ -195,6 +219,43 @@ public  class ContactDAO extends HibernateDaoSupport{
         return listContact;
     }
 	
+	@Override
+	@SuppressWarnings("unchecked")
+    public ArrayList<Contact> researchContactsSimple(String recherche) {
+		
+		System.out.println("Utilisation de la researchContactsSimple()");
+		
+        String q1 = "FROM Contact as c where c.firstName like '%"+recherche+"%'";
+        String q2 = "FROM Contact as c where c.lastName like '%"+recherche+"%'";
+        String q3 = "FROM Contact as c where c.email like '%"+recherche+"%'";
+
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.getTransaction();
+        if(!transaction.isActive()) 
+            transaction = session.beginTransaction();
+
+        ArrayList<Contact> listContact = new ArrayList<Contact>();
+
+        if(recherche.length() > 0) {
+
+            listContact.addAll(session.createQuery(q1).list());
+            listContact.addAll(session.createQuery(q2).list());
+            listContact.addAll(session.createQuery(q3).list());
+
+            Set<Contact> eliminateDoubleContact = new HashSet<Contact>();
+            eliminateDoubleContact.addAll(listContact);
+            listContact.clear();
+            listContact.addAll(eliminateDoubleContact);
+
+            transaction.commit();
+        }
+        return listContact;
+    }
+	
+	/* (non-Javadoc)
+	 * @see daos.IContactDAO#getContactById(long)
+	 */
+	@Override
 	public IContact getContactById(long id){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
@@ -209,6 +270,10 @@ public  class ContactDAO extends HibernateDaoSupport{
 		return contact;
 	}
 	
+	/* (non-Javadoc)
+	 * @see daos.IContactDAO#listContact()
+	 */
+	@Override
 	public List<IContact> listContact(){
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		
@@ -223,6 +288,10 @@ public  class ContactDAO extends HibernateDaoSupport{
 		
 	}
 	
+	/* (non-Javadoc)
+	 * @see daos.IContactDAO#addContactInGroup(long, long)
+	 */
+	@Override
 	public void addContactInGroup(long id_cont, long id_group){
 		
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();

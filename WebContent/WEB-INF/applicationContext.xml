@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans 
 	http://www.springframework.org/schema/beans/spring-beans.xsd
@@ -9,7 +8,7 @@
     http://www.springframework.org/schema/tx/spring-tx.xsd
 	http://www.springframework.org/schema/aop 
     http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
- 
+
 	<aop:aspectj-autoproxy />
 
 	<bean id="myDataSource"
@@ -36,41 +35,47 @@
 		</property>
 	</bean>
 	
-
-<!-- 	<bean id="hibernateTemplate" class="org.springframework.orm.hibernate4.HibernateTemplate"> -->
-<!-- 		<property name="sessionFactory" ref="sessionFactory" /> -->
-<!-- 		 <property name="checkWriteOperations" value="false"/>  -->
-<!-- 	</bean> -->
+	<bean id="template" class="org.springframework.orm.hibernate4.HibernateTemplate">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
 
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-    <tx:attributes>
-        <tx:method name="get*" read-only="true" />
-        <tx:method name="sav*" propagation="REQUIRED" />
-        <tx:method name="find*" read-only="true" />
-		<tx:method name="*" propagation="REQUIRED" timeout="1"/>
-    </tx:attributes>
+		<tx:attributes>
+			<tx:method name="get*" read-only="true" />
+			<tx:method name="sav*" propagation="REQUIRED" />
+			<tx:method name="find*" read-only="true" />
+			<tx:method name="*" propagation="REQUIRED" timeout="1" />
+		</tx:attributes>
 	</tx:advice>
 	<aop:config>
-		<aop:advisor pointcut="execution(* daos.*.*(..))" advice-ref="txAdvice"/>
+		<aop:advisor pointcut="execution(* daos.*.*(..))"
+			advice-ref="txAdvice" />
 	</aop:config>
 
-	<bean id="beanContact" class="entities.Contact" scope="prototype" >
-		<property name="firstName"><value>fyfgh</value></property>
-		<property name="lastName"><value>Dupont</value></property>
-		<property name="email"><value>axel.dupont@gmail.com</value></property>
+	<bean id="beanContact" class="entities.Contact" scope="prototype">
+		<property name="firstName">
+			<value>fyfgh</value>
+		</property>
+		<property name="lastName">
+			<value>Dupont</value>
+		</property>
+		<property name="email">
+			<value>axel.dupont@gmail.com</value>
+		</property>
 	</bean>
 
-	<bean id="beanContactService" class="services.ContactService" scope="singleton" init-method="init" destroy-method="cleanup" >
+	<bean id="beanContactService" class="services.ContactService"
+		scope="singleton" init-method="init" destroy-method="cleanup">
 		<constructor-arg>
 			<ref bean="beanContactDAO" />
 		</constructor-arg>
 	</bean>
-	<!-- Aspect Pour la création de contact-->
+	<!-- Aspect Pour la création de contact -->
 	<bean id="logAspect" class="services.LoggingAspect" />
 
 	<!-- DAO et Services -->
@@ -113,7 +118,7 @@
 
 
 	<bean id="beanContactDAO" class="daos.ContactDAO" scope="singleton">
-		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="template" ref="template" />
 	</bean>
 
 	<bean id="beanContactGroupDAO" class="daos.ContactGroupDAO" scope="singleton">

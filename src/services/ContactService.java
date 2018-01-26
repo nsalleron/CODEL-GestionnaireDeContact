@@ -1,16 +1,20 @@
 package services;
 
 import java.util.ArrayList;
+
 import java.util.List;
-import daos.ContactDAO;
+
+import org.springframework.transaction.annotation.Transactional;
+
+import daos.IContactDAO;
 import entities.Contact;
 import entities.IContact;
 import entities.Address;
 
 public class ContactService implements IContactService {
-	private ContactDAO cDAO;
+	private IContactDAO cDAO;
 	
-	public ContactService(ContactDAO cDAO) {
+	public ContactService(IContactDAO cDAO) {
 		this.cDAO = cDAO;
 	}
 	
@@ -76,6 +80,10 @@ public class ContactService implements IContactService {
 		return cDAO.researchContactsParam(recherche); 
 	}
 
+	@Override
+	public ArrayList<Contact> researchContactsSimple(String recherche) {
+		return cDAO.researchContactsSimple(recherche);
+	}
 	/* (non-Javadoc)
 	 * @see services.IContactService#updateContact(long, java.lang.String, java.lang.String, java.lang.String)
 	 */
@@ -92,4 +100,6 @@ public class ContactService implements IContactService {
 		return cDAO.updateContact(c, firstName, lastName, email);
 		
 	}
+
+	
 }
