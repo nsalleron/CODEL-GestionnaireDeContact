@@ -7,10 +7,13 @@ import java.util.Set;
 
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.StaleObjectStateException;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate4.HibernateTemplate;
+import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.Transactional;
 
 import entities.Address;
 import entities.Contact;
@@ -22,20 +25,33 @@ import utils.HibernateUtil;
 
 public  class ContactDAO extends HibernateDaoSupport{
 	
+	private HibernateTemplate hibernateTemplate; //Attention à l'import, prendre la V3
+	
+	public void setHibernateTemplate(SessionFactory sessionFactory){
+		System.out.println("Instanciation HT Contact");
+		this.hibernateTemplate = new HibernateTemplate(sessionFactory); 
+	}
+	
+	@Transactional
 	public IContact createContact(String firstName, String lastName, String email, Address a) {
 		//TODO Hibernate? alContact.add(new Contact(alContact.size(),firstName,lastName,email));
 		
-		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+		
 	
 		IContact c = new Contact(firstName,lastName,email);
 		c.setAdd(a);
 		c.setPhones(new HashSet<PhoneNumber>());
 		c.setBooks(new HashSet<ContactGroup>());
-	
+		
+		
+		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		session.save(c);
 		session.getTransaction().commit();
-
+		System.out.println("Before hibernateTemplace.save(c)");
+		//hibernateTemplate.save(c);
+		//this.getHibernateTemplate().save(c);
+		//System.out.println("After hibernateTemplace.save(c): "+hibernateTemplate.toString());
 		return c;
 	}
 	
@@ -120,7 +136,7 @@ public  class ContactDAO extends HibernateDaoSupport{
 	
 	@SuppressWarnings("unchecked")
 	public ArrayList<Contact> researchContacts(String recherche) {
-		
+		System.out.println("Utilisation de la researchContacts()");
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) 
@@ -147,6 +163,37 @@ public  class ContactDAO extends HibernateDaoSupport{
 		}
 		return listContact;
 	}
+	
+	@SuppressWarnings("unchecked")
+    public ArrayList<Contact> researchContactsParam(String recherche) {
+
+		System.out.println("Utilisation de la researchContactsParam()");
+        Session session = HibernateUtil.getSessionFactory().getCurrentSession();
+        Transaction transaction = session.getTransaction();
+        if(!transaction.isActive()) 
+            transaction = session.beginTransaction();
+
+        ArrayList<Contact> listContact = new ArrayList<Contact>();
+
+        if(recherche.length() > 0) {
+
+            String hql1 = "from Contact c where c.firstName like :cherche";
+            String hql2 = "from Contact c where c.lastName like :cherche";
+            String hql3 = "from Contact c where c.email like :cherche";
+
+            listContact.addAll(session.createQuery(hql1).setString("cherche", "%"+recherche+"%").list());
+            listContact.addAll(session.createQuery(hql2).setString("cherche", "%"+recherche+"%").list());
+            listContact.addAll(session.createQuery(hql3).setString("cherche", "%"+recherche+"%").list());
+
+            Set<Contact> eliminateDoubleContact = new HashSet<Contact>();
+            eliminateDoubleContact.addAll(listContact);
+            listContact.clear();
+            listContact.addAll(eliminateDoubleContact);
+
+            transaction.commit();
+        }
+        return listContact;
+    }
 	
 	public IContact getContactById(long id){
 		

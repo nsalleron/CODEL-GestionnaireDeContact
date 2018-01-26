@@ -28,11 +28,11 @@
 		/* Debug pour le remplissage automatique des champs */
 		String debug = "1";
 		request.getSession().setAttribute("DEBUG", debug);
-		System.out.println("TEST1");
+		
 		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
-		System.out.println("TEST2");
+		
 		ContactGroupService contactGroupService = (ContactGroupService) context.getBean("beanContactGroupService");
-		System.out.println("TEST3");
+		
 		/* Initialisation du groupe PAS_DE_GROUPE */
 		if(!contactGroupService.checkIfGroupExist("_PAS_DE_GROUPE_"))
 			contactGroupService.createContactGroup("_PAS_DE_GROUPE_");
@@ -66,6 +66,9 @@
 		<h3>
 			<a class="btn btn-lg btn-primary btn-block" href="DeleteContact.jsp">Supprimer
 				contact</a>
+		</h3>
+		<h3>
+			<a class="btn btn-lg btn-primary btn-block" href="Test.jsp">Test du cache niveau 2</a>
 		</h3>
 		<!-- <h3><a class="btn btn-lg btn-primary btn-block" href="Test.jsp">Tests de la plateforme</a></h3> -->
 	</div>

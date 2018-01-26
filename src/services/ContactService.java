@@ -19,6 +19,7 @@ public class ContactService implements IContactService {
 	 */
 	@Override
 	public IContact createContact(String firstName, String lastName, String email, Address a) {
+		System.out.println(this.cDAO.toString());
 		return cDAO.createContact(firstName,lastName,email,a);
 	}
 	
@@ -60,6 +61,11 @@ public class ContactService implements IContactService {
 	@Override
 	public ArrayList<Contact> researchContacts(String recherche) {
 		return cDAO.researchContacts(recherche);
+	}
+	
+	@Override
+	public ArrayList<Contact> researchContactsParam(String recherche){
+		return cDAO.researchContactsParam(recherche); 
 	}
 
 	/* (non-Javadoc)

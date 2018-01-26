@@ -25,4 +25,6 @@ public interface IContactService {
 
 	boolean updateContact(IContact c, String firstName, String lastName, String email);
 
+	ArrayList<Contact> researchContactsParam(String recherche);
+
 }
