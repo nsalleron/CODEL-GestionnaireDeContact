@@ -59,13 +59,13 @@
 		<aop:advisor pointcut="execution(* daos.*.*(..))" advice-ref="txAdvice"/>
 	</aop:config>
 
-	<bean id="beanContact" class="entities.Contact" scope="prototype">
+	<bean id="beanContact" class="entities.Contact" scope="prototype" >
 		<property name="firstName"><value>fyfgh</value></property>
 		<property name="lastName"><value>Dupont</value></property>
 		<property name="email"><value>axel.dupont@gmail.com</value></property>
 	</bean>
 
-	<bean id="beanContactService" class="services.ContactService" scope="singleton">
+	<bean id="beanContactService" class="services.ContactService" scope="singleton" init-method="init" destroy-method="cleanup" >
 		<constructor-arg>
 			<ref bean="beanContactDAO" />
 		</constructor-arg>

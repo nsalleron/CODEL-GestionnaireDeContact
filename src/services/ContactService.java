@@ -14,6 +14,14 @@ public class ContactService implements IContactService {
 		this.cDAO = cDAO;
 	}
 	
+	public void init() {
+		System.out.println("Bean's Life Cycle : Initialisation de ContactService ");
+	}
+	
+	public void cleanup() {
+		System.out.println("Bean's Life Cycle : Cleanup de ContactService ");
+	}
+	
 	/* (non-Javadoc)
 	 * @see services.IContactService#createContact(java.lang.String, java.lang.String, java.lang.String, entities.Address)
 	 */
