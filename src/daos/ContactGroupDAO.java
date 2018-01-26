@@ -97,19 +97,23 @@ public class ContactGroupDAO extends HibernateDaoSupport{
 	}
 
 	public boolean checkIfGroupExist(String nameGroup) {
+		System.out.println("0");
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
-
+		System.out.println("1");
 		Transaction transaction = session.getTransaction();
 		if(!transaction.isActive()) transaction = session.beginTransaction();
-
+		System.out.println("2");
 		@SuppressWarnings("unchecked")
 		List<ContactGroup> results = session.createQuery("select contactGroup from ContactGroup contactGroup").list();
 		for (ContactGroup group : results) {
 			if(group.getGroupName().equals(nameGroup)) {
+				transaction.commit();
 				return true;
 			}
 		}
+		System.out.println("3");
 		transaction.commit();
+		System.out.println("4");
 		return false;
 	}
 

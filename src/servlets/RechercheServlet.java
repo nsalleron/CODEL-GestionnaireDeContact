@@ -85,7 +85,6 @@ public class RechercheServlet extends HttpServlet {
 				contacts = rechercheSimple;
 			}
 			/*Fin de vérification */
-			
 			RequestDispatcher rd = request.getRequestDispatcher("DeleteContact.jsp");
 			request.setAttribute("contacts", contacts);
 			request.setAttribute("recherche", recherche);
@@ -100,6 +99,9 @@ public class RechercheServlet extends HttpServlet {
 			rd.forward(request, response);
 		}else if(modeDelete != null && idContact.length() > 0){	/* mode delete */
 			IContact contact = contactService.getContactById(Long.parseLong(idContact));
+			if(contact == null ) {
+				contact = entrepriseService.getEntrepriseById(Long.parseLong(idContact));
+			}
 			request.setAttribute("idcontact", contact.getIdContact());
 			RequestDispatcher rd = request.getRequestDispatcher("DeleteServlet");
 			rd.forward(request, response);

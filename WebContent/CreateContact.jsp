@@ -62,17 +62,13 @@
 		
 		String[] whereFails;
 		boolean bFirstName = true, bLastName = true, bEmail = true, bStreet = true, bZip = true, bCity = true,
-				bCountry = true, bPhone = true, bPhoneKind = true, bEntreprise = false;
+				bCountry = true, bPhone = true, bPhoneKind = true, bEntreprise = true;
 		Boolean success;
 		
 		contact = (Contact) request.getAttribute("contact");
 		request.getSession().setAttribute("CONTACTOBJ", contact);
 		
-		if(contact instanceof Entreprise){
-			bEntreprise = true;
-		}else{
-			bEntreprise = false;
-		}
+		
 		System.out.println("Entreprise : "+bEntreprise);
 		
 		
@@ -83,20 +79,22 @@
 			nbGroupe = ""+contact.getBooks().size();
 			System.out.println("NbNumero : "+ nbNumero);
 			System.out.println("NbGroupe : "+ nbGroupe);
+			if(contact instanceof Entreprise){
+				bEntreprise = true;
+			}else{
+				bEntreprise = false;
+			}
 		}
 		if(DEBUG != null && DEBUG.equals("1") && contact == null){
-			int i = contactService.listContacts().size();
-			firstname = "user"+i;
-			lastname = "last"+i;
-			email = "user"+i+"@"+firstname+".fr";
-			street = "street de "+firstname;
-			city = "CityOf"+firstname;
-			zip = "0"+i;
-			country = "CountryOf"+firstname;
-			groupe = "GroupOf"+firstname;
-			alPhone.add("000000000"+i);
-			alPhoneKind.add(firstname);
-			alGroupes.add(firstname);
+			Contact c = (Contact) context.getBean("Contact1");
+			firstname = c.getFirstName();
+			lastname = c.getLastName();
+			email = c.getEmail();
+			street = c.getAdd().getStreet();
+			city = c.getAdd().getCity();
+			zip = c.getAdd().getZip();
+			country = c.getAdd().getCountry();
+			groupe = "DEFAULT";
 		}
 	%>
 <script type="text/javascript">
@@ -236,8 +234,9 @@
 		whereFails = information.split(";");
 		if (!success) {
 	%>
-		<h1>
-		Il y a eu une erreur. Vérifier les champs :
+	<div class="col-md-offset-2 col-md-3" style="width: 80%">
+		<h1>Il y a eu une erreur. Vérifier les champs :
+		
 	<%
 		String tmp = "";
 		for (String str : whereFails) {
@@ -266,9 +265,10 @@
 			bPhoneKind = false;%>
 		<%=tmp%>
 		</h1>
+		</div>
 	<%	}
 	}
-	if(contact == null && DEBUG == null ){ // récupération des éléments déjà renseignés (cas d'erreur)
+	if(contact == null && (DEBUG.equals("0") || DEBUG == null) ){ // récupération des éléments déjà renseignés (cas d'erreur)
 		firstname = request.getParameter("firstname") == null ? "" : request.getParameter("firstname");
 		lastname = request.getParameter("lastname") == null ? "" : request.getParameter("lastname");
 		email = request.getParameter("email") == null ? "" : request.getParameter("email");
@@ -371,6 +371,7 @@
 <%	} %>
 			<div class="row" >
 				<div class="col-md-offset-2 col-md-3" style="width: 80%">
+					
 					<div class="form-group">
 						<fieldset style="margin-bottom: -2%;">
 						<legend style="color: #5826AB80;">Information générales :</legend>
@@ -403,7 +404,7 @@
 						
 					if(bEntreprise){
 						casEntreprise += "<label for=\"siret\">Numéro Siret</label>";
-						casEntreprise += "<input type=\"text\" class=\"form-control\" name=\"siret\" value=" + siret +"\""+ 
+						casEntreprise += "<input type=\"text\" class=\"form-control\" name=\"siret\" value=\"" + siret +"\""+ 
 								" placeholder=\"Numéro Siret (Obligatoire)\">";
 					}
 					%>

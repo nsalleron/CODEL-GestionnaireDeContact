@@ -34,12 +34,13 @@
 		ContactGroupService contactGroupService = (ContactGroupService) context.getBean("beanContactGroupService");
 		
 		/* Initialisation du groupe PAS_DE_GROUPE */
-		if(!contactGroupService.checkIfGroupExist("_PAS_DE_GROUPE_"))
-			contactGroupService.createContactGroup("_PAS_DE_GROUPE_");
+		if(contactGroupService != null)
+			if(!contactGroupService.checkIfGroupExist("_PAS_DE_GROUPE_"))
+				contactGroupService.createContactGroup("_PAS_DE_GROUPE_");
 		
 		String name = (String) request.getSession().getAttribute("name");
 		String updateFailed = (String) request.getAttribute("updatefailed");
-		System.out.println("MAIN : " + updateFailed);
+		//System.out.println("MAIN : " + updateFailed);
 		if (name == null) {
 			name = (String) session.getAttribute("name");
 		}
@@ -75,6 +76,7 @@
 
 	<%
 		if (updateFailed != null && updateFailed.length() > 0) {
+			System.out.println(updateFailed);
 	%>
 	<%=updateFailed%>
 	<%

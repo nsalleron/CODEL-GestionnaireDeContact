@@ -23,12 +23,7 @@ import entities.PhoneNumber;
 
 import utils.HibernateUtil;
 
-public  class ContactDAO implements IContactDAO{
-	
-	HibernateTemplate template;  
-	public void setTemplate(HibernateTemplate template) {  
-	    this.template = template;  
-	}  
+public  class ContactDAO extends HibernateDaoSupport implements IContactDAO{
 	
 	/* (non-Javadoc)
 	 * @see daos.IContactDAO#createContact(java.lang.String, java.lang.String, java.lang.String, entities.Address)
@@ -37,21 +32,23 @@ public  class ContactDAO implements IContactDAO{
 	public IContact createContact(String firstName, String lastName, String email, Address a) {
 		//TODO Hibernate? alContact.add(new Contact(alContact.size(),firstName,lastName,email));
 		
-		
-	
 		IContact c = new Contact(firstName,lastName,email);
 		c.setAdd(a);
 		c.setPhones(new HashSet<PhoneNumber>());
 		c.setBooks(new HashSet<ContactGroup>());
 		
-		
+		/*
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		session.save(c);
 		session.getTransaction().commit();
+		*/
 		
 		System.out.println("Before hibernateTemplace.save(c)");
 		//System.out.println(template.toString());
+		getHibernateTemplate().getSessionFactory().getCurrentSession().getTransaction().begin();
+		getHibernateTemplate().save(c);
+		getHibernateTemplate().getSessionFactory().getCurrentSession().getTransaction().commit();
 		//template.save(c);
 		//hibernateTemplate.save(c);
 		//this.getHibernateTemplate().save(c);

@@ -17,6 +17,7 @@ public class Contact implements IContact {
 		super();
 	}
 	
+	
 	public Contact(String firstName, String lastName, String email) {
 		super();
 		this.firstName = firstName;

@@ -269,9 +269,11 @@ public class UpdateServlet extends HttpServlet {
 							}
 						}
 
-				bAllOk = addressService.updateAddress(e.getAdd(), street, city, zip, country);
+				
 				if(!bAllOk) {
 					rep = setError(e);
+				}else {
+					bAllOk = addressService.updateAddress(e.getAdd(), street, city, zip, country);
 				}
 
 			}else {
@@ -287,8 +289,10 @@ public class UpdateServlet extends HttpServlet {
 				c.setFirstName(firstName);
 				c.setLastName(lastName);
 				c.setEmail(email);
-
-				if(!(bAllOk = contactService.updateContact(c, firstName, lastName, email))) {
+				
+				bAllOk = contactService.updateContact(c, firstName, lastName, email);
+				System.out.println("value of bAllOk" + bAllOk);
+				if(!(bAllOk)) {
 					rep = setError(c);
 				}
 
@@ -336,17 +340,20 @@ public class UpdateServlet extends HttpServlet {
 
 						}
 
-				bAllOk = addressService.updateAddress(c.getAdd(), street, city, zip, country);
+				
 				if(!bAllOk) {
 					rep = setError(c);
+				}else {
+					bAllOk = addressService.updateAddress(c.getAdd(), street, city, zip, country);
 				}
 			}else {
 				rep = setError(c);
 			}
 		}
 
-
+		System.out.println("before");
 		if(!bAllOk) {
+			System.out.println("failed");
 			request.setAttribute("updatefailed",rep); 
 			RequestDispatcher rd = request.getRequestDispatcher("Main.jsp");
 			rd.forward(request, response);

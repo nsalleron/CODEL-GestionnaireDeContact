@@ -131,16 +131,46 @@ public class CreateServlet extends HttpServlet {
 		
 		
 		/* Vérification des élements */
-		if(firstName != null && firstName.length() > 0) 
-			okFirstName = true;
-		if(lastName!=null && lastName.length()>0)
-			okLastName = true;
+		if(firstName != null && firstName.length() > 0) {
+			try {
+				Long.parseLong(firstName);
+				okFirstName = false;
+			}catch(NumberFormatException e) {
+				//System.out.println("Problème format long");
+				okFirstName = true;
+			}
+		}
+			
+		if(lastName!=null && lastName.length()>0) {
+			try {
+				Long.parseLong(lastName);
+				okLastName = false;
+			}catch(NumberFormatException e) {
+				//System.out.println("Problème format long");
+				okLastName = true;
+			}
+		}
+			
 		if(email!=null && email.length()>5 && email.contains("@") && email.contains("."))
 			okEmail = true;
 		if(street!=null && street.length()>0) 
 			okStreet = true;
-		if(zip!=null && zip.length()>0) 
-			okZip = true;
+		if(zip!=null && zip.length()>0) {
+			try {
+				if(Long.parseLong(zip) < 0) {
+					okZip = false;
+				}else {
+					okZip = true;
+				}
+				
+			}catch(NumberFormatException e) {
+				System.out.println("Problème format long");
+				okZip = false;
+			}
+			
+		}
+		
+			
 		if(city!=null && city.length()>0) 
 			okCity = true;
 		if(country!=null && country.length()>0) 
@@ -177,6 +207,7 @@ public class CreateServlet extends HttpServlet {
 			
 			if(siret!=null && !siret.isEmpty()){
 				c = entrepriseService.createEntreprise(firstName, lastName, email, add, siret);
+				
 			} else {
 				c = contactService.createContact(firstName, lastName, email, add);
 			}
