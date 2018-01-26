@@ -1,7 +1,6 @@
 package daos;
 
 import org.hibernate.Session;
-import org.hibernate.StaleObjectStateException;
 import org.hibernate.Transaction;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 

@@ -16,7 +16,6 @@ import entities.IContact;
 import entities.PhoneNumber;
 import services.AddressService;
 import services.ContactGroupService;
-import services.EntrepriseService;
 import services.IContactService;
 import services.PhoneNumberService;
 

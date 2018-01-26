@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import java.util.List;
 
-import org.springframework.transaction.annotation.Transactional;
-
 import daos.IContactDAO;
 import entities.Contact;
 import entities.IContact;

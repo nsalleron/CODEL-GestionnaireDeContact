@@ -2,8 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
-
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -16,11 +14,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import entities.Contact;
 import entities.IContact;
-import services.AddressService;
-import services.ContactGroupService;
 import services.EntrepriseService;
 import services.IContactService;
-import services.PhoneNumberService;
 
 /**
  * Servlet implementation class RechercheServlet

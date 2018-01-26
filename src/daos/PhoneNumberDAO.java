@@ -4,24 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.hibernate.StaleObjectStateException;
 import org.hibernate.Transaction;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
-import org.springframework.orm.hibernate4.HibernateTemplate;
-
 import entities.IContact;
 import entities.PhoneNumber;
 import utils.HibernateUtil;
 
 public class PhoneNumberDAO extends HibernateDaoSupport{
-	
-	private HibernateTemplate hibernateTemplate; //Attention à l'import, prendre la V3
-	
-	public void setHibernateTemplate(SessionFactory sessionFactory){
-		System.out.println("Instanciation PN");
-		this.hibernateTemplate = new HibernateTemplate(sessionFactory); 
-	}
 
 	public PhoneNumber createPhoneNumber(String phoneKind, String phoneNumber, IContact contact) {
 		

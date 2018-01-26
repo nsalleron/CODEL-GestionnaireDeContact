@@ -2,7 +2,6 @@ package servlets;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import javax.servlet.RequestDispatcher;
@@ -13,11 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import entities.Address;
-import entities.Contact;
 import entities.ContactGroup;
-import entities.Entreprise;
 import entities.IContact;
 import entities.PhoneNumber;
 import services.AddressService;
@@ -174,9 +169,12 @@ public class UpdateServlet extends HttpServlet {
 			}
 		}
 
+		@SuppressWarnings("unused")
 		long idContactFromUser = Long.parseLong(idContact);
 		long verContactFromUser = Long.parseLong(versionContact);
+		@SuppressWarnings("unused")
 		long idAddressFromUser = Long.parseLong(idAddr);
+		@SuppressWarnings("unused")
 		long verAddressFromUser = Long.parseLong(versionAddress);
 
 		long[] tabPhones = new long[alPhones.size()];

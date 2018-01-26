@@ -2,9 +2,6 @@ package daos;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.springframework.transaction.annotation.Transactional;
-
 import entities.Address;
 import entities.Contact;
 import entities.IContact;
