@@ -25,14 +25,15 @@
         la valeur =create i.e. creation à chaque lancement  -->
         <property name="hbm2ddl.auto">create</property>
         <!-- Le SQL généré est affiché sur la console -->
-        <property name="hibernate.show_sql">false</property>
+        <property name="hibernate.show_sql">true</property>
         <!-- Pretty format le SQL généré -->
-        <property name="hibernate.format_sql">false</property>
+        <property name="hibernate.format_sql">true</property>
         
         <property name="hibernate.cache.use_query_cache">true</property>
 		<property name="hibernate.cache.use_second_level_cache">true</property>
 		<property name="hibernate.cache.region.factory_class">org.hibernate.cache.ehcache.EhCacheRegionFactory</property>
 		
+		<property name="org.hibernate.flushMode">COMMIT</property>
         
         <!-- liens vers les fichiers de mapping, indiquez le chemin à partir de src -->
         <mapping resource="entities/Address.hbm.xml"/>

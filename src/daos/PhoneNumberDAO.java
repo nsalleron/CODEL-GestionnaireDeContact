@@ -29,9 +29,6 @@ public class PhoneNumberDAO extends HibernateDaoSupport{
 		session.save(phone);
 
 		transaction.commit();
-		
-		//hibernateTemplate.save(phone);
-		
 
 		return phone;
 	}

@@ -201,5 +201,14 @@
 			<value>France</value>
 		</property>
 	</bean>
+	
+	<bean id="phone1" class="entities.PhoneNumber" scope="prototype">
+		<property name="phoneKind">
+			<value>Domicile</value>
+		</property>
+		<property name="phoneNumber">
+			<value>07383920133</value>
+		</property>
+	</bean>
 
 </beans>

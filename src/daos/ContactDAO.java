@@ -46,6 +46,7 @@ public  class ContactDAO extends HibernateDaoSupport implements IContactDAO{
 		getHibernateTemplate().getSessionFactory().getCurrentSession().getTransaction().begin();
 		getHibernateTemplate().save(c);
 		getHibernateTemplate().getSessionFactory().getCurrentSession().getTransaction().commit();
+		
 		//template.save(c);
 		//hibernateTemplate.save(c);
 		//this.getHibernateTemplate().save(c);

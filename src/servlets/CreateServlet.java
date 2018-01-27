@@ -219,6 +219,7 @@ public class CreateServlet extends HttpServlet {
 			}
 			
 			for(i = 0; i < alPhone.size(); i++) {
+				//System.out.println("Phone : "+c.getIdContact());
 				phoneNumberService.createPhoneNumber(alPhoneKind.get(i).value, alPhone.get(i).value, c);
 			}
 			

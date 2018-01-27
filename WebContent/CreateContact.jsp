@@ -87,6 +87,7 @@
 		}
 		if(DEBUG != null && DEBUG.equals("1") && contact == null){
 			Contact c = (Contact) context.getBean("Contact1");
+			PhoneNumber pn = (PhoneNumber) context.getBean("phone1");
 			firstname = c.getFirstName();
 			lastname = c.getLastName();
 			email = c.getEmail();
@@ -94,7 +95,9 @@
 			city = c.getAdd().getCity();
 			zip = c.getAdd().getZip();
 			country = c.getAdd().getCountry();
-			groupe = "DEFAULT";
+			alPhone.add(pn.getPhoneNumber());
+			alPhoneKind.add(pn.getPhoneKind());
+			alGroupes.add("DEFAULT");
 		}
 	%>
 <script type="text/javascript">
