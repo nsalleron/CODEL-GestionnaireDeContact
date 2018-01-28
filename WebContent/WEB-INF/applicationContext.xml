@@ -62,7 +62,33 @@
 			<value>axel.dupont@gmail.com</value>
 		</property>
 	</bean>
-	<aop:aspectj-autoproxy/>
+
+
+	<aop:config>
+		<aop:aspect id="printTimeStamp" ref="beanContactService">
+			<aop:before
+				pointcut="execution(* createContact(String, String, *, *))
+				 and args(first, last, *, *)"
+				method="logbfr" arg-names="first, last" />
+		</aop:aspect>
+	</aop:config>
+
+	<aop:config>
+		<aop:aspect id="printTimeStampAfter" ref="beanContactService">
+			<aop:after
+				pointcut="execution(* createContact(String, String, *, *))
+				 and args(first, last, *, *)"
+				method="logaft" arg-names="first, last" />
+		</aop:aspect>
+	</aop:config>
+	<aop:config>
+		<aop:aspect id="printPhoneNumberChange" ref="beanPhoneNumberService">
+			<aop:around method="logpjp" arg-names="pjp, phonekind, phone" 
+			pointcut="execution (* createPhoneNumber(String, String, *)) and args(phonekind, phone, *)"/>
+		</aop:aspect>
+	</aop:config>
+
+	<aop:aspectj-autoproxy />
 	<bean id="beanContactService" class="services.ContactService"
 		scope="singleton" init-method="init" destroy-method="cleanup">
 		<constructor-arg>
@@ -109,7 +135,7 @@
 	<bean id="beanAddressDAO" class="daos.AddressDAO" scope="singleton">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
+
 	<bean id="beanContactDAO" class="daos.ContactDAO" scope="singleton">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
@@ -201,7 +227,7 @@
 			<value>France</value>
 		</property>
 	</bean>
-	
+
 	<bean id="phone1" class="entities.PhoneNumber" scope="prototype">
 		<property name="phoneKind">
 			<value>Domicile</value>

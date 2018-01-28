@@ -1,8 +1,10 @@
 package services;
 
 import java.util.ArrayList;
-
+import java.util.Date;
 import java.util.List;
+
+import org.aspectj.lang.ProceedingJoinPoint;
 
 import daos.IContactDAO;
 import entities.Contact;
@@ -11,19 +13,19 @@ import entities.Address;
 
 public class ContactService implements IContactService {
 	private IContactDAO cDAO;
-	
+
 	public ContactService(IContactDAO cDAO) {
 		this.cDAO = cDAO;
 	}
-	
+
 	public void init() {
 		System.out.println("Bean's Life Cycle : Initialisation de ContactService ");
 	}
-	
+
 	public void cleanup() {
 		System.out.println("Bean's Life Cycle : Cleanup de ContactService ");
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see services.IContactService#createContact(java.lang.String, java.lang.String, java.lang.String, entities.Address)
 	 */
@@ -32,7 +34,7 @@ public class ContactService implements IContactService {
 		System.out.println(this.cDAO.toString());
 		return cDAO.createContact(firstName,lastName,email,a);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see services.IContactService#deleteContact(long)
 	 */
@@ -40,7 +42,7 @@ public class ContactService implements IContactService {
 	public void deleteContact(long idContact) {
 		cDAO.deleteContact(idContact);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see services.IContactService#listContacts()
 	 */
@@ -48,7 +50,7 @@ public class ContactService implements IContactService {
 	public List<IContact> listContacts() {
 		return cDAO.listContact();
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see services.IContactService#getContactById(long)
 	 */
@@ -56,7 +58,7 @@ public class ContactService implements IContactService {
 	public IContact getContactById(long id){
 		return cDAO.getContactById(id);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see services.IContactService#addContactInGroup(long, long)
 	 */
@@ -64,7 +66,7 @@ public class ContactService implements IContactService {
 	public void addContactInGroup(long id_cont, long id_group) {
 		cDAO.addContactInGroup(id_cont, id_group);
 	}
-	
+
 	/* (non-Javadoc)
 	 * @see services.IContactService#researchContacts(java.lang.String)
 	 */
@@ -72,7 +74,7 @@ public class ContactService implements IContactService {
 	public ArrayList<Contact> researchContacts(String recherche) {
 		return cDAO.researchContacts(recherche);
 	}
-	
+
 	@Override
 	public ArrayList<Contact> researchContactsParam(String recherche){
 		return cDAO.researchContactsParam(recherche); 
@@ -96,8 +98,21 @@ public class ContactService implements IContactService {
 	@Override
 	public boolean updateContact(IContact c, String firstName, String lastName, String email) {
 		return cDAO.updateContact(c, firstName, lastName, email);
+
+	}
+
+	public void logbfr(String first, String last) {
+		System.out.println("logBefore() is running with Spring Framework");
+		System.out.println("hello " + first +" " + last + " il est : "+new Date().toString());
+		System.out.println("******");
+		
+	}
+	
+	public void logaft(String first, String last) {
+		System.out.println("logAfter() is running with Spring Framework");
+		System.out.println("hello " + first +" " + last + " il est : "+new Date().toString());
+		System.out.println("******");
 		
 	}
 
-	
 }

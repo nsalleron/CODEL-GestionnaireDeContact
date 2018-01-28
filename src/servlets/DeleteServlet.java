@@ -17,7 +17,7 @@ import entities.PhoneNumber;
 import services.AddressService;
 import services.ContactGroupService;
 import services.IContactService;
-import services.PhoneNumberService;
+import services.IPhoneNumberService;
 
 
 /**
@@ -53,7 +53,7 @@ public class DeleteServlet extends HttpServlet {
 		ApplicationContext context = WebApplicationContextUtils.getWebApplicationContext(getServletContext());
 		IContactService contactService = (IContactService) context.getBean("beanContactService");
 		AddressService addressService = (AddressService) context.getBean("beanAddressService");
-		PhoneNumberService phoneNumberService = (PhoneNumberService) context.getBean("beanPhoneNumberService");
+		IPhoneNumberService phoneNumberService = (IPhoneNumberService) context.getBean("beanPhoneNumberService");
 		ContactGroupService contactGroupService = (ContactGroupService) context.getBean("beanContactGroupService");
 		
 		IContact c = contactService.getContactById(Long.parseLong(contact));

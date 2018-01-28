@@ -19,7 +19,7 @@ import services.AddressService;
 import services.ContactGroupService;
 import services.EntrepriseService;
 import services.IContactService;
-import services.PhoneNumberService;
+import services.IPhoneNumberService;
 
 /**
  * Servlet implementation class CreateServlet
@@ -81,7 +81,7 @@ public class UpdateServlet extends HttpServlet {
 		IContactService contactService = (IContactService) context.getBean("beanContactService");
 		AddressService addressService = (AddressService) context.getBean("beanAddressService");
 		EntrepriseService entrepriseService = (EntrepriseService) context.getBean("beanEntrepriseService");
-		PhoneNumberService phoneNumberService = (PhoneNumberService) context.getBean("beanPhoneNumberService");
+		IPhoneNumberService phoneNumberService = (IPhoneNumberService) context.getBean("beanPhoneNumberService");
 		ContactGroupService contactGroupService = (ContactGroupService) context.getBean("beanContactGroupService");
 
 		int i = 0;

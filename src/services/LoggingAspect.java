@@ -12,7 +12,7 @@ public class LoggingAspect {
 	@Before("execution(* services.IContactService.listContacts(..))")
 	public void logBefore(JoinPoint joinPoint) {
 
-		System.out.println("logBefore() is running!");
+		System.out.println("logBefore() is running with AspectJ");
 		System.out.println("hijacked : " + joinPoint.getSignature().getName());
 		System.out.println("******");
 	}
@@ -22,7 +22,7 @@ public class LoggingAspect {
 	@After("execution(* services.IContactService.listContacts(..))")
 	public void logAfter(JoinPoint joinPoint) {
 
-		System.out.println("logAfter() is running!");
+		System.out.println("logAfter() is running with AspectJ");
 		System.out.println("hijacked : " + joinPoint.getSignature().getName());
 		System.out.println("******");
 	}
@@ -30,7 +30,7 @@ public class LoggingAspect {
 	@Before("execution(* services.IContactService.createContact(..))")
 	public void logBeforeCreate(JoinPoint joinPoint) {
 
-		System.out.println("logBefore() is running!");
+		System.out.println("logBefore() is running with AspectJ");
 		System.out.println("hijacked : " + joinPoint.getSignature().getName());
 		System.out.println("******");
 	}
@@ -38,7 +38,7 @@ public class LoggingAspect {
 	@After("execution(* services.IContactService.createContact(..))")
 	public void logAfterCreate(JoinPoint joinPoint) {
 
-		System.out.println("logAfter() is running!");
+		System.out.println("logAfter() is running with AspectJ");
 		System.out.println("hijacked : " + joinPoint.getSignature().getName());
 		System.out.println("******");
 	}
