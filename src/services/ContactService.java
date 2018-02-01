@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.hibernate.exception.ConstraintViolationException;
 
 import daos.IContactDAO;
 import entities.Contact;
@@ -31,8 +32,8 @@ public class ContactService implements IContactService {
 	 */
 	@Override
 	public IContact createContact(String firstName, String lastName, String email, Address a) {
-		System.out.println(this.cDAO.toString());
-		return cDAO.createContact(firstName,lastName,email,a);
+			
+			return cDAO.createContact(firstName,lastName,email,a);
 	}
 
 	/* (non-Javadoc)

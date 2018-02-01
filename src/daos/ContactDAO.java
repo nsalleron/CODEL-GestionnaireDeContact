@@ -34,23 +34,19 @@ public  class ContactDAO extends HibernateDaoSupport implements IContactDAO{
 		c.setPhones(new HashSet<PhoneNumber>());
 		c.setBooks(new HashSet<ContactGroup>());
 		
-		/*
+		///* <- Old way
 		Session session = HibernateUtil.getSessionFactory().getCurrentSession();
 		session.beginTransaction();
 		session.save(c);
 		session.getTransaction().commit();
-		*/
+		//*/
 		
-		System.out.println("Before hibernateTemplace.save(c)");
-		//System.out.println(template.toString());
-		getHibernateTemplate().getSessionFactory().getCurrentSession().getTransaction().begin();
-		getHibernateTemplate().save(c);
-		getHibernateTemplate().getSessionFactory().getCurrentSession().getTransaction().commit();
 		
-		//template.save(c);
-		//hibernateTemplate.save(c);
-		//this.getHibernateTemplate().save(c);
-		//System.out.println("After hibernateTemplace.save(c): "+template.toString());
+		//getHibernateTemplate().getSessionFactory().getCurrentSession().getTransaction().begin();
+		//getHibernateTemplate().save(c);
+		//getHibernateTemplate().getSessionFactory().getCurrentSession().getTransaction().commit();
+		
+		
 		return c;
 	}
 	

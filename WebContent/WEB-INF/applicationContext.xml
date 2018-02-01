@@ -88,17 +88,13 @@
 		</aop:aspect>
 	</aop:config>
 
-	<aop:aspectj-autoproxy />
+	
 	<bean id="beanContactService" class="services.ContactService"
 		scope="singleton" init-method="init" destroy-method="cleanup">
 		<constructor-arg>
 			<ref bean="beanContactDAO" />
 		</constructor-arg>
 	</bean>
-	<!-- Aspect Pour la création de contact -->
-	<bean id="logAspect" class="services.LoggingAspect" />
-
-	<!-- DAO et Services -->
 
 	<bean id="beanAddressService" class="services.AddressService"
 		scope="singleton">
@@ -114,6 +110,7 @@
 		</constructor-arg>
 	</bean>
 
+	<aop:aspectj-autoproxy />
 	<bean id="beanEntrepriseService" class="services.EntrepriseService"
 		scope="singleton">
 		<constructor-arg>
@@ -124,13 +121,17 @@
 			<ref bean="beanContactDAO" />
 		</constructor-arg>
 	</bean>
-
+	<!-- Aspect Pour le phoneNumber -->
+	<bean id="logAspect" class="servlets.LoggingAspect" />
+	
+	<!-- DAO et Services -->
 	<bean id="beanPhoneNumberService" class="services.PhoneNumberService"
 		scope="singleton">
 		<constructor-arg>
 			<ref bean="beanPhoneNumberDAO" />
 		</constructor-arg>
 	</bean>
+	
 
 	<bean id="beanAddressDAO" class="daos.AddressDAO" scope="singleton">
 		<property name="sessionFactory" ref="sessionFactory" />
@@ -153,20 +154,7 @@
 	</bean>
 
 
-	<bean id="Contact1" class="entities.Contact" scope="prototype">
-		<property name="firstName">
-			<value>Axel</value>
-		</property>
-		<property name="lastName">
-			<value>Dupont</value>
-		</property>
-		<property name="email">
-			<value>axel.dupont@gmail.com</value>
-		</property>
-		<property name="add">
-			<ref bean="Address1" />
-		</property>
-	</bean>
+
 
 	<bean id="Contact2" class="entities.Contact" scope="prototype">
 		<property name="firstName">
@@ -195,6 +183,21 @@
 		</property>
 		<property name="add">
 			<ref bean="Address2" />
+		</property>
+	</bean>
+	
+	<bean id="Contact1" class="entities.Contact" scope="prototype">
+		<property name="firstName">
+			<value>Axel</value>
+		</property>
+		<property name="lastName">
+			<value>Dupont</value>
+		</property>
+		<property name="email">
+			<value>axel.dupont@gmail.com</value>
+		</property>
+		<property name="add">
+			<ref bean="Address1" />
 		</property>
 	</bean>
 
